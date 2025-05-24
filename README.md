@@ -90,7 +90,7 @@ A web-based **Library Management System** built with **Java Servlet**, **JSP**, 
 
 ## 🗃 Sample DB Connection Code (Java)
 
-    ```java
+    ```
     String url = "jdbc:sqlserver://mssql:1433;databaseName=library_system;encrypt=true;trustServerCertificate=true;";
     String username = "sa";
     String password = "12345";
