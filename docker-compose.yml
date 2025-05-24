@@ -1,33 +1,33 @@
 services:
-  mssql:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: mssql-dev
-    ports:
-      - "1433:1433"
-    environment:
-      SA_PASSWORD: "12345"
-      ACCEPT_EULA: "Y"
-    volumes:
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "12345", "-Q", "SELECT 1" ]
-      interval: 10s
-      retries: 10
-    command: >
-      /bin/bash -c "
-      /opt/mssql/bin/sqlservr & 
-      sleep 20 && 
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 12345 -i /docker-entrypoint-initdb.d/init.sql && 
-      wait
-      "
+    mssql:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        container_name: mssql-dev
+        ports:
+            - "1433:1433"
+        environment:
+            SA_PASSWORD: "YourStrong!Passw0rd"
+            ACCEPT_EULA: "Y"
+        volumes:
+            - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+        healthcheck:
+            test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourStrong!Passw0rd", "-Q", "SELECT 1" ]
+            interval: 10s
+            retries: 10
+        command: >
+            /bin/bash -c "
+            /opt/mssql/bin/sqlservr &
+            sleep 20 &&
+            /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -i /docker-entrypoint-initdb.d/init.sql &&
+            wait
+            "
 
-  servlet:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: servlet-app
-    ports:
-      - "8080:8080"
-    depends_on:
-      mssql:
-        condition: service_healthy
+    servlet:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: servlet-app
+        ports:
+            - "8080:8080"
+        depends_on:
+            mssql:
+                condition: service_healthy

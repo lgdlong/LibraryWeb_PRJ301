@@ -1,5 +1,5 @@
 # Base image: Tomcat 10 + JDK 8
-FROM tomcat:10.0.27-jdk8
+FROM tomcat:10.0.27-jdk8 AS build-only
 
 # ============ Cài Apache Ant =====================
 # Chỉ cài 1 lần và tận dụng cache layer Docker
@@ -29,6 +29,7 @@ COPY src/ ./src
 COPY web/ ./web
 # Các .jar (jstl, sqljdbc4, v.v...)
 COPY lib/ ./lib
+COPY nbproject/ ./nbproject
 
 # ============ Build WAR trong container ============
 RUN ant clean dist
