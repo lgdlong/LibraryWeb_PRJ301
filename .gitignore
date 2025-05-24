@@ -1,1 +1,34 @@
-/nbproject/private/
+# ============================
+# 📦 BUILD & CLASS FILES
+# ============================
+*.class
+/build/
+/dist/
+/out/
+/target/
+
+# ============================
+# ⚙️ IDE FILES
+# ============================
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# NetBeans
+nbproject/private/
+
+# VS Code
+.vscode/
+
+# ============================
+# 💻 OS FILES
+# ============================
+.DS_Store
+Thumbs.db
+
+# ============================
+# 🔧 LOGS / TEMP FILES
+# ============================
+*.log
+*.tmp
