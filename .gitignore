@@ -3,9 +3,12 @@
 # ============================
 *.class
 /build/
-/dist/
 /out/
 /target/
+
+# Ignore all WARs except final one
+/dist/
+!dist/LibraryWeb_PRJ301_G1.war
 
 # ============================
 # ⚙️ IDE FILES
@@ -32,3 +35,22 @@ Thumbs.db
 # ============================
 *.log
 *.tmp
+
+# ============================
+# ✅ Keep important config
+# ============================
+
+# Allow key build & deploy files
+!Dockerfile
+!Dockerfile.ant.dockerfile
+!Makefile
+!docker-compose.yml
+!build.xml
+
+# ✅ Giữ lại .editorconfig trong repo
+!.editorconfig
+
+# Keep SQL init and backups
+!database/
+!database/init.sql
+!database/init-*.sql
