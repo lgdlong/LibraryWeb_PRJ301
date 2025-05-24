@@ -16,7 +16,6 @@ indent_size = 4
 # 🧱 Java files
 # ==========================
 [*.java]
-indent_size = 4
 max_line_length = 120
 
 # ==========================
@@ -29,7 +28,6 @@ indent_size = 2
 # 🐳 Dockerfiles
 # ==========================
 [Dockerfile*]
-indent_style = space
 indent_size = 2
 
 # ==========================
