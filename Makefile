@@ -16,7 +16,7 @@ ANT_IMAGE_NAME = ant-builder
 # ⚙️ Chạy 1 lần duy nhất để build image có sẵn Ant
 setup-ant:
 	@echo "🔧 [setup-ant] Building Ant Docker image..."
-	docker build -f Dockerfile.ant -t $(ANT_IMAGE_NAME) .
+	docker build -f Dockerfile.ant.dockerfile -t $(ANT_IMAGE_NAME) .
 
 # 📦 Build WAR và Docker image
 all: build-java build-docker
