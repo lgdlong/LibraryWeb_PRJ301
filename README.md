@@ -55,7 +55,7 @@ A web-based **Library Management System** built with **Java Servlet**, **JSP**, 
 1. 🔄 **Khởi động lại từ đầu (nếu muốn sạch DB):**
    ```bash
    make prj-restart
-   
+
 	```
 
 2. 📦 **Thay đổi code → build lại (không cần reset DB):**
@@ -64,14 +64,14 @@ A web-based **Library Management System** built with **Java Servlet**, **JSP**, 
    make build-java
    make build-docker
    make up
-   
+
    ```
 
 3. 🧪 **Truy cập hệ thống:**
 
 - Ứng dụng: [http://localhost:8080/LibraryWeb_PRJ301_G1](http://localhost:8080/LibraryWeb_PRJ301_G1)
 
-- Tomcat Manager: [http://localhost:8080/manager/html](http://localhost:8080/manager/html)  
+- Tomcat Manager: [http://localhost:8080/manager/html](http://localhost:8080/manager/html)
   Username: `admin` | Password: `admin`
 
 4. 🧬 **Kết nối SQL Server bằng DBeaver/Azure Data Studio:**
@@ -90,17 +90,14 @@ A web-based **Library Management System** built with **Java Servlet**, **JSP**, 
 
 ## 🗃 Sample DB Connection Code (Java)
 
-```java
-String url = "jdbc:sqlserver://mssql:1433;databaseName=library_system;encrypt=true;trustServerCertificate=true;";
-String username = "sa";
-String password = "12345";
-Class.
+    ```java
+    String url = "jdbc:sqlserver://mssql:1433;databaseName=library_system;encrypt=true;trustServerCertificate=true;";
+    String username = "sa";
+    String password = "12345";
+    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+    Connection conn = DriverManager.getConnection(url, username, password);
 
-forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-
-Connection conn = DriverManager.getConnection(url, username, password);
-
-```
+    ```
 
 > Lưu ý: `"mssql"` là tên service trong Docker, không phải `localhost`.
 
