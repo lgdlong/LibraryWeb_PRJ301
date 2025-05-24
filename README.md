@@ -90,14 +90,14 @@ A web-based **Library Management System** built with **Java Servlet**, **JSP**, 
 
 ## 🗃 Sample DB Connection Code (Java)
 
-    ```java
-    String url = "jdbc:sqlserver://mssql:1433;databaseName=library_system;encrypt=true;trustServerCertificate=true;";
-    String username = "sa";
-    String password = "12345";
-    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    Connection conn = DriverManager.getConnection(url, username, password);
+```java
+String url = "jdbc:sqlserver://mssql:1433;databaseName=library_system;encrypt=true;trustServerCertificate=true;";
+String username = "sa";
+String password = "12345";
+Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+Connection conn = DriverManager.getConnection(url, username, password);
 
-    ```
+```
 
 > Lưu ý: `"mssql"` là tên service trong Docker, không phải `localhost`.
 
@@ -114,9 +114,8 @@ A web-based **Library Management System** built with **Java Servlet**, **JSP**, 
 ----------
 
 ## 📌 Ghi chú cuối
-
+```text
 - Không commit `*.class`, `*.iml`, hoặc `dist/*.war`
-
 - Nhớ cập nhật lại `db/init.sql` nếu thay đổi dữ liệu
 
 ```
