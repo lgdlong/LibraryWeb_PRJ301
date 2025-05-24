@@ -5,20 +5,26 @@
 WAR_NAME = LibraryWeb_PRJ301_G1.war
 WAR_PATH = dist/$(WAR_NAME)
 DOCKER_IMAGE_NAME = servlet-library-app
+ANT_IMAGE_NAME = ant-builder
 
 # ==================================
 # 🛠️ TASKS
 # ==================================
 
-.PHONY: all build-java build-docker up down db-up db-down clean prj-restart export-db
+.PHONY: all setup-ant build-java build-docker up down db-up db-down clean prj-restart export-db ensure-db-dir
+
+# ⚙️ Chạy 1 lần duy nhất để build image có sẵn Ant
+setup-ant:
+	@echo "🔧 [setup-ant] Building Ant Docker image..."
+	docker build -f Dockerfile.ant -t $(ANT_IMAGE_NAME) .
 
 # 📦 Build WAR và Docker image
 all: build-java build-docker
 
-# 🔨 Build WAR file bằng Ant (NetBeans)
+# 🔨 Build WAR bằng container có Ant
 build-java:
-	@echo "🛠️  [build-java] Building WAR with Ant..."
-	ant clean dist
+	@echo "🛠️  [build-java] Building WAR using $(ANT_IMAGE_NAME)..."
+	docker run --rm -v ${PWD}:/app -w /app $(ANT_IMAGE_NAME) ant clean dist
 
 # 🐳 Build Docker image (Tomcat + WAR)
 build-docker: $(WAR_PATH)
@@ -59,12 +65,24 @@ prj-restart:
 	make build-docker
 	docker compose up --build
 
-# 📤 (Optional) Export schema/data thành init.sql (placeholder)
-export-db:
-	@echo "📤 [export-db] Attempting to export DB schema (limited)..."
+# 📤 Export schema/data thành init-YYYYMMDD-HHMMSS.sql + alias init.sql
+export-db: ensure-db-dir
+	@echo "📤 [export-db] Exporting MSSQL schema (placeholder)..."
+	$(eval NOW := $(shell date +%Y%m%d-%H%M%S))
+	$(eval FILE := database/init-$(NOW).sql)
+
 	docker exec -i mssql-dev /opt/mssql-tools/bin/sqlcmd \
 		-S localhost -U sa -P YourStrong\!Passw0rd \
 		-Q "SELECT name FROM sys.databases;" \
-		-o /init.sql
-	@echo "⚠️ Note: MSSQL không hỗ trợ xuất .sql đầy đủ qua sqlcmd."
-	@echo "✅ Khuyên dùng DBeaver hoặc Azure Data Studio để export chuẩn init.sql."
+		-o /docker-entrypoint-initdb.d/init.sql
+
+	docker cp mssql-dev:/docker-entrypoint-initdb.d/init.sql $(FILE)
+	cp $(FILE) database/init.sql
+
+	@echo "✅ Exported to $(FILE)"
+	@echo "📌 Alias updated: database/init.sql"
+
+# 📁 Tạo thư mục database nếu chưa có
+ensure-db-dir:
+	@echo "📁 Ensuring database/ directory exists..."
+	@mkdir -p database

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -7,16 +5,20 @@ services:
     ports:
       - "1433:1433"
     environment:
-      SA_PASSWORD: "YourStrong!Passw0rd"
+      SA_PASSWORD: "12345"
       ACCEPT_EULA: "Y"
     volumes:
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "12345", "-Q", "SELECT 1" ]
+      interval: 10s
+      retries: 10
     command: >
       /bin/bash -c "
-      /opt/mssql/bin/sqlservr &
-      sleep 20 &&
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -i /docker-entrypoint-initdb.d/init.sql &&
-      tail -f /dev/null
+      /opt/mssql/bin/sqlservr & 
+      sleep 20 && 
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 12345 -i /docker-entrypoint-initdb.d/init.sql && 
+      wait
       "
 
   servlet:
@@ -27,4 +29,5 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mssql
+      mssql:
+        condition: service_healthy
