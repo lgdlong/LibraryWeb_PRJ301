@@ -1,12 +1,10 @@
-# 📚 LibraryWeb_PRJ301_G1
+# LibraryWeb_PRJ301_G1
 
 A full-stack **Library Management System** built with **Java Servlet**, **JSP**, and **SQL Server**, using **Docker
 Compose** and a clean, simple **Makefile-based workflow** for easy development and collaboration.
 
 > ✅ Mọi thành viên cần sử dụng **Git Bash** khi chạy lệnh, và làm việc trên **nhánh phụ** – không commit trực tiếp lên
 `main`.
-
----
 
 ## Flow làm việc chuẩn
 
@@ -19,8 +17,6 @@ git checkout -b <ten-nhanh-cua-ban>
 
 Khi xong, push và tạo **Pull Request (PR)** về `main`.
 
-----------
-
 ### 2. Khởi động dự án
 
 ```bash
@@ -28,24 +24,18 @@ make restart
 
 ```
 
-----------
-
 ### 3. ⚠️ Nếu bạn chỉnh sửa database (schema hoặc dữ liệu)
 
-> [Xem hướng dẫn xuất database thành file .sql tại đây](GEN_SCRIPT_GUIDE.md)
+- [Hướng dẫn xuất database thành file .sql](GEN_SCRIPT_GUIDE.md)
 
-----------
-
-### 3. Truy cập ứng dụng
+### 4. Truy cập ứng dụng
 
 - Web app: [http://localhost:8080/LibraryWeb_PRJ301_G1](http://localhost:8080/LibraryWeb_PRJ301_G1)
 
 - Tomcat Manager: [http://localhost:8080/manager/html](http://localhost:8080/manager/html)
     - Tài khoản: `admin` / Mật khẩu: `admin`
 
-----------
-
-### 4️⃣ Kết nối CSDL
+### 5. Kết nối CSDL
 
 Dùng DBeaver, Azure Data Studio hoặc SSMS:
 
@@ -62,15 +52,11 @@ Dùng DBeaver, Azure Data Studio hoặc SSMS:
 <img src="instruction/connect_db.png" alt="Step 3" height="300"/>
 </details>
 
-----------
+## Cấu trúc Makefile hỗ trợ
 
-## 🧱 Cấu trúc Makefile hỗ trợ
+- [Chi tiết tất các lệnh Makefile](MAKEFILE.md)
 
-> [Xem chi tiết tất cả lệnh Makefile tại đây](MAKEFILE.md)
-
-----------
-
-## 📦 Công nghệ sử dụng
+## Công nghệ sử dụng
 
 - Java Servlet (JDK 1.8.0_172)
 
@@ -84,9 +70,7 @@ Dùng DBeaver, Azure Data Studio hoặc SSMS:
 
 - Makefile (build automation)
 
-----------
-
-## 👥 Thành viên nhóm – Group 1
+## Thành viên nhóm – Group 1
 
 - SE190377 – Phùng Lưu Hoàng Long
 
@@ -94,9 +78,7 @@ Dùng DBeaver, Azure Data Studio hoặc SSMS:
 
 - SE192515 – Nguyễn Lê Phúc Nguyên
 
-----------
-
-## 📌 Lưu ý
+## Lưu ý
 
 ```text
 - Luôn dùng Git Bash để chạy lệnh make
