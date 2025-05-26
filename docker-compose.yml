@@ -3,23 +3,18 @@ services:
         image: mcr.microsoft.com/mssql/server:2019-latest
         container_name: mssql-dev
         ports:
-            - "1433:1433"
+            - "15432:1433"
         environment:
             SA_PASSWORD: "YourStrong!Passw0rd"
             ACCEPT_EULA: "Y"
         volumes:
             - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
         healthcheck:
-            test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourStrong!Passw0rd", "-Q", "SELECT 1" ]
+            test: ["CMD-SHELL", "pidof sqlservr || exit 1"]
             interval: 10s
+            timeout: 3s
             retries: 10
-        command: >
-            /bin/bash -c "
-            /opt/mssql/bin/sqlservr &
-            sleep 20 &&
-            /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -i /docker-entrypoint-initdb.d/init.sql &&
-            wait
-            "
+        command: /opt/mssql/bin/sqlservr
 
     servlet:
         build:
@@ -31,3 +26,17 @@ services:
         depends_on:
             mssql:
                 condition: service_healthy
+
+    sqlcmd:
+        image: mcr.microsoft.com/mssql-tools
+        depends_on:
+            - mssql
+        entrypoint: >
+            /bin/bash -c "
+            sleep 20 &&
+            /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'YourStrong!Passw0rd' -i /init.sql
+            "
+        volumes:
+            - ./database/init.sql:/init.sql
+        networks:
+            - default
