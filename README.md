@@ -1,109 +1,141 @@
 # 📚 LibraryWeb_PRJ301_G1
 
-A web-based **Library Management System** built with **Java Servlet**, **JSP**, and **SQL Server**, running on **Tomcat
-10**. This project uses **Docker + Makefile** to help every team member build and run the app quickly and consistently.
+A full-stack **Library Management System** built with **Java Servlet**, **JSP**, and **SQL Server**, using **Docker
+Compose** and a clean, simple **Makefile-based workflow** for easy development and collaboration.
+
+> ✅ Mọi thành viên cần sử dụng **Git Bash** khi chạy lệnh, và làm việc trên **nhánh phụ** – không commit trực tiếp lên
+`main`.
 
 ---
 
-## 🚀 Technologies Used
+## 🔁 Flow làm việc chuẩn
 
-- **Java Servlet** (JDK 1.8.0_172)
-- **Apache Tomcat** 10.0.27
-- **Microsoft SQL Server** 2019 (inside Docker)
-- **JSP + JSTL** (2.0.0)
-- **Docker & Docker Compose**
-- **Makefile** for build/run automation
+### 1️⃣ Tạo nhánh riêng để làm việc
 
----
+```bash
+git checkout -b <ten-nhanh-cua-ban>
 
-## 📦 Libraries
+```
 
-| Library        | Version   | Description                          |
-|----------------|-----------|--------------------------------------|
-| `sqljdbc4.jar` | latest    | Microsoft JDBC Driver for SQL Server |
-| `jstl.jar`     | 2.0.0     | JSTL core tag library                |
-| `jstl-api.jar` | 2.0.0     | JSTL API interfaces                  |
-| `jdk`          | 1.8.0_172 | Java development kit                 |
-
----
-
-## ⚙️ Hướng Dẫn Dành Cho Nhóm
-
-### ✅ Bước 1: Cài đặt yêu cầu
-
-- [x] Java JDK 1.8.0_172
-- [x] Docker Desktop (bật WSL nếu dùng Windows)
-- [x] Có NetBeans hoặc IntelliJ để viết code (nếu muốn)
-
----
-
-### 🛠️ Các lệnh `make` dành cho nhóm
-
-| Lệnh                          | Mô tả                                                                  |
-|-------------------------------|------------------------------------------------------------------------|
-| `make` hoặc `make all`        | Build WAR bằng Ant và Docker image (chưa chạy app)                     |
-| `make up`                     | Build và chạy cả app + MSSQL, dữ liệu được giữ lại từ lần trước        |
-| `make prj-restart` 🔥         | XÓA toàn bộ dữ liệu DB, build lại WAR + Docker, chạy lại từ `init.sql` |
-| `make db-up` / `make db-down` | Chạy hoặc tắt riêng dịch vụ MSSQL                                      |
-| `make clean`                  | Xoá WAR + Docker image                                                 |
-| `make export-db`              | (Thử nghiệm) Xuất schema từ DB ra `init.sql`                           |
-
----
-
-### 🔁 Quy trình làm việc chuẩn cho mỗi thành viên
-
-1. 🔄 **Khởi động lại từ đầu (nếu muốn sạch DB):**
-   ```bash
-   make prj-restart
-
-	```
-
-2. 📦 **Thay đổi code → build lại (không cần reset DB):**
-
-   ```bash
-   make build-java
-   make build-docker
-   make up
-
-   ```
-
-3. 🧪 **Truy cập hệ thống:**
-
-- Ứng dụng: [http://localhost:8080/LibraryWeb_PRJ301_G1](http://localhost:8080/LibraryWeb_PRJ301_G1)
-
-- Tomcat Manager: [http://localhost:8080/manager/html](http://localhost:8080/manager/html)
-  Username: `admin` | Password: `admin`
-
-4. 🧬 **Kết nối SQL Server bằng DBeaver/Azure Data Studio:**
-
-- Host: `localhost`
-
-- Port: `1433`
-
-- User: `sa`
-
-- Pass: `12345`
-
-- DB name: theo `init.sql` của bạn
+Khi xong, push và tạo **Pull Request (PR)** về `main`.
 
 ----------
 
-## 🗃 Sample DB Connection Code (Java)
+### 2️⃣ Mỗi khi khởi động dự án (bắt buộc cho từng thành viên)
+
+✅ DÙNG `Git Bash` để chạy lệnh
+
+```bash
+make restart
+
+```
+
+👉 Lệnh này sẽ: Xoá sạch database cũ + Dùng lại file `database/init.sql` + Build WAR + chạy lại toàn bộ hệ thống
+
+
+> ❗ Mục tiêu: giúp mọi thành viên **luôn dùng cùng 1 phiên bản database**, tránh mâu thuẫn hoặc lỗi dữ liệu cũ.
+
+----------
+
+### 🛠 Khi bạn chỉnh sửa database (schema hoặc dữ liệu)
+
+1. Xem hướng dẫn xuất database thành file .sql tại đây:
+
+> 📘 [GEN_SCRIPT_GUIDE.md](GEN_SCRIPT_GUIDE.md)
+
+2. (Tuỳ chọn) **Lưu lại bản cũ trước khi ghi đè:**
+
+```bash
+make db-backup
+
+```
+
+→ Lưu bản sao `init.sql` thành `init-YYYYMMDD-HHMMSS.sql`
+
+
+
+----------
+
+### 3️⃣ Truy cập ứng dụng
+
+- Web app: [http://localhost:8080/LibraryWeb_PRJ301_G1](http://localhost:8080/LibraryWeb_PRJ301_G1)
+
+- Tomcat Manager: [http://localhost:8080/manager/html](http://localhost:8080/manager/html)
+  Tài khoản: `admin` / Mật khẩu: `admin`
+
+----------
+
+### 4️⃣ Kết nối CSDL
+
+<img src="instruction/connect_db.png" alt="Step 3" height="300"/>
+
+Dùng DBeaver, Azure Data Studio hoặc SSMS:
+
+| Thông tin     | Giá trị                           |
+|---------------|-----------------------------------|
+| Host          | `localhost`                       |
+| Port          | `1433`                            |
+| User          | `sa`                              |
+| Password      | `YourStrong!Passw0rd`             |
+| Database name | `library_system` (xem `init.sql`) |
+
+----------
+
+## 🧱 Cấu trúc Makefile hỗ trợ
+
+| Lệnh             | Mô tả                                         |
+|------------------|-----------------------------------------------|
+| `make build`     | Build WAR và Docker image                     |
+| `make export`    | Export WAR ra thư mục `dist/`                 |
+| `make up`        | Chạy toàn bộ hệ thống                         |
+| `make down`      | Dừng toàn bộ container                        |
+| `make restart`   | Reset toàn bộ: xóa DB + build lại + chạy      |
+| `make up`        | Chạy toàn bộ hệ thống                         |
+| `make clean`     | Xóa WAR và Docker images                      |
+| `make db-up`     | Chỉ bật MSSQL                                 |
+| `make db-down`   | Chỉ tắt MSSQL                                 |
+| `make db-backup` | Backup file `init.sql` thành bản có timestamp |
+
+> 🧠 File `init.sql` được dùng để khởi tạo lại DB mỗi lần `restart`. Nếu bạn sửa dữ liệu hoặc schema, hãy update file này
+> và backup lại.
+
+----------
+
+## 🔌 Ví dụ kết nối JDBC
 
 ```java
 String url = "jdbc:sqlserver://mssql:1433;databaseName=library_system;encrypt=true;trustServerCertificate=true;";
 String username = "sa";
-String password = "12345";
-Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+String password = "YourStrong!Passw0rd";
+Class.
+
+forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
 Connection conn = DriverManager.getConnection(url, username, password);
 
 ```
 
-> Lưu ý: `"mssql"` là tên service trong Docker, không phải `localhost`.
+> ⚠️ `mssql` là tên service nội bộ Docker (không phải `localhost` khi chạy trong container).
 
 ----------
 
-## 👨‍👨‍👦 Nhóm thực hiện – Group 1
+## 📦 Công nghệ sử dụng
+
+- Java Servlet (JDK 1.8.0_172)
+
+- Apache Tomcat 10.0.27
+
+- Microsoft SQL Server 2019 (Docker)
+
+- JSP + JSTL (2.0.0)
+
+- Docker & Docker Compose
+
+- Makefile (build automation)
+
+----------
+
+## 👥 Thành viên nhóm – Group 1
 
 - SE190377 – Phùng Lưu Hoàng Long
 
@@ -113,9 +145,11 @@ Connection conn = DriverManager.getConnection(url, username, password);
 
 ----------
 
-## 📌 Ghi chú cuối
+## 📌 Lưu ý
+
 ```text
-- Không commit `*.class`, `*.iml`, hoặc `dist/*.war`
-- Nhớ cập nhật lại `db/init.sql` nếu thay đổi dữ liệu
+- Luôn dùng Git Bash để chạy lệnh make
+- Không commit các file: *.class, *.iml, dist/*.war
+- Nếu chỉnh sửa database/init.sql → chạy make db-backup trước
 
 ```
