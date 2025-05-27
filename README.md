@@ -3,8 +3,14 @@
 A full-stack **Library Management System** built with **Java Servlet**, **JSP**, and **SQL Server**, using **Docker
 Compose** and a clean, simple **Makefile-based workflow** for easy development and collaboration.
 
-> ✅ Mọi thành viên cần sử dụng **Git Bash** khi chạy lệnh, và làm việc trên **nhánh phụ** – không commit trực tiếp lên
+## Lưu ý quan trọng
+
+> ⚠️ Mọi thành viên cần sử dụng **Git Bash** khi chạy lệnh, và làm việc trên **nhánh phụ** – không commit trực tiếp lên
 `main`.
+
+> ⚠️ Nếu lỗi không tìm thấy tomcat trong project, hãy xem [Hướng dẫn thêm Tomcat vào Project](ADD_TOMCAT_TO_PRJ.md).
+
+> ⚠️ Không chạy được `make`? Hãy xem [Hướng dẫn cài make](HOW_TO_INSTALL_MAKE.md).
 
 ## Flow làm việc chuẩn
 
