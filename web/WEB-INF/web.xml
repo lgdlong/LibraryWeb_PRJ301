@@ -12,6 +12,22 @@
         <servlet-name>AdminUserController</servlet-name>
         <servlet-class>controller.AdminUserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserController</servlet-name>
+        <servlet-class>controller.UserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfigController</servlet-name>
+        <servlet-class>controller.AdminConfigController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookAdminController</servlet-name>
+        <servlet-class>controller.AdminBookController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FineAdminController</servlet-name>
+        <servlet-class>controller.AdminFineController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>
@@ -23,6 +39,22 @@
     <servlet-mapping>
         <servlet-name>AdminUserController</servlet-name>
         <url-pattern>/AdminUserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/UserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfigController</servlet-name>
+        <url-pattern>/ConfigController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookAdminController</servlet-name>
+        <url-pattern>/BookAdminController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FineAdminController</servlet-name>
+        <url-pattern>/FineAdminController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

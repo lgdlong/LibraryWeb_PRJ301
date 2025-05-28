@@ -4,6 +4,7 @@ import dto.*;
 import entity.*;
 
 public class SystemConfigMapping {
+
     public static SystemConfig toSystemConfig(SystemConfigDb db) {
         if (db == null) {
             return null;
@@ -15,7 +16,7 @@ public class SystemConfigMapping {
             configValueDouble = Double.parseDouble(db.getConfigValue());
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            // Có thể ghi log ở đây hoặc throw nếu cần cứng rắn
+            // Optional: log warning
         }
 
         return new SystemConfig(
@@ -23,6 +24,19 @@ public class SystemConfigMapping {
             db.getConfigKey(),
             configValueDouble,
             db.getDescription()
+        );
+    }
+
+    public static SystemConfigDb toDb(SystemConfig config) {
+        if (config == null) {
+            return null;
+        }
+
+        return new SystemConfigDb(
+            config.getId(),
+            config.getConfigKey(),
+            String.valueOf(config.getConfigValue()), // convert double to String
+            config.getDescription()
         );
     }
 }
