@@ -16,4 +16,9 @@ public class UserService {
     public User getUserById(long id) {
         return userDAO.getById(id);
     }
+
+    public long getUserCount() {
+        return userDAO.userCount();
+    }
+
 }

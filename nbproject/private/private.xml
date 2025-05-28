@@ -4,8 +4,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/src/java/entity/Fine.java</file>
+            <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/web/admin/admin.jsp</file>
+            <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/web/admin/layout.jsp</file>
+            <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/web/common/header.jsp</file>
+            <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/web/index.html</file>
             <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/src/java/entity/User.java</file>
             <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/src/java/enums/UserRole.java</file>
+            <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/src/java/controller/TestController.java</file>
+            <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/src/java/controller/AdminController.java</file>
+            <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/web/admin/admin-sidebar.jsp</file>
+            <file>file:/E:/FPT/Semester_4/PRJ301_Project/LibraryWeb_PRJ301_G1/src/java/db/DbConfig.java</file>
         </group>
     </open-files>
 </project-private>

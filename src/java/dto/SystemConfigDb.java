@@ -1,21 +1,15 @@
-package entity;
+package dto;
 
-public class SystemConfig {
+public class SystemConfigDb {
     private long id;
     private String configKey;
-    private double configValue;
+    private String configValue;
     private String description;
 
-    public SystemConfig() {
+    public SystemConfigDb() {
     }
 
-    public SystemConfig(String configKey, double configValue, String description) {
-        this.configKey = configKey;
-        this.configValue = configValue;
-        this.description = description;
-    }
-
-    public SystemConfig(long id, String configKey, double configValue, String description) {
+    public SystemConfigDb(long id, String configKey, String configValue, String description) {
         this.id = id;
         this.configKey = configKey;
         this.configValue = configValue;
@@ -26,6 +20,10 @@ public class SystemConfig {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getConfigKey() {
         return configKey;
     }
@@ -34,11 +32,11 @@ public class SystemConfig {
         this.configKey = configKey;
     }
 
-    public double getConfigValue() {
+    public String getConfigValue() {
         return configValue;
     }
 
-    public void setConfigValue(double configValue) {
+    public void setConfigValue(String configValue) {
         this.configValue = configValue;
     }
 

@@ -1,7 +1,7 @@
 <%-- 
     Document   : header
     Created on : May 28, 2025, 9:04:06 AM
-    Author     : ADMIN
+    Author     : Long
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
