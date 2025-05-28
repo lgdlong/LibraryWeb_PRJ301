@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller;
 
 import entity.*;
@@ -11,7 +15,6 @@ import java.util.*;
 
 @WebServlet("/admin/users")
 public class AdminUserController extends HttpServlet {
-
     private final UserService userService = new UserService();
 
     @Override
@@ -75,4 +78,5 @@ public class AdminUserController extends HttpServlet {
     }
 
     // Optional: handle create/update/delete via doPost()
+
 }

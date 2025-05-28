@@ -8,6 +8,10 @@
         <servlet-name>AdminController</servlet-name>
         <servlet-class>controller.AdminController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminUserController</servlet-name>
+        <servlet-class>controller.AdminUserController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/AdminController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminUserController</servlet-name>
+        <url-pattern>/AdminUserController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
