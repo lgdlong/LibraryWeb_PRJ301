@@ -4,9 +4,9 @@ import enums.*;
 
 public class User {
     private long id;
-    private String username;
-    private String password;
+    private String name;
     private String email;
+    private String password;
     private UserRole role;
     private UserStatus userStatus;
 
@@ -15,20 +15,20 @@ public class User {
     }
 
     // Constructor for creating a user
-    public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
+    public User(String name, String email, String password) {
+        this.name = name;
         this.email = email;
+        this.password = password;
         this.role = UserRole.USER; // Default role
         this.userStatus = UserStatus.ACTIVE; // Default status
     }
 
     // Constructor for retrieving a user from the database
-    public User(long id, String username, String password, String email, UserRole role, UserStatus userStatus) {
+    public User(long id, String name, String email, String password, UserRole role, UserStatus userStatus) {
         this.id = id;
-        this.username = username;
-        this.password = password;
+        this.name = name;
         this.email = email;
+        this.password = password;
         this.role = role;
         this.userStatus = userStatus;
     }
@@ -37,12 +37,12 @@ public class User {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
