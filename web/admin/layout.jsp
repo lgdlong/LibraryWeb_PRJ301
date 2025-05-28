@@ -16,7 +16,18 @@
 
   <!-- Main content area -->
   <div class="flex-grow-1 p-4" style="min-height: 100vh;">
-    <%--    <jsp:include page="${contentPage}"/>--%>
+    <%
+        String contentPage = (String) request.getAttribute("contentPage");
+        if (contentPage == null || contentPage.trim().isEmpty()) {
+            contentPage = "/admin/dashboard.jsp";
+        }
+
+        // Validate the content page path to prevent directory traversal
+        if (!contentPage.startsWith("/admin/") || contentPage.contains("..")) {
+            contentPage = "/admin/error.jsp";
+        }
+        request.setAttribute("validatedContentPage", contentPage);
+    %>
     <c:import url="${contentPage}"/>
   </div>
 </div>
