@@ -57,27 +57,3 @@
   </div>
 </div>
 
-<!-- Danh sách các biến môi trường -->
-<div class="card mt-4">
-  <div class="card-header">System Configuration Variables</div>
-  <div class="card-body">
-    <table class="table table-bordered table-hover table-sm">
-      <thead class="table-light">
-      <tr>
-        <th>Key</th>
-        <th>Value</th>
-        <th>Description</th>
-      </tr>
-      </thead>
-      <tbody>
-      <c:forEach var="config" items="${systemConfigs}">
-        <tr>
-          <td>${config.configKey}</td>
-          <td>${config.configValue}</td>
-          <td>${config.description}</td>
-        </tr>
-      </c:forEach>
-      </tbody>
-    </table>
-  </div>
-</div>

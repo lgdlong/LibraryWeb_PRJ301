@@ -39,6 +39,7 @@ build-image: $(WAR_PATH)
 	@echo "💣 Building final Docker image..."
 	docker build -t $(DOCKER_IMAGE_NAME) .
 
+$(WAR_PATH): build-war export
 # ==================================
 # 🚀 RUNTIME TASKS
 # ==================================

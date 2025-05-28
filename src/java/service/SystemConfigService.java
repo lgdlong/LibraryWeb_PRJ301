@@ -18,4 +18,19 @@ public class SystemConfigService {
             .map(SystemConfigMapping::toSystemConfig)
             .collect(Collectors.toList());
     }
+
+
+    public void add(SystemConfigDb config) {
+        SystemConfig db = SystemConfigMapping.toSystemConfig(config);
+        systemConfigDao.add(db);
+    }
+
+    public void update(SystemConfigDb config) {
+        SystemConfig db = SystemConfigMapping.toSystemConfig(config);
+        systemConfigDao.update(db);
+    }
+
+    public void delete(long id) {
+        systemConfigDao.delete(id);
+    }
 }
