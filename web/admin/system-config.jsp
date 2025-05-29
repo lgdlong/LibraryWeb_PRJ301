@@ -57,7 +57,7 @@
           </div>
           <div class="mb-3">
             <label for="configValue" class="form-label">Value</label>
-            <input type="text" class="form-control" id="configValue" name="configValue" required>
+            <input type="number" class="form-control" id="configValue" name="configValue" required>
           </div>
           <div class="mb-3">
             <label for="description" class="form-label">Description</label>
@@ -85,6 +85,8 @@
     document.getElementById('configValue').value = value || '';
     document.getElementById('description').value = desc || '';
 
+    console.log(id, key, value, desc);
+
     // Show delete button only when editing
     document.getElementById('deleteBtn').style.display = id ? 'inline-block' : 'none';
 
@@ -92,12 +94,12 @@
   }
 
   function submitDelete() {
-    if (confirm("Are you sure you want to delete this config?")) {
+    if (confirm("Are you sure to delete this config?")) {
       const id = document.getElementById('configId').value;
       if (id) {
         const form = document.createElement('form');
         form.method = 'post';
-        form.action = '/admin?action=deleteConfig';
+        form.action = "${pageContext.request.contextPath}/admin/config?delete=" + encodeURIComponent(id);
 
         const idField = document.createElement('input');
         idField.type = 'hidden';
