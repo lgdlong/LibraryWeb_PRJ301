@@ -11,6 +11,13 @@ public enum BorrowStatus {
     }
 
     public static BorrowStatus fromString(String value) {
-        return BorrowStatus.valueOf(value.toUpperCase());
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("BorrowStatus value cannot be null or empty");
+        }
+        try {
+            return BorrowStatus.valueOf(value.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid BorrowStatus: " + value, e);
+        }
     }
 }

@@ -10,6 +10,13 @@ public enum UserRole {
     }
 
     public static UserRole fromString(String value) {
-        return UserRole.valueOf(value.toUpperCase());
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("UserRole value cannot be null or empty");
+        }
+        try {
+            return UserRole.valueOf(value.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid UserRole: " + value, e);
+        }
     }
 }

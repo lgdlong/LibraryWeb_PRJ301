@@ -11,6 +11,13 @@ public enum RequestStatus {
     }
 
     public static RequestStatus fromString(String value) {
-        return RequestStatus.valueOf(value.toUpperCase());
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("RequestStatus value cannot be null or empty");
+        }
+        try {
+            return RequestStatus.valueOf(value.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid RequestStatus: " + value, e);
+        }
     }
 }

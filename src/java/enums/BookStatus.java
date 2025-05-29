@@ -10,6 +10,13 @@ public enum BookStatus {
     }
 
     public static BookStatus fromString(String value) {
-        return BookStatus.valueOf(value.toUpperCase());
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("BookStatus value cannot be null or empty");
+        }
+        try {
+            return BookStatus.valueOf(value.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid BookStatus: " + value, e);
+        }
     }
 }

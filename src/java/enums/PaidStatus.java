@@ -10,6 +10,13 @@ public enum PaidStatus {
     }
 
     public static PaidStatus fromString(String value) {
-        return PaidStatus.valueOf(value.toUpperCase());
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("PaidStatus value cannot be null or empty");
+        }
+        try {
+            return PaidStatus.valueOf(value.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid PaidStatus: " + value, e);
+        }
     }
 }
