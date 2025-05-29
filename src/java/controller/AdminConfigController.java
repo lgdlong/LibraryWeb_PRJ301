@@ -24,12 +24,12 @@ public class AdminConfigController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
         String deleteIdStr = req.getParameter("delete");
-
+        
         try {
-            if (deleteIdStr != null) {
-                handleDelete(Long.parseLong(deleteIdStr));
+            if (deleteIdStr != null && !deleteIdStr.trim().isEmpty()) {
+                long deleteId = Long.parseLong(deleteIdStr);
+                handleDelete(deleteId);
             } else {
                 handleAddOrUpdate(req);
             }
