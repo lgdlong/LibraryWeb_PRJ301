@@ -51,7 +51,12 @@ public class AdminUserController extends HttpServlet {
 
         try {
             if (deleteId != null) {
-                userService.deleteUser(Long.parseLong(deleteId));
+                long idToDelete = parseLongOrZero(deleteId);
+                if (idToDelete > 0) {
+                    userService.deleteUser(idToDelete);
+                } else {
+                    throw new IllegalArgumentException("Invalid user ID for deletion");
+                }
             } else {
                 long id = parseLongOrZero(req.getParameter("id"));
                 String name = req.getParameter("name");
