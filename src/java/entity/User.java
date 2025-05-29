@@ -23,23 +23,6 @@ public class User {
         this.userStatus = UserStatus.ACTIVE; // Default status
     }
 
-    public User(String name, String email, String password, UserRole role, UserStatus userStatus) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.userStatus = userStatus;
-    }
-
-    // Constructor for updating a user
-    public User(long id, String name, String email, UserRole role, UserStatus userStatus) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.role = role;
-        this.userStatus = userStatus; // Default status
-    }
-
     // Constructor for retrieving a user from the database
     public User(long id, String name, String email, String password, UserRole role, UserStatus userStatus) {
         this.id = id;
