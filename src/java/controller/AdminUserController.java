@@ -65,8 +65,24 @@ public class AdminUserController extends HttpServlet {
                 String roleStr = req.getParameter("role");
                 String statusStr = req.getParameter("status");
 
-                UserRole role = UserRole.fromString(roleStr);
-                UserStatus status = UserStatus.fromString(statusStr);
+                // Validate role parameter
+                UserRole role;
+                try {
+                    role = UserRole.fromString(roleStr);
+                } catch (IllegalArgumentException | NullPointerException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid user role: " + roleStr);
+                    return;
+                }
+                // Validate status parameter
+                UserStatus status;
+                try {
+                    status = UserStatus.fromString(statusStr);
+                } catch (IllegalArgumentException | NullPointerException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid user status: " + statusStr);
+                    return;
+                }
 
                 if (id == 0) {
                     // THÊM MỚI
