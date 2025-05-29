@@ -25,7 +25,8 @@
 
     <img src="instruction/install_make.png" width="400" alt="Step 3" />
 
-- Ở phần `System variables`, tìm dòng `Path`, Double click vào nó
+- Ở phần `System variables`, tìm dòng `Path`,
+- **Double click** vào nó
 
   <img src="instruction/install_make_2.png" width="400" alt="Step 3" />
 
