@@ -4,79 +4,122 @@
  */
 package controller;
 
+import dto.*;
 import entity.*;
+import enums.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
+import mapper.*;
 import service.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.*;
 
 @WebServlet("/admin/users")
 public class AdminUserController extends HttpServlet {
     private final UserService userService = new UserService();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String search = req.getParameter("search");
+        List<UserDTO> users = new ArrayList<>();
 
-        String action = request.getParameter("action");
-        if (action == null) action = "list";
-
-        switch (action) {
-            case "view":
-                viewUserById(request, response);
-                break;
-            case "list":
-            default:
-                listUsers(request, response);
-                break;
+        if (search != null && !search.trim().isEmpty()) {
+            User user = userService.searchByEmail(search.trim());
+            if (user != null) {
+                users.add(UserMapping.toUserDTO(user));
+            } else {
+                req.setAttribute("errorMessage", "No user found with email: " + search);
+            }
+        } else {
+            users = userService.getAllUsers().stream()
+                .map(UserMapping::toUserDTO)
+                .collect(Collectors.toList());
         }
+
+        req.setAttribute("userList", users);
+        req.setAttribute("pageTitle", "User Management");
+        req.setAttribute("contentPage", "/admin/user-management.jsp");
+        req.getRequestDispatcher("/admin/layout.jsp").forward(req, resp);
     }
 
-    private void listUsers(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-
-        List<User> users = userService.getAllUsers();
-
-        request.setAttribute("users", users);
-        request.setAttribute("pageTitle", "Manage Users");
-        request.setAttribute("contentPage", "/admin/userList.jsp");
-
-        request.getRequestDispatcher("/admin/layout.jsp").forward(request, response);
-    }
-
-    private void viewUserById(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-
-        String idStr = request.getParameter("id");
-
-        if (idStr == null || idStr.isEmpty() || !idStr.matches("\\d+")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "User ID is required.");
-            return;
-        }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String deleteId = req.getParameter("delete");
 
         try {
-            long id = Long.parseLong(idStr);
-            User user = userService.getUserById(id);
+            if (deleteId != null) {
+                long idToDelete = parseLongOrZero(deleteId);
+                if (idToDelete > 0) {
+                    userService.deleteUser(idToDelete);
+                } else {
+                    throw new IllegalArgumentException("Invalid user ID for deletion");
+                }
+            } else {
+                long id = parseLongOrZero(req.getParameter("id"));
+                String name = req.getParameter("name");
+                String email = req.getParameter("email");
+                String password = req.getParameter("password");
+                String roleStr = req.getParameter("role");
+                String statusStr = req.getParameter("status");
 
-            if (user == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found.");
-                return;
+                // Validate role parameter
+                UserRole role;
+                try {
+                    role = UserRole.fromString(roleStr);
+                } catch (IllegalArgumentException | NullPointerException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid user role: " + roleStr);
+                    return;
+                }
+                // Validate status parameter
+                UserStatus status;
+                try {
+                    status = UserStatus.fromString(statusStr);
+                } catch (IllegalArgumentException | NullPointerException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid user status: " + statusStr);
+                    return;
+                }
+
+                if (id == 0) {
+                    // THÊM MỚI
+                    if (password == null || password.trim().isEmpty()) {
+                        throw new IllegalArgumentException("Password is required for new users.");
+                    }
+
+                    User user = new User(name, email, password, role, status);
+                    userService.addUser(user);
+                } else {
+                    // CẬP NHẬT
+                    if (password == null || password.trim().isEmpty()) {
+                        // If password is not provided, we assume it's an update without changing the password
+                        User existingUser = userService.getUserById(id);
+                        if (existingUser == null) {
+                            throw new IllegalArgumentException("User not found with ID: " + id);
+                        }
+                        password = existingUser.getPassword();
+                    }
+
+                    User user = new User(id, name, email, password, role, status);
+                    userService.updateUser(user);
+                }
             }
 
-            request.setAttribute("user", user);
-            request.setAttribute("pageTitle", "User Detail");
-            request.setAttribute("contentPage", "/admin/userDetail.jsp");
-
-            request.getRequestDispatcher("/admin/layout.jsp").forward(request, response);
-
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user ID.");
+            resp.sendRedirect(req.getContextPath() + "/admin/users");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user operation");
         }
     }
 
-    // Optional: handle create/update/delete via doPost()
-
+    private long parseLongOrZero(String val) {
+        try {
+            return (val != null && !val.isEmpty()) ? Long.parseLong(val) : 0;
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 }

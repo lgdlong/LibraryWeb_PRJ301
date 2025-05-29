@@ -53,6 +53,91 @@ public class UserDao {
         return null;
     }
 
+    public User getByEmail(String email) {
+        String sql = "SELECT id, name, password, email, role, status FROM users WHERE email = ?";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error fetching user by email: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    public void add(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User must not be null.");
+        }
+
+        String sql = "INSERT INTO users (name, email, password, role, status) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, user.getPassword());
+            stmt.setString(4, user.getRole().toString());
+            stmt.setString(5, user.getUserStatus().toString());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error adding user: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update(User user) {
+        if (user == null || user.getId() <= 0) {
+            throw new IllegalArgumentException("User must not be null and must have a valid ID for update.");
+        }
+
+        String sql = "UPDATE users SET name = ?, email = ?, password = ?, role = ?, status = ? WHERE id = ?";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, user.getPassword());
+            stmt.setString(4, user.getRole().toString());
+            stmt.setString(5, user.getUserStatus().toString());
+            stmt.setLong(6, user.getId());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error updating user: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void delete(long id) {
+        String sql = "DELETE FROM users WHERE id = ?";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error deleting user: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
     public long userCount() {
         String sql = "SELECT COUNT(*) FROM users";
 
@@ -85,7 +170,7 @@ public class UserDao {
 
     private UserRole parseUserRole(String roleStr) {
         try {
-            return UserRole.valueOf(roleStr);
+            return UserRole.fromString(roleStr);
         } catch (IllegalArgumentException e) {
             LOGGER.warning("Invalid user role in database: " + roleStr);
             return UserRole.USER; // or throw a more specific exception
@@ -94,7 +179,7 @@ public class UserDao {
 
     private UserStatus parseUserStatus(String statusStr) {
         try {
-            return UserStatus.valueOf(statusStr);
+            return UserStatus.fromString(statusStr);
         } catch (IllegalArgumentException e) {
             LOGGER.warning("Invalid user status in database: " + statusStr);
             return UserStatus.BLOCKED; // or throw a more specific exception
