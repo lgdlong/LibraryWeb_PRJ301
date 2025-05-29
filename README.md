@@ -10,7 +10,7 @@ Compose** and a clean, simple **Makefile-based workflow** for easy development a
 
 > ⚠️ Nếu lỗi không tìm thấy tomcat trong project, hãy xem [Hướng dẫn thêm Tomcat vào Project](ADD_TOMCAT_TO_PRJ.md).
 
-> ⚠️ Không chạy được `make`? Hãy xem [Hướng dẫn cài make](HOW_TO_INSTALL_MAKE.md).
+> ⚠️ Không chạy được `make`? Hãy xem [Hướng dẫn cài make](INSTALLMAKE.md).
 
 ## Flow làm việc chuẩn
 
