@@ -80,7 +80,11 @@ public class AdminUserController extends HttpServlet {
                     // CẬP NHẬT
                     if (password == null || password.trim().isEmpty()) {
                         // If password is not provided, we assume it's an update without changing the password
-                        password = userService.getUserById(id).getPassword();
+                        User existingUser = userService.getUserById(id);
+                        if (existingUser == null) {
+                            throw new IllegalArgumentException("User not found with ID: " + id);
+                        }
+                        password = existingUser.getPassword();
                     }
 
                     User user = new User(id, name, email, password, role, status);
