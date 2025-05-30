@@ -38,6 +38,9 @@ public class BookService {
     }
 
     public void deleteBook(long id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Book ID must be positive");
+        }
         bookDao.delete(id);
     }
 
@@ -46,8 +49,29 @@ public class BookService {
     }
 
     public List<Book> sortBooksBy(String field, boolean ascending) {
-        return bookDao.sortBy(field, ascending);
+        if (field == null) {
+            throw new IllegalArgumentException("Sort field cannot be null");
+        }
+
+        String normalized = field.trim().toLowerCase();
+        String sortField;
+
+        switch (normalized) {
+            case "title":
+            case "author":
+            case "id":
+                sortField = normalized;
+                break;
+            case "publishedyear":
+                sortField = "publishedYear";
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid sort field: " + field);
+        }
+
+        return bookDao.sortBy(sortField, ascending);
     }
+
 
     public long getTotalBooks() {
         return bookDao.countAll();

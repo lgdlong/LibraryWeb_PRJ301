@@ -24,21 +24,24 @@ public class AdminBookController extends HttpServlet {
 
         List<BookDTO> books;
 
+        // Determine sort field and order
+        String sortField = "title".equalsIgnoreCase(sort) ? "title" :
+            "year".equalsIgnoreCase(sort) ? "publishedYear" : null;
+        boolean ascending = true; // Could be parameterized
+
         if (search != null && !search.trim().isEmpty()) {
-            books = bookService.searchByTitleOrAuthor(search.trim()).stream()
+            // Add a new service method that combines search and sort
+            books = bookService.searchAndSort(search.trim(), sortField, ascending).stream()
+                .map(BookMapping::toBookDTO)
+                .collect(Collectors.toList());
+        } else if (sortField != null) {
+            books = bookService.sortBooksBy(sortField, ascending).stream()
                 .map(BookMapping::toBookDTO)
                 .collect(Collectors.toList());
         } else {
             books = bookService.getAllBooks().stream()
                 .map(BookMapping::toBookDTO)
                 .collect(Collectors.toList());
-        }
-
-        // Simple sort
-        if ("title".equalsIgnoreCase(sort)) {
-            books.sort(Comparator.comparing(BookDTO::getTitle, String.CASE_INSENSITIVE_ORDER));
-        } else if ("year".equalsIgnoreCase(sort)) {
-            books.sort(Comparator.comparingInt(BookDTO::getPublishedYear));
         }
 
         req.setAttribute("bookList", books);
@@ -105,9 +108,12 @@ public class AdminBookController extends HttpServlet {
              }
 
             resp.sendRedirect(req.getContextPath() + "/admin/books");
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid book operation");
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred processing your request");
         }
     }
 

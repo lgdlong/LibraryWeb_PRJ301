@@ -133,9 +133,8 @@ public class BookDao {
             if (rs.next()) {
                 return rs.getLong(1);
             }
-        } catch (SQLException e) {
-            System.err.println("Error counting books: " + e.getMessage());
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error counting books", e);
         }
         return 0;
     }
