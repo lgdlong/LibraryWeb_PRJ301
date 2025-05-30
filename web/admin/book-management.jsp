@@ -199,6 +199,14 @@
         const form = document.createElement('form');
         form.method = 'post';
         form.action = "${pageContext.request.contextPath}/admin/books?delete=" + encodeURIComponent(id);
+        
+        // Add CSRF token
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrf_token';
+        csrfInput.value = '${sessionScope.csrf_token}';
+        form.appendChild(csrfInput);
+        
         document.body.appendChild(form);
         form.submit();
       }
