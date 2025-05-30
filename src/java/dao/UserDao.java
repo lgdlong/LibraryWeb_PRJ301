@@ -74,6 +74,31 @@ public class UserDao {
         return null;
     }
 
+    public List<User> searchByKeyword(String keyword) {
+        String sql = "SELECT id, name, password, email, role, status " +
+            "FROM users " +
+            "WHERE LOWER(name) LIKE ? OR LOWER(email) LIKE ?";
+        String searchTerm = "%" + keyword.toLowerCase() + "%";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, searchTerm);
+            stmt.setString(2, searchTerm);
+
+            ResultSet rs = stmt.executeQuery();
+            List<User> results = new ArrayList<>();
+
+            while (rs.next()) {
+                results.add(mapRow(rs));
+            }
+
+            return results;
+        } catch (SQLException e) {
+            throw new RuntimeException("Search failed", e);
+        }
+    }
+
     public void add(User user) {
         if (user == null) {
             throw new IllegalArgumentException("User must not be null.");

@@ -27,12 +27,9 @@ public class AdminUserController extends HttpServlet {
         List<UserDTO> users = new ArrayList<>();
 
         if (search != null && !search.trim().isEmpty()) {
-            User user = userService.searchByEmail(search.trim());
-            if (user != null) {
-                users.add(UserMapping.toUserDTO(user));
-            } else {
-                req.setAttribute("errorMessage", "No user found with email: " + search);
-            }
+            users = userService.searchByNameOrEmail(search.trim()).stream()
+                .map(UserMapping::toUserDTO)
+                .collect(Collectors.toList());
         } else {
             users = userService.getAllUsers().stream()
                 .map(UserMapping::toUserDTO)

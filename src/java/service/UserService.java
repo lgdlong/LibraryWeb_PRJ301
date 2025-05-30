@@ -7,32 +7,36 @@ import entity.*;
 import java.util.*;
 
 public class UserService {
-    private final UserDao userDAO = new UserDao();
+    private final UserDao userDao = new UserDao();
 
     public List<User> getAllUsers() {
-        return userDAO.getAll();
+        return userDao.getAll();
     }
 
     public User getUserById(long id) {
-        return userDAO.getById(id);
+        return userDao.getById(id);
     }
 
     public long getUserCount() {
-        return userDAO.userCount();
+        return userDao.userCount();
     }
 
     public User searchByEmail(String email) {
-        return userDAO.getByEmail(email);
+        return userDao.getByEmail(email);
+    }
+
+    public List<User> searchByNameOrEmail(String keyword) {
+        return userDao.searchByKeyword(keyword);
     }
 
     public void addUser(User user) {
         try {
             // check if user already exists
-            if (userDAO.getByEmail(user.getEmail()) != null) {
+            if (userDao.getByEmail(user.getEmail()) != null) {
                 throw new IllegalArgumentException("User with email " + user.getEmail() + " already exists.");
             }
 
-            userDAO.add(user);
+            userDao.add(user);
             System.out.println("User added: " + user.getEmail());
 
         } catch (RuntimeException e) {
@@ -41,11 +45,12 @@ public class UserService {
     }
 
     public void updateUser(User user) {
-        userDAO.update(user);
+        userDao.update(user);
     }
 
     public void deleteUser(long id) {
-        userDAO.delete(id);
+        userDao.delete(id);
     }
+
 
 }
