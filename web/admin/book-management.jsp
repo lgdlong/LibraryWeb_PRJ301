@@ -84,7 +84,9 @@
           </div>
           <div class="mb-3">
             <label for="isbn" class="form-label">ISBN</label>
-            <input type="text" class="form-control" id="isbn" name="isbn" maxlength="20" pattern="[0-9\-X]{10,17}">
+            <input type="text" class="form-control" id="isbn" name="isbn" maxlength="20" 
+                   pattern="^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$"
+                   title="Please enter a valid ISBN-10 or ISBN-13">
           </div>
           <div class="mb-3">
             <label for="coverUrl" class="form-label">Cover URL</label>
