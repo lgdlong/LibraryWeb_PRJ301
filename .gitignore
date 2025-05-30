@@ -7,8 +7,8 @@
 /target/
 
 # Ignore all WARs except final one
-/dist/
-!dist/LibraryWeb_PRJ301_G1.war
+dist/*
+!dist/*.war
 
 # ============================
 # ⚙️ IDE FILES
