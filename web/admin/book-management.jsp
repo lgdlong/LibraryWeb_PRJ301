@@ -41,19 +41,23 @@
       </tr>
       </thead>
       <tbody>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
       <c:forEach var="book" items="${bookList}" varStatus="loop">
         <tr
-          onclick="openBookForm(${book.id}, '${book.title}', '${book.author}', '${book.isbn}', '${book.coverUrl}', '${book.category}', ${book.publishedYear}, ${book.totalCopies}, ${book.availableCopies}, '${book.status}')">
+          onclick="openBookForm(${book.id}, '${fn:escapeXml(book.title)}', '${fn:escapeXml(book.author)}', '${fn:escapeXml(book.isbn)}', '${fn:escapeXml(book.coverUrl)}', '${fn:escapeXml(book.category)}', ${book.publishedYear}, ${book.totalCopies}, ${book.availableCopies}, '${fn:escapeXml(book.status)}')">
           <td>${loop.index + 1}</td>
-          <td>${book.title}</td>
-          <td>${book.author}</td>
-          <td>${book.isbn}</td>
-          <td>${book.category}</td>
+          <td>${fn:escapeXml(book.title)}</td>
+          <td>${fn:escapeXml(book.author)}</td>
+          <td>${fn:escapeXml(book.isbn)}</td>
+          <td>${fn:escapeXml(book.category)}</td>
           <td>${book.publishedYear}</td>
           <td>${book.totalCopies}</td>
           <td>${book.availableCopies}</td>
-          <td>${book.status}</td>
+          <td>${fn:escapeXml(book.status)}</td>
         </tr>
+      </c:forEach>
       </c:forEach>
       </tbody>
     </table>
