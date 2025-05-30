@@ -60,26 +60,49 @@ public class AdminBookController extends HttpServlet {
                     throw new IllegalArgumentException("Invalid book ID for deletion");
                 }
             } else {
-                long id = parseLongOrZero(req.getParameter("id"));
-                String title = req.getParameter("title");
-                String author = req.getParameter("author");
-                String isbn = req.getParameter("isbn");
-                String coverUrl = req.getParameter("coverUrl");
-                String category = req.getParameter("category");
-                int publishedYear = parseIntOrZero(req.getParameter("publishedYear"));
-                int totalCopies = parseIntOrZero(req.getParameter("totalCopies"));
-                int availableCopies = parseIntOrZero(req.getParameter("availableCopies"));
-                BookStatus status = BookStatus.fromString(req.getParameter("status"));
+             } else {
+                 long id = parseLongOrZero(req.getParameter("id"));
+                 String title = req.getParameter("title");
+                 String author = req.getParameter("author");
+                 String isbn = req.getParameter("isbn");
+                 String coverUrl = req.getParameter("coverUrl");
+                 String category = req.getParameter("category");
+                 int publishedYear = parseIntOrZero(req.getParameter("publishedYear"));
+                 int totalCopies = parseIntOrZero(req.getParameter("totalCopies"));
+                 int availableCopies = parseIntOrZero(req.getParameter("availableCopies"));
 
-                Book book = new Book(id, title, author, isbn, coverUrl, category,
-                    publishedYear, totalCopies, availableCopies, status);
+                 // Validate required fields
+                 if (title == null || title.trim().isEmpty()) {
+                     throw new IllegalArgumentException("Title is required");
+                 }
+                 if (author == null || author.trim().isEmpty()) {
+                     throw new IllegalArgumentException("Author is required");
+                 }
 
-                if (id == 0) {
-                    bookService.addBook(book);
-                } else {
-                    bookService.updateBook(book);
-                }
-            }
+                 // Validate business rules
+                 if (availableCopies > totalCopies) {
+                     throw new IllegalArgumentException("Available copies cannot exceed total copies");
+                 }
+                 if (publishedYear < 1000 || publishedYear > Calendar.getInstance().get(Calendar.YEAR) + 1) {
+                     throw new IllegalArgumentException("Invalid published year");
+                 }
+
+                 // Safe status parsing
+                 BookStatus status;
+                 try {
+                     status = BookStatus.fromString(req.getParameter("status"));
+                 } catch (Exception e) {
+                     status = BookStatus.ACTIVE; // Default status
+                 }
+
+                 Book book = new Book(id, title, author, isbn, coverUrl, category,
+                     publishedYear, totalCopies, availableCopies, status);
+                 if (id == 0) {
+                     bookService.addBook(book);
+                 } else {
+                     bookService.updateBook(book);
+                 }
+             }
 
             resp.sendRedirect(req.getContextPath() + "/admin/books");
         } catch (Exception e) {
