@@ -4,6 +4,7 @@ import dao.*;
 import entity.*;
 
 import java.util.*;
+import java.util.stream.*;
 
 public class BookService {
     private final BookDao bookDao = new BookDao();
@@ -46,10 +47,12 @@ public class BookService {
         if (books == null) {
             return new ArrayList<>();
         }
-
+        // Filter out null books to prevent NPE
+        List<Book> validBooks = books.stream()
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
         Comparator<Book> comparator;
         String normalizedField = field.trim().toLowerCase();
-
         switch (normalizedField) {
             case "title":
                 comparator = Comparator.comparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER);
@@ -61,7 +64,6 @@ public class BookService {
             case "published_year":  // Support both formats
                 comparator = Comparator.comparingInt(Book::getPublishedYear);
                 break;
-                break;
             case "totalcopies":
                 comparator = Comparator.comparingInt(Book::getTotalCopies);
                 break;
@@ -71,12 +73,10 @@ public class BookService {
             default:
                 throw new IllegalArgumentException("Invalid sort field: " + field);
         }
-
         if (!ascending) {
             comparator = comparator.reversed();
         }
-
-        List<Book> sortedList = new ArrayList<>(books);
+        List<Book> sortedList = new ArrayList<>(validBooks);
         sortedList.sort(comparator);
         return sortedList;
     }
