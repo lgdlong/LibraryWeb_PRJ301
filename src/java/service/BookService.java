@@ -12,21 +12,18 @@ public class BookService {
         return bookDao.getAll();
     }
 
-    public Book getBookById(long id) {
-        return bookDao.getById(id);
-    }
-
     public List<Book> searchByTitleOrAuthor(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
-            return new ArrayList<>();
+            return getAllBooks(); // Return all books if no keyword
         }
-        return bookDao.searchByKeyword(keyword);
+        return bookDao.searchByKeyword(keyword.trim());
     }
 
     public void addBook(Book book) {
         if (book == null) {
             throw new IllegalArgumentException("Book must not be null");
         }
+        validateBook(book);
         bookDao.add(book);
     }
 
@@ -34,6 +31,7 @@ public class BookService {
         if (book == null || book.getId() <= 0) {
             throw new IllegalArgumentException("Book must not be null and must have a valid ID");
         }
+        validateBook(book);
         bookDao.update(book);
     }
 
@@ -44,37 +42,59 @@ public class BookService {
         bookDao.delete(id);
     }
 
-    public long getBookCount() {
-        return bookDao.bookCount();
-    }
-
-    public List<Book> sortBooksBy(String field, boolean ascending) {
-        if (field == null) {
-            throw new IllegalArgumentException("Sort field cannot be null");
+    public List<Book> sortInMemory(List<Book> books, String field, boolean ascending) {
+        if (books == null) {
+            return new ArrayList<>();
         }
 
-        String normalized = field.trim().toLowerCase();
-        String sortField;
+        Comparator<Book> comparator;
+        String normalizedField = field.trim().toLowerCase();
 
-        switch (normalized) {
+        switch (normalizedField) {
             case "title":
+                comparator = Comparator.comparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER);
+                break;
             case "author":
-            case "id":
-                sortField = normalized;
+                comparator = Comparator.comparing(Book::getAuthor, String.CASE_INSENSITIVE_ORDER);
                 break;
             case "publishedyear":
-                sortField = "publishedYear";
+                comparator = Comparator.comparingInt(Book::getPublishedYear);
+                break;
+            case "totalcopies":
+                comparator = Comparator.comparingInt(Book::getTotalCopies);
+                break;
+            case "availablecopies":
+                comparator = Comparator.comparingInt(Book::getAvailableCopies);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid sort field: " + field);
         }
 
-        return bookDao.sortBy(sortField, ascending);
+        if (!ascending) {
+            comparator = comparator.reversed();
+        }
+
+        List<Book> sortedList = new ArrayList<>(books);
+        sortedList.sort(comparator);
+        return sortedList;
     }
 
+    private void validateBook(Book book) {
+        if (book.getTitle() == null || book.getTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("Title is required");
+        }
+        if (book.getAuthor() == null || book.getAuthor().trim().isEmpty()) {
+            throw new IllegalArgumentException("Author is required");
+        }
+        if (book.getAvailableCopies() > book.getTotalCopies()) {
+            throw new IllegalArgumentException("Available copies cannot exceed total copies");
+        }
+        if (book.getPublishedYear() < 1000 || book.getPublishedYear() > Calendar.getInstance().get(Calendar.YEAR) + 1) {
+            throw new IllegalArgumentException("Invalid published year");
+        }
+    }
 
     public long getTotalBooks() {
-        return bookDao.countAll();
+        return bookDao.bookCount();
     }
 }
-

@@ -31,27 +31,6 @@ public class BookDao {
         return books;
     }
 
-    public Book getById(long id) {
-        String sql = "SELECT * FROM books WHERE id = ?";
-
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setLong(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return mapRow(rs);
-                }
-            }
-
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error fetching book by ID", e);
-            throw new RuntimeException(e);
-        }
-
-        return null;
-    }
-
     public List<Book> searchByKeyword(String keyword) {
         List<Book> books = new ArrayList<>();
         String sql = "SELECT * FROM books WHERE LOWER(title) LIKE ? OR LOWER(author) LIKE ?";
@@ -138,36 +117,6 @@ public class BookDao {
         }
         return 0;
     }
-
-    public long countAll() {
-        return bookCount(); // hoặc copy nội dung từ bookCount nếu muốn tách biệt logic
-    }
-
-    public List<Book> sortBy(String field, boolean ascending) {
-        List<String> allowedFields = Arrays.asList("title", "author", "published_year", "category");
-        if (!allowedFields.contains(field)) {
-            throw new IllegalArgumentException("Invalid sort field: " + field);
-        }
-
-        String order = ascending ? "ASC" : "DESC";
-        String sql = "SELECT * FROM books ORDER BY " + field + " " + order;
-
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            List<Book> sortedBooks = new ArrayList<>();
-            while (rs.next()) {
-                sortedBooks.add(mapRow(rs)); // Bạn cần có hàm mapRow để chuyển ResultSet -> Book
-            }
-            return sortedBooks;
-
-        } catch (SQLException e) {
-            System.err.println("Error sorting books: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
 
     private Book mapRow(ResultSet rs) throws SQLException {
         return new Book(

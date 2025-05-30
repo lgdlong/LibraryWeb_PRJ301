@@ -21,30 +21,27 @@ public class AdminBookController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String search = req.getParameter("search");
         String sort = req.getParameter("sort");
+        String order = req.getParameter("order"); // "asc" or "desc", default is asc
 
-        List<BookDTO> books;
+        // Start with the full list of books
+        List<Book> books = bookService.getAllBooks();
 
-        // Determine sort field and order
-        String sortField = "title".equalsIgnoreCase(sort) ? "title" :
-            "year".equalsIgnoreCase(sort) ? "publishedYear" : null;
-        boolean ascending = true; // Could be parameterized
-
+        // Apply search if provided
         if (search != null && !search.trim().isEmpty()) {
-            // Add a new service method that combines search and sort
-            books = bookService.searchAndSort(search.trim(), sortField, ascending).stream()
-                .map(BookMapping::toBookDTO)
-                .collect(Collectors.toList());
-        } else if (sortField != null) {
-            books = bookService.sortBooksBy(sortField, ascending).stream()
-                .map(BookMapping::toBookDTO)
-                .collect(Collectors.toList());
-        } else {
-            books = bookService.getAllBooks().stream()
-                .map(BookMapping::toBookDTO)
-                .collect(Collectors.toList());
+            books = bookService.searchByTitleOrAuthor(search.trim());
         }
 
-        req.setAttribute("bookList", books);
+        // Apply sorting if provided
+        if (sort != null && !sort.trim().isEmpty()) {
+            boolean ascending = !"desc".equalsIgnoreCase(order);
+            books = bookService.sortInMemory(books, sort.trim(), ascending);
+        }
+
+        List<BookDTO> bookDTOs = books.stream()
+            .map(BookMapping::toBookDTO)
+            .collect(Collectors.toList());
+
+        req.setAttribute("bookList", bookDTOs);
         req.setAttribute("pageTitle", "Book Management");
         req.setAttribute("contentPage", "/admin/book-management.jsp");
         req.getRequestDispatcher("/admin/layout.jsp").forward(req, resp);
@@ -55,58 +52,11 @@ public class AdminBookController extends HttpServlet {
         String deleteId = req.getParameter("delete");
 
         try {
-            if (deleteId != null) {
-                long idToDelete = parseLongOrZero(deleteId);
-                if (idToDelete > 0) {
-                    bookService.deleteBook(idToDelete);
-                } else {
-                    throw new IllegalArgumentException("Invalid book ID for deletion");
-                }
+            if (deleteId != null && !deleteId.trim().isEmpty()) {
+                handleDelete(deleteId);
             } else {
-             } else {
-                 long id = parseLongOrZero(req.getParameter("id"));
-                 String title = req.getParameter("title");
-                 String author = req.getParameter("author");
-                 String isbn = req.getParameter("isbn");
-                 String coverUrl = req.getParameter("coverUrl");
-                 String category = req.getParameter("category");
-                 int publishedYear = parseIntOrZero(req.getParameter("publishedYear"));
-                 int totalCopies = parseIntOrZero(req.getParameter("totalCopies"));
-                 int availableCopies = parseIntOrZero(req.getParameter("availableCopies"));
-
-                 // Validate required fields
-                 if (title == null || title.trim().isEmpty()) {
-                     throw new IllegalArgumentException("Title is required");
-                 }
-                 if (author == null || author.trim().isEmpty()) {
-                     throw new IllegalArgumentException("Author is required");
-                 }
-
-                 // Validate business rules
-                 if (availableCopies > totalCopies) {
-                     throw new IllegalArgumentException("Available copies cannot exceed total copies");
-                 }
-                 if (publishedYear < 1000 || publishedYear > Calendar.getInstance().get(Calendar.YEAR) + 1) {
-                     throw new IllegalArgumentException("Invalid published year");
-                 }
-
-                 // Safe status parsing
-                 BookStatus status;
-                 try {
-                     status = BookStatus.fromString(req.getParameter("status"));
-                 } catch (Exception e) {
-                     status = BookStatus.ACTIVE; // Default status
-                 }
-
-                 Book book = new Book(id, title, author, isbn, coverUrl, category,
-                     publishedYear, totalCopies, availableCopies, status);
-                 if (id == 0) {
-                     bookService.addBook(book);
-                 } else {
-                     bookService.updateBook(book);
-                 }
-             }
-
+                handleCreateOrUpdate(req);
+            }
             resp.sendRedirect(req.getContextPath() + "/admin/books");
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -117,9 +67,48 @@ public class AdminBookController extends HttpServlet {
         }
     }
 
+    private void handleDelete(String deleteId) {
+        long idToDelete = parseLongOrZero(deleteId);
+        if (idToDelete > 0) {
+            bookService.deleteBook(idToDelete);
+        } else {
+            throw new IllegalArgumentException("Invalid book ID for deletion");
+        }
+    }
+
+    private void handleCreateOrUpdate(HttpServletRequest req) {
+        long id = parseLongOrZero(req.getParameter("id"));
+        String title = req.getParameter("title");
+        String author = req.getParameter("author");
+        String isbn = req.getParameter("isbn");
+        String coverUrl = req.getParameter("coverUrl");
+        String category = req.getParameter("category");
+        int publishedYear = parseIntOrZero(req.getParameter("publishedYear"));
+        int totalCopies = parseIntOrZero(req.getParameter("totalCopies"));
+        int availableCopies = parseIntOrZero(req.getParameter("availableCopies"));
+        String statusParam = req.getParameter("status");
+
+        // Safe status parsing
+        BookStatus status;
+        try {
+            status = statusParam != null ? BookStatus.fromString(statusParam) : BookStatus.ACTIVE;
+        } catch (Exception e) {
+            status = BookStatus.ACTIVE; // Default status
+        }
+
+        Book book = new Book(id, title, author, isbn, coverUrl, category,
+            publishedYear, totalCopies, availableCopies, status);
+
+        if (id == 0) {
+            bookService.addBook(book);
+        } else {
+            bookService.updateBook(book);
+        }
+    }
+
     private long parseLongOrZero(String val) {
         try {
-            return (val != null && !val.isEmpty()) ? Long.parseLong(val) : 0;
+            return (val != null && !val.trim().isEmpty()) ? Long.parseLong(val.trim()) : 0;
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -127,7 +116,7 @@ public class AdminBookController extends HttpServlet {
 
     private int parseIntOrZero(String val) {
         try {
-            return (val != null && !val.isEmpty()) ? Integer.parseInt(val) : 0;
+            return (val != null && !val.trim().isEmpty()) ? Integer.parseInt(val.trim()) : 0;
         } catch (NumberFormatException e) {
             return 0;
         }

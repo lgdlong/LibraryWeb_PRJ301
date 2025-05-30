@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <h2>Book Management</h2>
 <p>Manage books: add, update, remove from library.</p>
@@ -17,8 +18,9 @@
   <button type="submit" class="btn btn-outline-primary">Search</button>
 </form>
 
-<!-- Add Book Button -->
+<!-- Add Book and Sort Buttons -->
 <div class="d-flex justify-content-end mb-2">
+  <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#sortModal">Sort</button>
   <button class="btn btn-success" onclick="openBookForm(null)">Add Book</button>
 </div>
 
@@ -41,12 +43,9 @@
       </tr>
       </thead>
       <tbody>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
       <c:forEach var="book" items="${bookList}" varStatus="loop">
         <tr
-          onclick="openBookForm(${book.id}, '${fn:escapeXml(book.title)}', '${fn:escapeXml(book.author)}', '${fn:escapeXml(book.isbn)}', '${fn:escapeXml(book.coverUrl)}', '${fn:escapeXml(book.category)}', ${book.publishedYear}, ${book.totalCopies}, ${book.availableCopies}, '${fn:escapeXml(book.status)}')">
+          onclick="openBookForm(${book.id}, '${fn:escapeXml(book.title)}', '${fn:escapeXml(book.author)}', '${fn:escapeXml(book.isbn)}', '${fn:escapeXml(book.coverUrl)}', '${fn:escapeXml(book.category)}', ${book.publishedYear}, ${book.totalCopies}, ${book.availableCopies}, '${book.status}')">
           <td>${loop.index + 1}</td>
           <td>${fn:escapeXml(book.title)}</td>
           <td>${fn:escapeXml(book.author)}</td>
@@ -55,9 +54,8 @@
           <td>${book.publishedYear}</td>
           <td>${book.totalCopies}</td>
           <td>${book.availableCopies}</td>
-          <td>${fn:escapeXml(book.status)}</td>
+          <td>${book.status}</td>
         </tr>
-      </c:forEach>
       </c:forEach>
       </tbody>
     </table>
@@ -128,6 +126,52 @@
   </div>
 </div>
 
+<!-- Sort Modal Form -->
+<div class="modal fade" id="sortModal" tabindex="-1" aria-labelledby="sortModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="get" action="${pageContext.request.contextPath}/admin/books" id="sortForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="sortModalLabel">Sort Books</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="sortField" class="form-label">Sort By</label>
+            <select class="form-select" id="sortField" name="sort" required>
+              <option value="" disabled ${empty param.sort ? 'selected' : ''}>Select a field</option>
+              <option value="title" ${param.sort == 'title' ? 'selected' : ''}>Title</option>
+              <option value="author" ${param.sort == 'author' ? 'selected' : ''}>Author</option>
+              <option value="publishedYear" ${param.sort == 'publishedYear' ? 'selected' : ''}>Published Year</option>
+              <option value="totalCopies" ${param.sort == 'totalCopies' ? 'selected' : ''}>Total Copies</option>
+              <option value="availableCopies" ${param.sort == 'availableCopies' ? 'selected' : ''}>Available Copies
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="sortOrder" class="form-label">Order</label>
+            <select class="form-select" id="sortOrder" name="order" required>
+              <option value="asc" ${param.order == 'asc' || empty param.order ? 'selected' : ''}>Ascending</option>
+              <option value="desc" ${param.order == 'desc' ? 'selected' : ''}>Descending</option>
+            </select>
+          </div>
+          <!-- Preserve search parameter if it exists -->
+          <c:if test="${not empty param.search}">
+            <input type="hidden" name="search" value="${fn:escapeXml(param.search)}">
+          </c:if>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" onclick="removeSort()">Remove Sort</button>
+          <div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Apply Sort</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
   function openBookForm(id, title, author, isbn, coverUrl, category, year, total, available, status) {
     const modal = new bootstrap.Modal(document.getElementById('bookModal'));
@@ -160,6 +204,13 @@
       }
     }
   }
+
+  function removeSort() {
+    const form = document.getElementById('sortForm');
+    // Clear sort and order fields
+    document.getElementById('sortField').value = '';
+    document.getElementById('sortOrder').value = 'asc';
+    // Submit form with only search parameter (if exists)
+    form.submit();
+  }
 </script>
-
-
