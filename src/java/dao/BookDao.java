@@ -31,6 +31,27 @@ public class BookDao {
         return books;
     }
 
+    public Book getById(long id) {
+        String sql = "SELECT * FROM books WHERE id = ?";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs);
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error fetching book by ID", e);
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
     public List<Book> searchByKeyword(String keyword) {
         List<Book> books = new ArrayList<>();
         String sql = "SELECT * FROM books WHERE LOWER(title) LIKE ? OR LOWER(author) LIKE ?";

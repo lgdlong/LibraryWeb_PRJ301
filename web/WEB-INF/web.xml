@@ -28,6 +28,14 @@
         <servlet-name>FineAdminController</servlet-name>
         <servlet-class>controller.AdminFineController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminBorrowRecordController</servlet-name>
+        <servlet-class>controller.AdminBorrowRecordController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminRequestManagement</servlet-name>
+        <servlet-class>controller.AdminRequestController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>
@@ -55,6 +63,14 @@
     <servlet-mapping>
         <servlet-name>FineAdminController</servlet-name>
         <url-pattern>/FineAdminController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminBorrowRecordController</servlet-name>
+        <url-pattern>/AdminBorrowRecordController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminRequestManagement</servlet-name>
+        <url-pattern>/AdminRequestManagement</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
