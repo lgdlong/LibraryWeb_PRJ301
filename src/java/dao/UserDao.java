@@ -75,6 +75,10 @@ public class UserDao {
     }
 
     public List<User> searchByKeyword(String keyword) {
+        if (keyword == null) {
+            return new ArrayList<>();
+        }
+
         String sql = "SELECT id, name, password, email, role, status " +
             "FROM users " +
             "WHERE LOWER(name) LIKE ? OR LOWER(email) LIKE ?";
@@ -86,15 +90,18 @@ public class UserDao {
             stmt.setString(1, searchTerm);
             stmt.setString(2, searchTerm);
 
-            ResultSet rs = stmt.executeQuery();
-            List<User> results = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<User> results = new ArrayList<>();
 
-            while (rs.next()) {
-                results.add(mapRow(rs));
+                while (rs.next()) {
+                    results.add(mapRow(rs));
+                }
+
+                return results;
             }
-
-            return results;
         } catch (SQLException e) {
+            System.err.println("Error searching users by keyword: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Failed to search users by keyword", e);
             throw new RuntimeException("Search failed", e);
         }
     }

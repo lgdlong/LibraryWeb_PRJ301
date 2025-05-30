@@ -26,6 +26,9 @@ public class UserService {
     }
 
     public List<User> searchByNameOrEmail(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
         return userDao.searchByKeyword(keyword);
     }
 
