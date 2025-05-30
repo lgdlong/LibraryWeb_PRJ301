@@ -110,10 +110,6 @@
               <option value="inactive">Inactive</option>
             </select>
           </div>
-          <div class="mb-3">
-            <label for="cover-url" class="form-label">Cover Url</label>
-            <input type="text" class="form-control" id="cover-url" name="coverUrl">
-          </div>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-danger" id="bookDeleteBtn" onclick="submitBookDelete()">Delete</button>
