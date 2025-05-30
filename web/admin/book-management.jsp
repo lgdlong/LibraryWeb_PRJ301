@@ -65,6 +65,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <form method="post" action="${pageContext.request.contextPath}/admin/books">
+        <input type="hidden" name="csrf_token" value="${sessionScope.csrf_token}">
         <div class="modal-header">
           <h5 class="modal-title" id="bookModalLabel">Edit Book</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -73,15 +74,15 @@
           <input type="hidden" name="id" id="bookId">
           <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+            <input type="text" class="form-control" id="title" name="title" required maxlength="255">
           </div>
           <div class="mb-3">
             <label for="author" class="form-label">Author</label>
-            <input type="text" class="form-control" id="author" name="author" required>
+            <input type="text" class="form-control" id="author" name="author" required maxlength="255">
           </div>
           <div class="mb-3">
             <label for="isbn" class="form-label">ISBN</label>
-            <input type="text" class="form-control" id="isbn" name="isbn">
+            <input type="text" class="form-control" id="isbn" name="isbn" maxlength="20" pattern="[0-9\-X]{10,17}">
           </div>
           <div class="mb-3">
             <label for="coverUrl" class="form-label">Cover URL</label>
