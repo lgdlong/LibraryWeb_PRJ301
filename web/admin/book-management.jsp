@@ -54,7 +54,7 @@
           <td>${book.publishedYear}</td>
           <td>${book.totalCopies}</td>
           <td>${book.availableCopies}</td>
-          <td>${book.status}</td>
+          <td>${fn:escapeXml(book.status)}</td>
         </tr>
       </c:forEach>
       </tbody>

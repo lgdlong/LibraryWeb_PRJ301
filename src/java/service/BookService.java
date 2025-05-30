@@ -86,6 +86,12 @@ public class BookService {
         if (book.getAuthor() == null || book.getAuthor().trim().isEmpty()) {
             throw new IllegalArgumentException("Author is required");
         }
+        if (book.getTotalCopies() < 0) {
+            throw new IllegalArgumentException("Total copies cannot be negative");
+        }
+        if (book.getAvailableCopies() < 0) {
+            throw new IllegalArgumentException("Available copies cannot be negative");
+        }
         if (book.getAvailableCopies() > book.getTotalCopies()) {
             throw new IllegalArgumentException("Available copies cannot exceed total copies");
         }
