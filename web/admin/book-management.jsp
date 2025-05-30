@@ -45,7 +45,7 @@
       <tbody>
       <c:forEach var="book" items="${bookList}" varStatus="loop">
         <tr
-          onclick="openBookForm(${book.id}, '${fn:escapeXml(book.title)}', '${fn:escapeXml(book.author)}', '${fn:escapeXml(book.isbn)}', '${fn:escapeXml(book.coverUrl)}', '${fn:escapeXml(book.category)}', ${book.publishedYear}, ${book.totalCopies}, ${book.availableCopies}, '${book.status}')">
+          onclick="openBookForm(${book.id}, '${fn:escapeXml(book.title)}', '${fn:escapeXml(book.author)}', '${fn:escapeXml(book.isbn)}', '${fn:escapeXml(book.coverUrl)}', '${fn:escapeXml(book.category)}', ${book.publishedYear}, ${book.totalCopies}, ${book.availableCopies}, '${fn:escapeXml(book.status)}')">
           <td>${loop.index + 1}</td>
           <td>${fn:escapeXml(book.title)}</td>
           <td>${fn:escapeXml(book.author)}</td>
