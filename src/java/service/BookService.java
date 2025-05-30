@@ -58,7 +58,9 @@ public class BookService {
                 comparator = Comparator.comparing(Book::getAuthor, String.CASE_INSENSITIVE_ORDER);
                 break;
             case "publishedyear":
+            case "published_year":  // Support both formats
                 comparator = Comparator.comparingInt(Book::getPublishedYear);
+                break;
                 break;
             case "totalcopies":
                 comparator = Comparator.comparingInt(Book::getTotalCopies);
