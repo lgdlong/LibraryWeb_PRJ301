@@ -26,7 +26,7 @@ public class Book {
         this.publishedYear = publishedYear;
         this.totalCopies = totalCopies;
         this.availableCopies = totalCopies; // Default to 0 available copies
-        this.status = BookStatus.ACTIVE; // Default status
+        this.status = BookStatus.AVAILABLE; // Default status
     }
 
     public Book(long id, String title, String author, String isbn, String coverUrl, String category, int publishedYear, int totalCopies, int availableCopies, BookStatus status) {

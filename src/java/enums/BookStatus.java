@@ -1,8 +1,8 @@
 package enums;
 
 public enum BookStatus {
-    ACTIVE,
-    INACTIVE;
+    AVAILABLE,
+    UNAVAILABLE;
 
     @Override
     public String toString() {
