@@ -10,6 +10,10 @@ public class BookRequestMapping {
     private static final BookService bookService = new BookService();
 
     public static BookRequestDTO toDTO(BookRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("BookRequest cannot be null");
+        }
+
         User user = userService.getUserById(request.getUserId());
         Book book = bookService.getBookById(request.getBookId());
 
@@ -18,7 +22,10 @@ public class BookRequestMapping {
             user != null ? user.getName() : "Unknown User",
             book != null ? book.getTitle() : "Unknown Book",
             request.getRequestDate(),
-            request.getStatus().toString()
+            request.getStatus() != null
+                ? request.getStatus().toString()
+                : "Unknown Status"
         );
+    }
     }
 }
