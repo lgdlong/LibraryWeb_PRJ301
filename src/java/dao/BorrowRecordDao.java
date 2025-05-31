@@ -98,7 +98,10 @@ public class BorrowRecordDao {
             stmt.setString(6, record.getStatus().toString());
             stmt.setLong(7, record.getId());
 
-            stmt.executeUpdate();
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Update failed, no rows affected. Record with ID " + record.getId() + " may not exist.");
+            }
 
         } catch (SQLException e) {
             System.err.println("Error updating borrow record: " + e.getMessage());
