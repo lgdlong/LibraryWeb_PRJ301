@@ -155,8 +155,19 @@ public class BorrowRecordDao {
         record.setId(rs.getLong("id"));
         record.setUserId(rs.getLong("user_id"));
         record.setBookId(rs.getLong("book_id"));
-        record.setBorrowDate(rs.getDate("borrow_date").toLocalDate());
-        record.setDueDate(rs.getDate("due_date").toLocalDate());
+
+        Date borrowDate = rs.getDate("borrow_date");
+        if (borrowDate == null) {
+            throw new SQLException("borrow_date cannot be null for borrow record ID: " + rs.getLong("id"));
+        }
+        record.setBorrowDate(borrowDate.toLocalDate());
+
+        Date dueDate = rs.getDate("due_date");
+        if (dueDate == null) {
+            throw new SQLException("due_date cannot be null for borrow record ID: " + rs.getLong("id"));
+        }
+        record.setDueDate(dueDate.toLocalDate());
+
         Date returnDate = rs.getDate("return_date");
         if (returnDate != null) {
             record.setReturnDate(returnDate.toLocalDate());
