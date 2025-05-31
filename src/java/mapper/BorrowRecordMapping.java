@@ -14,12 +14,12 @@ public class BorrowRecordMapping {
         }
 
         // get user's name and book title from the record
+        // get user's name and book title from the record
         User user = userService.getUserById(record.getUserId());
         Book book = bookService.getBookById(record.getBookId());
 
-        String userName = user.getName();
-        String bookTitle = book.getTitle();
-
+        String userName = user != null ? user.getName() : "Unknown User";
+        String bookTitle = book != null ? book.getTitle() : "Unknown Book";
         return new BorrowRecordDTO(
             record.getId(),
             userName,
