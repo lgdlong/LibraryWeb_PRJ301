@@ -44,24 +44,18 @@
             <th>Book Title</th>
             <th>Request Date</th>
             <th>Status</th>
-            <th>Action</th>
           </tr>
           </thead>
           <tbody>
           <c:forEach var="request" items="${requestList}" varStatus="loop">
             <c:if test="${request.status == 'pending'}">
-              <tr>
+              <tr
+                onclick="openRequestForm(${request.id}, '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'pending')">
                 <td>${loop.index + 1}</td>
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
                 <td>${fn:escapeXml(request.requestDate)}</td>
                 <td>${fn:escapeXml(request.status)}</td>
-                <td>
-                  <button class="btn btn-sm btn-primary"
-                          onclick="openRequestForm(${request.id}, '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}')">
-                    Update
-                  </button>
-                </td>
               </tr>
             </c:if>
           </c:forEach>
@@ -89,7 +83,8 @@
           <tbody>
           <c:forEach var="request" items="${requestList}" varStatus="loop">
             <c:if test="${request.status == 'approved'}">
-              <tr>
+              <tr
+                onclick="openRequestForm(${request.id}, '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'approved')">
                 <td>${loop.index + 1}</td>
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
@@ -122,7 +117,8 @@
           <tbody>
           <c:forEach var="request" items="${requestList}" varStatus="loop">
             <c:if test="${request.status == 'rejected'}">
-              <tr>
+              <tr
+                onclick="openRequestForm(${request.id}, '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'rejected')">
                 <td>${loop.index + 1}</td>
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
@@ -176,14 +172,32 @@
 </div>
 
 <script>
-  function openRequestForm(id, userName, bookTitle, status) {
+  function openRequestForm(id, userName, bookTitle, status, currentTab) {
     const modal = new bootstrap.Modal(document.getElementById('requestModal'));
 
     document.getElementById('requestId').value = id;
     document.getElementById('requestUserName').value = userName;
     document.getElementById('requestBookTitle').value = bookTitle;
-    document.getElementById('requestStatus').value = 'APPROVED'; // Mặc định chọn Approve
+
+    // Xử lý option động
+    const statusSelect = document.getElementById('requestStatus');
+    statusSelect.innerHTML = ''; // Clear existing options
+
+    if (currentTab === 'pending') {
+      statusSelect.innerHTML += '<option value="APPROVED">Approve</option>';
+      statusSelect.innerHTML += '<option value="REJECTED">Reject</option>';
+    } else if (currentTab === 'approved') {
+      statusSelect.innerHTML += '<option value="PENDING">Mark as Pending</option>';
+      statusSelect.innerHTML += '<option value="REJECTED">Reject</option>';
+    } else if (currentTab === 'rejected') {
+      statusSelect.innerHTML += '<option value="PENDING">Mark as Pending</option>';
+      statusSelect.innerHTML += '<option value="APPROVED">Approve</option>';
+    }
+
+    // Set mặc định giá trị đầu tiên
+    statusSelect.selectedIndex = 0;
 
     modal.show();
   }
 </script>
+
