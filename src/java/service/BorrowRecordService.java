@@ -28,4 +28,11 @@ public class BorrowRecordService {
         return null;
     }
 
+    public BorrowRecordDTO getById(long id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Record ID must be positive");
+        }
+        BorrowRecord record = borrowRecordDao.getById(id);
+        return BorrowRecordMapping.toBorrowRecordDTO(record);
+    }
 }

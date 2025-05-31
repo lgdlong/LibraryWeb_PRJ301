@@ -30,21 +30,24 @@ public class AdminBorrowRecordController extends HttpServlet {
 //        }
 
         // Lấy danh sách bản ghi mượn
-    try {
-        // Lấy danh sách bản ghi mượn
-        List<BorrowRecordDTO> dtos = borrowRecordService.getAll();
-    } catch (Exception e) {
-        request.setAttribute("errorMessage", "Unable to retrieve borrow records");
-        request.setAttribute("borrowRecordList", Collections.emptyList());
-    }
+        try {
+            // Lấy danh sách bản ghi mượn
+            List<BorrowRecordDTO> dtos = borrowRecordService.getAll();
 
-        // Thiết lập thuộc tính cho JSP
-        request.setAttribute("borrowRecordList", dtos);
-        request.setAttribute("pageTitle", "Borrow Record Management");
-        request.setAttribute("contentPage", "/admin/borrow-record-management.jsp");
+            // Thiết lập thuộc tính cho JSP
+            request.setAttribute("borrowRecordList", dtos);
+            request.setAttribute("contentPage", "/admin/borrow-record-management.jsp");
 
-        // Chuyển tiếp đến layout
-        request.getRequestDispatcher("/admin/layout.jsp").forward(request, response);
+            // Chuyển tiếp đến layout
+            request.getRequestDispatcher("/admin/layout.jsp").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", "Unable to retrieve borrow records");
+            request.setAttribute("borrowRecordList", Collections.emptyList());
+        } finally {
+            request.setAttribute("pageTitle", "Borrow Record Management");
+            // Đảm bảo luôn forward đến layout
+            request.getRequestDispatcher("/admin/layout.jsp").forward(request, response);
+        }
     }
 
     @Override
