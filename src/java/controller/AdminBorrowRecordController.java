@@ -30,7 +30,13 @@ public class AdminBorrowRecordController extends HttpServlet {
 //        }
 
         // Lấy danh sách bản ghi mượn
+    try {
+        // Lấy danh sách bản ghi mượn
         List<BorrowRecordDTO> dtos = borrowRecordService.getAll();
+    } catch (Exception e) {
+        request.setAttribute("errorMessage", "Unable to retrieve borrow records");
+        request.setAttribute("borrowRecordList", Collections.emptyList());
+    }
 
         // Thiết lập thuộc tính cho JSP
         request.setAttribute("borrowRecordList", dtos);
