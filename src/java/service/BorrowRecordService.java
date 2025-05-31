@@ -12,10 +12,20 @@ public class BorrowRecordService {
     private final BorrowRecordDao borrowRecordDao = new BorrowRecordDao();
 
     public List<BorrowRecordDTO> getAll() {
-        List<BorrowRecord> records = borrowRecordDao.getAll();
-        return records.stream()
-            .map(BorrowRecordMapping::toBorrowRecordDTO)
-            .collect(Collectors.toList());
+        List<BorrowRecord> records;
+        try {
+            records = borrowRecordDao.getAll();
+            if (records == null || records.isEmpty()) {
+                return new ArrayList<>();
+            }
+            return records.stream()
+                .map(BorrowRecordMapping::toBorrowRecordDTO)
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            // Log the error appropriately
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
