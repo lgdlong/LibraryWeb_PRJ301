@@ -59,9 +59,9 @@ public class BookRequestDao {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return new BookRequest(
-                        rs.getInt("id"),
-                        rs.getInt("user_id"),
-                        rs.getInt("book_id"),
+                        rs.getLong("id"),
+                        rs.getLong("user_id"),
+                        rs.getLong("book_id"),
                         rs.getDate("request_date").toLocalDate(),
                         RequestStatus.fromString(rs.getString("status"))
                     );
