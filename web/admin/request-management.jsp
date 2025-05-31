@@ -177,13 +177,24 @@
 
 <script>
   function openRequestForm(id, userName, bookTitle, status) {
-    const modal = new bootstrap.Modal(document.getElementById('requestModal'));
+    try {
+      const modalElement = document.getElementById('requestModal');
+      if (!modalElement) {
+        console.error('Request modal not found');
+        return;
+      }
 
-    document.getElementById('requestId').value = id;
-    document.getElementById('requestUserName').value = userName;
-    document.getElementById('requestBookTitle').value = bookTitle;
-    document.getElementById('requestStatus').value = 'APPROVED'; // Mặc định chọn Approve
+      const modal = new bootstrap.Modal(document.getElementById('requestModal'));
 
-    modal.show();
+      document.getElementById('requestId').value = id;
+      document.getElementById('requestUserName').value = userName;
+      document.getElementById('requestBookTitle').value = bookTitle;
+      document.getElementById('requestStatus').value = 'APPROVED'; // Mặc định chọn Approve
+
+      modal.show();
+    } catch (error) {
+      console.error('Error opening request form:', error);
+      alert('Failed to open request form. Please try again.');
+    }
   }
 </script>
