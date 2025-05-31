@@ -2,11 +2,13 @@ package entity;
 
 import enums.*;
 
+import java.time.*;
+
 public class BookRequest {
     private long id;
     private long userId;
     private long bookId;
-    private String requestDate;
+    private LocalDate requestDate;
     private RequestStatus status;
 
     // Default constructor
@@ -14,7 +16,7 @@ public class BookRequest {
     }
 
     // Constructor for creating a book request
-    public BookRequest(long userId, long bookId, String requestDate) {
+    public BookRequest(long userId, long bookId, LocalDate requestDate) {
         this.userId = userId;
         this.bookId = bookId;
         this.requestDate = requestDate;
@@ -22,7 +24,7 @@ public class BookRequest {
     }
 
     // Constructor for retrieving a book request from the database
-    public BookRequest(long id, long userId, long bookId, String requestDate, RequestStatus status) {
+    public BookRequest(long id, long userId, long bookId, LocalDate requestDate, RequestStatus status) {
         this.id = id;
         this.userId = userId;
         this.bookId = bookId;
@@ -32,6 +34,10 @@ public class BookRequest {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getUserId() {
@@ -50,11 +56,11 @@ public class BookRequest {
         this.bookId = bookId;
     }
 
-    public String getRequestDate() {
+    public LocalDate getRequestDate() {
         return requestDate;
     }
 
-    public void setRequestDate(String requestDate) {
+    public void setRequestDate(LocalDate requestDate) {
         this.requestDate = requestDate;
     }
 

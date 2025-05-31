@@ -16,7 +16,10 @@
     <a href="${pageContext.request.contextPath}/admin/books" class="list-group-item list-group-item-action">
       Manage Books
     </a>
-    <a href="${pageContext.request.contextPath}/admin/borrows" class="list-group-item list-group-item-action">
+    <a href="${pageContext.request.contextPath}/admin/requests" class="list-group-item list-group-item-action">
+      Manage Requests
+    </a>
+    <a href="${pageContext.request.contextPath}/admin/borrow-records" class="list-group-item list-group-item-action">
       Manage Borrows
     </a>
     <a href="${pageContext.request.contextPath}/admin/fines" class="list-group-item list-group-item-action">

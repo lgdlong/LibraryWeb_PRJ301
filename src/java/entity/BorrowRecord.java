@@ -8,35 +8,30 @@ public class BorrowRecord {
     private long id;
     private long userId;
     private long bookId;
-    private LocalDateTime borrowDate;
-    private LocalDateTime returnDate;
-    private long dueDate;
-    private BorrowStatus status; // e.g., "BORROWED", "RETURNED", "OVERDUE"
+    private LocalDate borrowDate;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
+    private BorrowStatus status;
 
     public BorrowRecord() {
     }
 
-    public BorrowRecord(long userId, long bookId, LocalDateTime borrowDate, LocalDateTime returnDate) {
-        this.userId = userId;
-        this.bookId = bookId;
-        this.borrowDate = borrowDate;
-        this.returnDate = returnDate;
-        setDueDate(borrowDate);
-        this.status = BorrowStatus.BORROWED;
-    }
-
-    public BorrowRecord(long id, long userId, long bookId, LocalDateTime borrowDate, LocalDateTime returnDate, long dueDate, BorrowStatus status) {
+    public BorrowRecord(long id, long userId, long bookId, LocalDate borrowDate, LocalDate dueDate, LocalDate returnDate, BorrowStatus status) {
         this.id = id;
         this.userId = userId;
         this.bookId = bookId;
         this.borrowDate = borrowDate;
-        this.returnDate = returnDate;
         this.dueDate = dueDate;
+        this.returnDate = returnDate;
         this.status = status;
     }
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getUserId() {
@@ -55,29 +50,28 @@ public class BorrowRecord {
         this.bookId = bookId;
     }
 
-    public LocalDateTime getBorrowDate() {
+    public LocalDate getBorrowDate() {
         return borrowDate;
     }
 
-    public void setBorrowDate(LocalDateTime borrowDate) {
+    public void setBorrowDate(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
     }
 
-    public LocalDateTime getReturnDate() {
-        return returnDate;
-    }
-
-    public void setReturnDate(LocalDateTime returnDate) {
-        this.returnDate = returnDate;
-    }
-
-    public long getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDateTime borrowDate) {
-        LocalDateTime now = LocalDateTime.now();
-        this.dueDate = Duration.between(borrowDate, now).toDays();
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
     }
 
     public BorrowStatus getStatus() {
