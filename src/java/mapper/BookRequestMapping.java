@@ -27,5 +27,4 @@ public class BookRequestMapping {
                 : "Unknown Status"
         );
     }
-    }
 }
