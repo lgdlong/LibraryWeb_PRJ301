@@ -1,6 +1,6 @@
 <%-- 
     Document   : login
-    Created on : Jun 5, 2025, 2:27:20 PM
+    Created on : Jun 5, 2025, 9:07:01 PM
     Author     : Dien Sanh
 --%>
 
@@ -12,10 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="UserLoginController" method="post">
-            <p>Gmail<input type="text" name="gmail" required=""/></p>
-            <p>Password<<input type="text" name="password1" required="/"></p>
-            <p><input type="submit" value="login"/></p>
-        </form>
+        <h1>Hello World!</h1>
     </body>
 </html>
