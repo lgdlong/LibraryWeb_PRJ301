@@ -54,7 +54,7 @@
 
         <!-- Nội dung chính -->
         <div class="main-content">
-            <h1>Hello World!</h1>
+            <h1>hello everyone</h1>
             <p>Chào mừng bạn đến hệ thống quản lý thư viện.</p>
         </div>
     </body>
