@@ -56,32 +56,7 @@ public class BookDao {
         return books;
     }
     
-    public List<Book> UsersearchByKeyword(String result){
-         List<Book> books = new ArrayList<>();
-        String sql = "SELECT [title],[author],[isbn],[category],[published_year],[available_copies],[cover_url] "
-                + "FROM books "
-                + "WHERE LOWER(title) LIKE ? OR LOWER(author) LIKE ?";
-        String searchTerm = "%" + result.toLowerCase() + "%";
-
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, searchTerm);
-            stmt.setString(2, searchTerm);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    books.add(mapRow(rs));
-                }
-            }
-
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error searching books", e);
-            throw new RuntimeException(e);
-        }
-
-        return books;
-    }
+    
 
     public void add(Book book) {
         String sql = "INSERT INTO books (title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
