@@ -12,6 +12,6 @@
         <title>User Dashboard</title>
     </head>
     <body>
-        hello word
+        test
     </body>
 </html>
