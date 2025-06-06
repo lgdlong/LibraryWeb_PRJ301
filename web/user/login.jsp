@@ -1,63 +1,96 @@
 <%-- 
     Document   : login
-    Created on : Jun 6, 2025, 9:58:55 AM
+    Created on : Jun 6, 2025, 10:11:57 AM
     Author     : Dien Sanh
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.io.*" %>
 <%
-    String username = request.getParameter("username");
-    if (username == null || username.isEmpty()) {
-        response.sendRedirect("login.jsp");
-        return;
+    String error = null;
+
+    if ("POST".equalsIgnoreCase(request.getMethod())) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Simulate account check (you can replace this with a database check later)
+        if ("admin".equals(username) && "1234".equals(password)) {
+            session.setAttribute("username", username);
+            response.sendRedirect("user.jsp");
+            return;
+        } else {
+            error = "Incorrect username or password!";
+        }
     }
 %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Trang người dùng</title>
+    <title>Login</title>
     <style>
-        .navbar {
-            width: 100%;
-            background-color: #2c3e50;
-            overflow: hidden;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ecf0f1;
             display: flex;
             justify-content: center;
-            font-family: Arial, sans-serif;
+            align-items: center;
+            height: 100vh;
         }
 
-        .navbar a {
+        .login-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+
+        .login-box h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-box input[type="text"],
+        .login-box input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+        }
+
+        .login-box input[type="submit"] {
+            width: 100%;
+            background-color: #2ecc71;
+            border: none;
+            padding: 10px;
             color: white;
-            padding: 14px 20px;
-            text-decoration: none;
             font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
         }
 
-        .navbar a:hover {
-            background-color: #34495e;
-            color: #1abc9c;
-        }
-
-        .main-content {
-            padding: 20px;
-            font-family: Arial, sans-serif;
+        .error {
+            color: red;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <a href="profile.jsp">Thay đổi thông tin cá nhân</a>
-        <a href="search.jsp">Tìm kiếm sách</a>
-        <a href="bookDetails.jsp">Xem tình trạng sách</a>
-        <a href="borrowReturn.jsp">Yêu cầu mượn / trả sách</a>
-        <a href="history.jsp">Xem lịch sử mượn trả</a>
-        <a href="logout.jsp">Đăng xuất</a>
-    </div>
-
-    <div class="main-content">
-        <h2>Xin chào, <%= username %>!</h2>
-        <p>Chào mừng bạn đến hệ thống quản lý thư viện.</p>
+    <div class="login-box">
+        <h2>Login</h2>
+        <form method="post" action="login.jsp">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+        <% if (error != null) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
     </div>
 </body>
 </html>
+
 
