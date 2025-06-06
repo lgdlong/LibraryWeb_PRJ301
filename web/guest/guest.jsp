@@ -40,17 +40,62 @@
 </head>
 <body>
 
-    <!-- Navigation Bar -->
+
     <div class="navbar">
-        <a href="search.jsp">Search Books</a>
-        <a href="bookDetails.jsp">View Book Status</a>
-        <a href="register.jsp">Register Account</a>
-        <a href="login.jsp">Login</a>
+        <a href="#">Search Books</a>
+        <a href="#">View Book Status</a>
+        <a href="#">Register Account</a>
+        <a href="#">Login</a>
     </div>
 
-    <!-- Main Content -->
+
     <div class="main-content">
-        <h1>Welcome, Guest!</h1>
+        <h2>New Book</h2>
+        <%
+            ArrayList<Book> books = (ArrayList<Book>) request.setAttribute("newBook");
+            if(newBook == null || newBook.isEmpty()){
+            
+        %>
+        <p>No new book publish in this year</p>
+        <%
+            }else{
+ 
+        %>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>URL</th>
+                    <th>Category</th>
+                    <th>Public Year</th>
+                    <th>Available Copy</th>
+                </tr>
+            </thead>
+        
+        <%
+            int count = 1;
+            for(Book b : books ){
+        %>
+        <tr>
+            <td><%= count %></td>
+            <td><%= b.getTitle() %></td>
+            <td><%= b.getAuthor() %></td>
+            <td><%= b.getIsbn() %></td>
+            <td><%= b.getCoverUrl() %></td>
+            <td><%= b.getCategory() %></td>
+            <td><%= b.PublicYear() %></td>
+            <td><%= b.getAvailableCopy()%></td>
+        </tr>
+        <%
+            }
+        %>
+        </table>
+        <%
+            }
+        %>
     </div>
 </body>
 </html>

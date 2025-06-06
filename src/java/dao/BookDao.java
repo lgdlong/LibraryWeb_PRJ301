@@ -30,6 +30,41 @@ public class BookDao {
 
         return books;
     }
+    
+    public List<Book> newBook() {
+        Connection cn = null;
+        ArrayList<Book> books = new ArrayList<>();
+        try {
+            cn = DbConfig.getConnection();
+            if (cn != null) {
+                String sql = "Select [title],[author],[isbn],[category],[published_year],[available_copies],[cover_url]\n"
+                        + "from book b\n"
+                        + "join [dbo].[system_config] c on c.config_key = 'book_new_years'\n"
+                        + "where YEAR(GETDATE()) - b.[published_year] <= CAST(c.config_value as decimal((5,2))";
+                PreparedStatement stmt = cn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery();
+                if(rs!= null){
+                    while(rs.next()){
+                        String titile = rs.getString("title");
+                        String author = rs.getString("author");
+                        String isbn = rs.getString("isbn");
+                        String url = rs.getString("cover_url");
+                        String category = rs.getString("category");
+                        int public_year = rs.getInt("publiced_year");
+                        int available_copies = rs.getInt("available_copies");
+                        
+                        
+                        Book book = new Book(titile, author, isbn, url, category, public_year, available_copies);
+                        books.add(book);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return books;
+    }
 
     public List<Book> searchByKeyword(String keyword) {
         List<Book> books = new ArrayList<>();
