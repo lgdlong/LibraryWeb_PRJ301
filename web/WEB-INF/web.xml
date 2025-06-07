@@ -28,6 +28,10 @@
         <servlet-name>FineAdminController</servlet-name>
         <servlet-class>controller.AdminFineController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewBookController</servlet-name>
+        <servlet-class>controller.NewBookController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>FineAdminController</servlet-name>
         <url-pattern>/FineAdminController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewBookController</servlet-name>
+        <url-pattern>/NewBookController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
