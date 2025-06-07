@@ -14,10 +14,10 @@
     <body>
         <h1>Login In</h1>
        
-        <form action="LoginController" method="POST">
+        <form action="${pageContext.request.contextPath}/login" method="post">
             <p>Email:<input type="text" name="email" required=""/></p>
-            </br><p>Password:<input type="password" name="password" required=""/></p>
-            </br><p><input type="submit"  value="Login"></p>  
+            <p>Password:<input type="password" name="password" required=""/></p>
+            <button type="submit">Login</button>
         </form>
         <%
          String s = (String) request.getAttribute("ERROR");

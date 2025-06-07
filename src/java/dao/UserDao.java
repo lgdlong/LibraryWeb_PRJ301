@@ -218,7 +218,7 @@ public class UserDao {
             return UserStatus.BLOCKED; // or throw a more specific exception
         }
     }
-    public static final String CHECK_LOGIN = "SELECT [id],[name],[email],[password],[role],[status] FROM users WHERE email=? AND password =?";
+    public static final String CHECK_LOGIN = "SELECT [id],[name],[email],[password],[role],[status] FROM users WHERE email=? AND password=?";
     public User checkLogin(String email,String password) throws SQLException{
         Connection cn = null;
         PreparedStatement ptm = null;
@@ -234,9 +234,9 @@ public class UserDao {
                 if(rs.next()){
                     int id = rs.getInt("id");
                     String name = rs.getString("name");
-                     parseUserRole(rs.getString("role"));
-                    parseUserStatus(rs.getString("status"));
-                    result = new User(id, name, email, UserRole.USER, UserStatus.ACTIVE);
+                    UserRole role = parseUserRole(rs.getString("role"));
+                    UserStatus status= parseUserStatus(rs.getString("status"));
+                    result = new User(id, name, email, role,status );
                 }
                 
             }
