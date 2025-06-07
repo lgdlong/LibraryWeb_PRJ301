@@ -73,26 +73,12 @@
         <url-pattern>/FineAdminController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AdminBorrowRecordController</servlet-name>
-        <url-pattern>/AdminBorrowRecordController</url-pattern>
+        <servlet-name>NewBookController</servlet-name>
+        <url-pattern>/NewBookController</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AdminRequestManagement</servlet-name>
-        <url-pattern>/AdminRequestManagement</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LoginController</servlet-name>
-        <url-pattern>/LoginController</url-pattern>
-    </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>RegisterController</servlet-name>
-    <url-pattern>/RegisterController</url-pattern>
-  </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-    <servlet-name>AdminRequestManagement</servlet-name>
-    <servlet-class>controller.AdminRequestController</servlet-class>
 </web-app>

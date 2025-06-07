@@ -30,36 +30,38 @@ public class BookDao {
 
         return books;
     }
-    
-    public List<Book> newBook() {
-        Connection cn = null;
+
+    public ArrayList<Book> getNewBooks() {
         ArrayList<Book> books = new ArrayList<>();
-        try {
-            cn = DbConfig.getConnection();
-            if (cn != null) {
-                String sql = "Select [title],[author],[isbn],[category],[published_year],[available_copies],[cover_url]\n"
-                        + "from book b\n"
-                        + "join [dbo].[system_config] c on c.config_key = 'book_new_years'\n"
-                        + "where YEAR(GETDATE()) - b.[published_year] <= CAST(c.config_value as decimal((5,2))";
-                PreparedStatement stmt = cn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery();
-                if(rs!= null){
-                    while(rs.next()){
-                        String titile = rs.getString("title");
-                        String author = rs.getString("author");
-                        String isbn = rs.getString("isbn");
-                        String url = rs.getString("cover_url");
-                        String category = rs.getString("category");
-                        int public_year = rs.getInt("publiced_year");
-                        int available_copies = rs.getInt("available_copies");
-                        
-                        
-                        Book book = new Book(titile, author, isbn, url, category, public_year, available_copies);
-                        books.add(book);
-                    }
-                }
+        String sql = "SELECT b.title, b.author, b.isbn, b.cover_url, b.category, " +
+            "b.published_year, b.total_copies, b.available_copies " +
+            "FROM books b " +
+            "JOIN dbo.system_config c ON c.config_key = 'book_new_years' " +
+            "WHERE YEAR(GETDATE()) - b.published_year <= CAST(c.config_value AS DECIMAL(5,2))";
+
+        try (Connection cn = DbConfig.getConnection();
+             PreparedStatement stmt = cn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                String isbn = rs.getString("isbn");
+                String url = rs.getString("cover_url");
+                String category = rs.getString("category");
+                int publishedYear = rs.getInt("published_year");
+                int totalCopies = rs.getInt("total_copies");
+                int availableCopies = rs.getInt("available_copies");
+
+                // Dùng constructor rút gọn, sau đó set availableCopies
+                Book book = new Book(title, author, isbn, url, category, publishedYear, totalCopies);
+                book.setAvailableCopies(availableCopies); // quan trọng nếu bạn muốn lấy đúng số bản sẵn có
+
+                books.add(book);
             }
-        } catch (Exception e) {
+
+        } catch (SQLException e) {
+            System.err.println("Error when fetching new books: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -111,8 +113,8 @@ public class BookDao {
 
         return books;
     }
-    
-    
+
+
 
     public void add(Book book) {
         String sql = "INSERT INTO books (title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";

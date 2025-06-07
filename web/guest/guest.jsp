@@ -1,9 +1,10 @@
-<%-- 
+<%--
     Document   : guest
     Created on : Jun 6, 2025, 10:40:38 AM
     Author     : Dien Sanh
 --%>
-
+<%@page  import="java.util.ArrayList" %>
+<%@page import="entity.Book" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,14 +53,14 @@
     <div class="main-content">
         <h2>New Book</h2>
         <%
-            ArrayList<Book> books = (ArrayList<Book>) request.setAttribute("newBook");
-            if(newBook == null || newBook.isEmpty()){
-            
+            ArrayList<Book> books = (ArrayList<Book>) request.getAttribute("newBooks");
+            if(books == null || books.isEmpty()){
+
         %>
         <p>No new book publish in this year</p>
         <%
             }else{
- 
+
         %>
         <table>
             <thead>
@@ -74,7 +75,7 @@
                     <th>Available Copy</th>
                 </tr>
             </thead>
-        
+
         <%
             int count = 1;
             for(Book b : books ){
@@ -86,8 +87,8 @@
             <td><%= b.getIsbn() %></td>
             <td><%= b.getCoverUrl() %></td>
             <td><%= b.getCategory() %></td>
-            <td><%= b.PublicYear() %></td>
-            <td><%= b.getAvailableCopy()%></td>
+            <td><%= b.getPublishedYear() %></td>
+            <td><%= b.getAvailableCopies()%></td>
         </tr>
         <%
             }
