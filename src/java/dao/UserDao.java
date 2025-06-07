@@ -1,7 +1,6 @@
 package dao;
 
 import db.*;
-import dto.UserDTO;
 import entity.*;
 import enums.*;
 
