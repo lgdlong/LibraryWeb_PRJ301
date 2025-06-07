@@ -1,25 +1,23 @@
-package entity;
-
-import enums.*;
+package dto;
 
 import java.time.*;
 
-public class BorrowRecord {
+public class BorrowRecordDTO {
     private long id;
-    private long userId;
-    private long bookId;
+    private String userName;
+    private String bookTitle;
     private LocalDate borrowDate;
     private LocalDate dueDate;
     private LocalDate returnDate;
-    private BorrowStatus status;
+    private String status;
 
-    public BorrowRecord() {
+    public BorrowRecordDTO() {
     }
 
-    public BorrowRecord(long id, long userId, long bookId, LocalDate borrowDate, LocalDate dueDate, LocalDate returnDate, BorrowStatus status) {
+    public BorrowRecordDTO(long id, String userName, String bookTitle, LocalDate borrowDate, LocalDate dueDate, LocalDate returnDate, String status) {
         this.id = id;
-        this.userId = userId;
-        this.bookId = bookId;
+        this.userName = userName;
+        this.bookTitle = bookTitle;
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
         this.returnDate = returnDate;
@@ -34,20 +32,20 @@ public class BorrowRecord {
         this.id = id;
     }
 
-    public long getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public long getBookId() {
-        return bookId;
+    public String getBookTitle() {
+        return bookTitle;
     }
 
-    public void setBookId(long bookId) {
-        this.bookId = bookId;
+    public void setBookTitle(String bookTitle) {
+        this.bookTitle = bookTitle;
     }
 
     public LocalDate getBorrowDate() {
@@ -74,11 +72,11 @@ public class BorrowRecord {
         this.returnDate = returnDate;
     }
 
-    public BorrowStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(BorrowStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

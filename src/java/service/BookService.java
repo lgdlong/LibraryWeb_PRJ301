@@ -13,6 +13,13 @@ public class BookService {
         return bookDao.getAll();
     }
 
+    public Book getBookById(long id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Book ID must be positive");
+        }
+        return bookDao.getById(id);
+    }
+
     public List<Book> searchByTitleOrAuthor(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return getAllBooks(); // Return all books if no keyword

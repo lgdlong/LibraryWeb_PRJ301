@@ -31,44 +31,26 @@ public class BookDao {
         return books;
     }
 
-    public ArrayList<Book> getNewBooks() {
-        ArrayList<Book> books = new ArrayList<>();
-        String sql = "SELECT b.title, b.author, b.isbn, b.cover_url, b.category, " +
-            "b.published_year, b.total_copies, b.available_copies " +
-            "FROM books b " +
-            "JOIN dbo.system_config c ON c.config_key = 'book_new_years' " +
-            "WHERE YEAR(GETDATE()) - b.published_year <= CAST(c.config_value AS DECIMAL(5,2))";
+    public Book getById(long id) {
+        String sql = "SELECT * FROM books WHERE id = ?";
 
-        try (Connection cn = DbConfig.getConnection();
-             PreparedStatement stmt = cn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                String title = rs.getString("title");
-                String author = rs.getString("author");
-                String isbn = rs.getString("isbn");
-                String url = rs.getString("cover_url");
-                String category = rs.getString("category");
-                int publishedYear = rs.getInt("published_year");
-                int totalCopies = rs.getInt("total_copies");
-                int availableCopies = rs.getInt("available_copies");
-
-                // Dùng constructor rút gọn, sau đó set availableCopies
-                Book book = new Book(title, author, isbn, url, category, publishedYear, totalCopies);
-                book.setAvailableCopies(availableCopies); // quan trọng nếu bạn muốn lấy đúng số bản sẵn có
-
-                books.add(book);
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs);
+                }
             }
 
         } catch (SQLException e) {
-            System.err.println("Error when fetching new books: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error fetching book by ID", e);
+            throw new RuntimeException(e);
         }
 
-        return books;
+        return null;
     }
-
-
 
     public List<Book> searchByKeyword(String keyword) {
         List<Book> books = new ArrayList<>();
@@ -94,8 +76,6 @@ public class BookDao {
 
         return books;
     }
-
-
 
     public void add(Book book) {
         String sql = "INSERT INTO books (title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -184,5 +164,42 @@ public class BookDao {
         stmt.setInt(7, book.getTotalCopies());
         stmt.setInt(8, book.getAvailableCopies());
         stmt.setString(9, book.getStatus().toString());
+    }
+
+    public ArrayList<Book> getNewBooks() {
+        ArrayList<Book> books = new ArrayList<>();
+        String sql = "SELECT b.title, b.author, b.isbn, b.cover_url, b.category, " +
+            "b.published_year, b.total_copies, b.available_copies " +
+            "FROM books b " +
+            "JOIN dbo.system_config c ON c.config_key = 'book_new_years' " +
+            "WHERE YEAR(GETDATE()) - b.published_year <= CAST(c.config_value AS DECIMAL(5,2))";
+
+        try (Connection cn = DbConfig.getConnection();
+             PreparedStatement stmt = cn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                String isbn = rs.getString("isbn");
+                String url = rs.getString("cover_url");
+                String category = rs.getString("category");
+                int publishedYear = rs.getInt("published_year");
+                int totalCopies = rs.getInt("total_copies");
+                int availableCopies = rs.getInt("available_copies");
+
+                // Dùng constructor rút gọn, sau đó set availableCopies
+                Book book = new Book(title, author, isbn, url, category, publishedYear, totalCopies);
+                book.setAvailableCopies(availableCopies); // quan trọng nếu bạn muốn lấy đúng số bản sẵn có
+
+                books.add(book);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error when fetching new books: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return books;
     }
 }

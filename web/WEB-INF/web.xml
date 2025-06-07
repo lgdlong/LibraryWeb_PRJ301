@@ -29,8 +29,12 @@
         <servlet-class>controller.AdminFineController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>NewBookController</servlet-name>
-        <servlet-class>controller.NewBookController</servlet-class>
+        <servlet-name>AdminBorrowRecordController</servlet-name>
+        <servlet-class>controller.AdminBorrowRecordController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminRequestManagement</servlet-name>
+        <servlet-class>controller.AdminRequestController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
