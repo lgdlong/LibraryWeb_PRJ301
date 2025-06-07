@@ -97,7 +97,7 @@ public class RegisterController extends HttpServlet {
         } catch (Exception e) {
              log("Error at LoginController" + e.getMessage());
              if(e.toString().contains("duplicate")){
-                 userError.setEmailError("Duplice email");
+                 userError.setEmailError("Duplicate email");
                  request.setAttribute("USER_ERROR", userError);
              }
         } finally {
