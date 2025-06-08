@@ -1,30 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
-import dao.UserDao;
-import dto.UserDTO;
-import dto.UserError;
-import entity.User;
-import enums.UserRole;
-import enums.UserStatus;
-import java.io.IOException;
-import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import service.AuthService;
-import service.UserService;
+import dto.*;
+import entity.*;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.*;
+import jakarta.servlet.http.*;
+import service.*;
 
-/**
- *
- * @author nguye
- */
+import java.io.*;
+import java.sql.*;
+
 @WebServlet("/register")
 public class RegisterController extends HttpServlet {
 
