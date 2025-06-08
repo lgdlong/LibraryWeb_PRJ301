@@ -36,6 +36,14 @@
         <servlet-name>AdminRequestManagement</servlet-name>
         <servlet-class>controller.AdminRequestController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>controller.LoginController</servlet-class>
+    </servlet>
+  <servlet>
+    <servlet-name>RegisterController</servlet-name>
+    <servlet-class>controller.RegisterController</servlet-class>
+  </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>
@@ -72,9 +80,19 @@
         <servlet-name>AdminRequestManagement</servlet-name>
         <url-pattern>/AdminRequestManagement</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/LoginController</url-pattern>
+    </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RegisterController</servlet-name>
+    <url-pattern>/RegisterController</url-pattern>
+  </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <servlet-name>AdminRequestManagement</servlet-name>
+    <servlet-class>controller.AdminRequestController</servlet-class>
 </web-app>

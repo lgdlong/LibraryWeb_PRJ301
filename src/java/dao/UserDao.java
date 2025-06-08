@@ -217,4 +217,68 @@ public class UserDao {
             return UserStatus.BLOCKED; // or throw a more specific exception
         }
     }
+//    public static final String CHECK_LOGIN = "SELECT [id],[name],[email],[password],[role],[status] FROM users WHERE email=? AND password=?";
+//    public User checkLogin(String email,String password) throws SQLException{
+//        Connection cn = null;
+//        PreparedStatement ptm = null;
+//        ResultSet rs = null;
+//        User result = null;
+//        try {
+//            cn = DbConfig.getConnection();
+//            if(cn!=null){
+//                ptm =  cn.prepareStatement(CHECK_LOGIN);
+//                ptm.setString(1,email);
+//                ptm.setString(2, password);
+//                rs = ptm.executeQuery();
+//                if(rs.next()){
+//                    int id = rs.getInt("id");
+//                    String name = rs.getString("name");
+//                    UserRole role = parseUserRole(rs.getString("role"));
+//                    UserStatus status= parseUserStatus(rs.getString("status"));
+//                    result = new User(id, name, email, role,status );
+//                }
+//
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            rs.close();
+//            ptm.close();
+//            cn.close();
+//        }
+//        return result;
+//    }
+//    private static final String REGISTER =  "INSERT  INTO users ([name],[email],[password],[role],[status]) VALUES (?, ?, ?, 'user','active')";
+//     public boolean insertUser(String fullName,String email,String password) throws SQLException{
+//
+//         Connection cn = null;
+//         PreparedStatement st = null;
+//         boolean check = false;
+//         try {
+//              cn=DbConfig.getConnection();
+//            if(cn!=null){
+//               st=cn.prepareStatement(REGISTER);
+//               st.setString(1, fullName);
+//               st.setString(2, email);
+//               st.setString(3,password);
+//               check = st.executeUpdate() > 0 ? true : false;
+//
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }finally{
+//         if(st!=null){
+//             st.close();
+//         }
+//         if(cn!=null){
+//             cn.close();
+//         }
+//
+//         }
+//        return check;
+//    }
+
+
 }

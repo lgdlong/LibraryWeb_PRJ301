@@ -7,10 +7,19 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.Map" %>
-
+<%@page import="entity.User" %>
+<%
+      User us = (User) session.getAttribute("LOGIN_USER");
+      if(us==null){
+          response.sendRedirect("index.html");
+        }
+        else{
+        
+    %>
 <h2>Admin Dashboard</h2>
 <p>Welcome, admin! Here's a quick overview of the system.</p>
 
+  <a href="LogoutController">Logout</a>
 <div class="row">
   <!-- Tổng số user -->
   <div class="col-md-3">
@@ -56,4 +65,8 @@
     </div>
   </div>
 </div>
+        
+        <%
+            }
+        %>
 
