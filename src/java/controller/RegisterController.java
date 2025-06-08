@@ -87,7 +87,7 @@ public class RegisterController extends HttpServlet {
             if(checkInsert){
                 url=SUCCESS;
             }else{
-                userError.setError("Unkown user");
+                userError.setError("Unknown user");
                 request.setAttribute("USER_ERROR", userError);
             }
         }else{
