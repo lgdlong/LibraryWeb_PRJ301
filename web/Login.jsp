@@ -1,30 +1,64 @@
-<%-- 
-    Document   : Login
-    Created on : Jun 1, 2025, 9:43:21 PM
-    Author     : nguye
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Login In</h1>
-       
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    
+  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-light d-flex align-items-center justify-content-center" style="height: 100vh;">
+
+    <div class="card shadow p-4" style="min-width: 350px;">
+        <h3 class="text-center mb-4">Login</h3>
+        
         <form action="${pageContext.request.contextPath}/login" method="post">
-            <p>Email:<input type="text" name="email" required=""/></p>
-            <p>Password:<input type="password" name="password" required=""/></p>
-            <button type="submit">Login</button>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" id="email" name="email" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password" required />
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                        <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <a href="Register.jsp" class="btn btn-secondary w-100">Register</a>
+            <a href="index.html" class="btn btn-secondary w-100">Back to Home</a>
+            
         </form>
-        <%
-         String s = (String) request.getAttribute("ERROR");
-         if(s==null){
-              s="";
-            }
+
+        <% String s = (String) request.getAttribute("ERROR");
+           if (s != null && !s.isEmpty()) {
         %>
-        <p style="color: red"><%= s %></p> 
-    </body>
+        <div class="mt-3 alert alert-danger text-center"><%= s %></div>
+        <% } %>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
 </html>

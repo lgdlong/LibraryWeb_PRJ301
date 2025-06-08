@@ -250,28 +250,36 @@ public class UserDao {
         }
         return result;
     }
-    private static final String REGISTER =  "INSERT  INTO users ([name],[email],[password],[role],[status]) VALUES (?, ?, ?, 'user','active')";
-     public boolean insertUser(String fullName,String email,String password){
-       
-         Connection cn = null;
-         PreparedStatement st = null;
-         boolean check = false;
-         try {
-              cn=DbConfig.getConnection();
-            if(cn!=null){
-               st=cn.prepareStatement(REGISTER);
-               st.setString(1, fullName);
-               st.setString(2, email);
-               st.setString(3,password);
-               check = st.executeUpdate() > 0 ? true : false; 
-               
-               
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return check;
-    }
+//    private static final String REGISTER =  "INSERT  INTO users ([name],[email],[password],[role],[status]) VALUES (?, ?, ?, 'user','active')";
+//     public boolean insertUser(String fullName,String email,String password) throws SQLException{
+//       
+//         Connection cn = null;
+//         PreparedStatement st = null;
+//         boolean check = false;
+//         try {
+//              cn=DbConfig.getConnection();
+//            if(cn!=null){
+//               st=cn.prepareStatement(REGISTER);
+//               st.setString(1, fullName);
+//               st.setString(2, email);
+//               st.setString(3,password);
+//               check = st.executeUpdate() > 0 ? true : false; 
+//               
+//               
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }finally{
+//         if(st!=null){
+//             st.close();
+//         }
+//         if(cn!=null){
+//             cn.close();
+//         }
+//         
+//         }
+//        return check;
+//    }
   
    
 }

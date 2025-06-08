@@ -65,7 +65,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
                 response.sendRedirect(request.getContextPath() + "/user.jsp"); // ✅ Thêm dấu /
             }
         } else {
-            request.setAttribute("ERROR", "Incorrect UserID OR Password");
+            request.setAttribute("ERROR", "Incorrect email or password");
             request.getRequestDispatcher("/Login.jsp").forward(request, response); // ✅ Hiển thị lại trang login
         }
     } catch (SQLException e) {
