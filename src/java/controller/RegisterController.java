@@ -83,13 +83,14 @@ public class RegisterController extends HttpServlet {
                 request.getRequestDispatcher(REGISTER_PAGE).forward(request, response);
             }
 
+        } catch (SQLIntegrityConstraintViolationException e) {
+            log("Database constraint violation at RegisterController: " + e.getMessage(), e);
+            userError.setEmailError("Duplicate email in DB.");
+            request.setAttribute("USER_ERROR", userError);
+            request.getRequestDispatcher(REGISTER_PAGE).forward(request, response);
         } catch (Exception e) {
-            log("Error at RegisterController: " + e.getMessage(), e);
-            if (e.toString().contains("duplicate")) {
-                userError.setEmailError("Duplicate email in DB.");
-            } else {
-                userError.setError("Unexpected server error.");
-            }
+            log("Unexpected error at RegisterController: " + e.getMessage(), e);
+            userError.setError("Unexpected server error.");
             request.setAttribute("USER_ERROR", userError);
             request.getRequestDispatcher(REGISTER_PAGE).forward(request, response);
         }
