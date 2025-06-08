@@ -25,78 +25,79 @@ import service.UserService;
  *
  * @author nguye
  */
-@WebServlet(name = "RegisterController", urlPatterns = {"/RegisterController"})
+@WebServlet("/register")
 public class RegisterController extends HttpServlet {
 
     private static final String REGISTER_PAGE = "Register.jsp";
-    private static final String SUCCESS = "index.html";
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
-    }
+    private static final String SUCCESS_PAGE = "Login.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+        throws ServletException, IOException {
+        request.getRequestDispatcher(REGISTER_PAGE).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String url = REGISTER_PAGE;
+        throws ServletException, IOException {
+
         UserError userError = new UserError();
         UserService userService = new UserService();
+        AuthService authService = new AuthService();
+        boolean check = true;
 
         try {
             String email = request.getParameter("email");
-            String fullname = request.getParameter("fullname");
+            String fullName = request.getParameter("fullname");
             String password = request.getParameter("password");
             String confirm = request.getParameter("confirm");
-            boolean check = true;
 
-            if (fullname.length() < 5 || fullname.length() > 30) {
-                userError.setFullnameError("Fullname in range 5-30");
+            // Validate input
+            if (fullName.length() < 5 || fullName.length() > 30) {
+                userError.setFullnameError("Fullname must be 5-30 characters.");
                 check = false;
             }
+
             if (password.length() < 5 || password.length() > 30) {
-                userError.setPasswordError("Password in range 5-30");
+                userError.setPasswordError("Password must be 5-30 characters.");
                 check = false;
-            }
-            if (!password.equalsIgnoreCase(confirm)) {
-                userError.setConfirmError("Passwords do not match");
-                check = false;
-            }
-                 AuthService authService = new AuthService();
-            if (authService.emailExists(email)) {
-                userError.setEmailError("Email already exists");
-                check= false;
             }
 
+            if (!password.equals(confirm)) {
+                userError.setConfirmError("Passwords do not match.");
+                check = false;
+            }
+
+            if (authService.emailExists(email)) {
+                userError.setEmailError("Email already exists.");
+                check = false;
+            }
+
+            // Process registration
             if (check) {
-                User user = new User(fullname, email, password);
+                User user = new User(fullName, email, password);
                 userService.addUser(user);
-                url = SUCCESS;
+                response.sendRedirect(request.getContextPath() + "/login");
             } else {
-                userError.setError("Unknown user");
                 request.setAttribute("USER_ERROR", userError);
+                request.getRequestDispatcher(REGISTER_PAGE).forward(request, response);
             }
 
         } catch (Exception e) {
-            log("Error at LoginController" + e.getMessage());
+            log("Error at RegisterController: " + e.getMessage(), e);
             if (e.toString().contains("duplicate")) {
-                userError.setEmailError("Duplicate email");
-                request.setAttribute("USER_ERROR", userError);
+                userError.setEmailError("Duplicate email in DB.");
+            } else {
+                userError.setError("Unexpected server error.");
             }
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("USER_ERROR", userError);
+            request.getRequestDispatcher(REGISTER_PAGE).forward(request, response);
         }
     }
+
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Register Controller";
+    }
 }
+

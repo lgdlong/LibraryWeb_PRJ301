@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+ <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="dto.UserError" %>
 <!DOCTYPE html>
 <html>
@@ -9,7 +9,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-   
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-light d-flex align-items-center justify-content-center" style="min-height: 100vh;">
@@ -24,8 +24,8 @@
             }
         %>
 
-        <form action="RegisterController" method="post">
-        
+        <form action="${pageContext.request.contextPath}/register" method="post">
+
             <div class="mb-3">
                 <label class="form-label">Full Name</label>
                 <input type="text" name="fullname" class="form-control" required />
@@ -34,16 +34,16 @@
                 <% } %>
             </div>
 
-         
+
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="text" name="email" class="form-control" required />
+                <input type="email" name="email" class="form-control" required />
                 <% if (userError.getEmailError() != null) { %>
                     <div class="text-danger small mt-1"><%= userError.getEmailError() %></div>
                 <% } %>
             </div>
 
-           
+
             <div class="mb-3">
                 <label class="form-label">Password</label>
                 <div class="input-group">
@@ -74,11 +74,11 @@
             <div class="d-grid gap-2">
                 <input type="submit" name="action" value="Register" class="btn btn-primary" />
             </div>
-            
+
         </form>
     </div>
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>

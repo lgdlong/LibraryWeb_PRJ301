@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import service.AuthService;
 
 import java.sql.SQLException;
 
@@ -28,19 +29,19 @@ import java.sql.SQLException;
 public class LoginController extends HttpServlet {
 
     private static final String US = "user";
-    private static final String AD = "admin"; 
+    private static final String AD = "admin";
     private static final String ADMIN_PAGE = "/admin/layout.jsp";
     private static final String USER_PAGE = "/user.jsp";
     private static final String ERROR = "Login.jsp";
 
-    
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.getRequestDispatcher("/Login.jsp").forward(request, response);
-        
+
     }
 
     @Override
@@ -51,8 +52,8 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        UserDao dao = new UserDao();
-        User us = dao.checkLogin(email, password);
+        AuthService authService = new AuthService();
+        User us = authService.checkLogin(email, password);
 
         if (us != null) {
             HttpSession session = request.getSession();
@@ -62,16 +63,16 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             if (role.equals(UserRole.ADMIN)) {
                 response.sendRedirect(request.getContextPath() + "/admin");
             } else {
-                response.sendRedirect(request.getContextPath() + "/user.jsp"); // ✅ Thêm dấu /
+                response.sendRedirect(request.getContextPath() + "/user.jsp");
             }
         } else {
             request.setAttribute("ERROR", "Incorrect email or password");
-            request.getRequestDispatcher("/Login.jsp").forward(request, response); // ✅ Hiển thị lại trang login
+            request.getRequestDispatcher("/Login.jsp").forward(request, response);
         }
     } catch (SQLException e) {
         log("ERROR at LoginController: " + e.toString());
         request.setAttribute("ERROR", "Internal server error");
-        request.getRequestDispatcher("/Login.jsp").forward(request, response); // ✅ Xử lý fallback khi lỗi
+        request.getRequestDispatcher("/Login.jsp").forward(request, response);
     }
 }
 

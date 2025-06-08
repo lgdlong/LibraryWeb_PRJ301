@@ -16,6 +16,7 @@
       User us = (User) session.getAttribute("LOGIN_USER");
       if(us==null){
           response.sendRedirect("index.html");
+          return;
         }
         else{
         
