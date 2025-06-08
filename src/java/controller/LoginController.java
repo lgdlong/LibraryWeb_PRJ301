@@ -28,8 +28,7 @@ import java.sql.SQLException;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
-    private static final String US = "user";
-    private static final String AD = "admin";
+// Removed unused constants US and AD
     private static final String ADMIN_PAGE = "/admin/layout.jsp";
     private static final String USER_PAGE = "/user.jsp";
     private static final String ERROR = "Login.jsp";
