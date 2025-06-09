@@ -127,11 +127,10 @@ public class BorrowRecordDao {
     }
 
     public List<Map.Entry<Long, Long>> getMostBorrowedBooks() {
-        String sql = "SELECT book_id, COUNT(*) as borrow_count " +
+        String sql = "SELECT TOP 5 book_id, COUNT(*) AS borrow_count " +
             "FROM borrow_records " +
             "GROUP BY book_id " +
-            "ORDER BY borrow_count DESC " +
-            "LIMIT 5";
+            "ORDER BY borrow_count DESC";
 
         List<Map.Entry<Long, Long>> mostBorrowed = new ArrayList<>();
         try (Connection conn = DbConfig.getConnection();
