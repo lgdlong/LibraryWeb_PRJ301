@@ -35,4 +35,18 @@ public class BorrowRecordService {
         BorrowRecord record = borrowRecordDao.getById(id);
         return BorrowRecordMapping.toBorrowRecordDTO(record);
     }
+
+    public long countCurrentlyBorrowedBooks() {
+        return borrowRecordDao.countCurrentlyBorrowed();
+    }
+
+    public List<MostBorrowedBookDTO> getMostBorrowedBooks() {
+        List<Map.Entry<Long, Long>> entries = borrowRecordDao.getMostBorrowedBooks();
+        if (entries == null || entries.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return entries.stream()
+            .map(BorrowRecordMapping::toMostBorrowedBookDTO)
+            .collect(Collectors.toList());
+    }
 }

@@ -126,6 +126,25 @@ public class BorrowRecordDao {
         }
     }
 
+    public long countCurrentlyBorrowed() {
+        String sql = "SELECT COUNT(*) FROM borrow_records WHERE status IN ('BORROWED', 'OVERDUE')";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error counting currently borrowed books", e);
+            throw new RuntimeException(e);
+        }
+
+        return 0;
+    }
+
     public List<Map.Entry<Long, Long>> getMostBorrowedBooks() {
         String sql = "SELECT TOP 5 book_id, COUNT(*) AS borrow_count " +
             "FROM borrow_records " +
