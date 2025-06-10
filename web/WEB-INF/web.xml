@@ -72,13 +72,23 @@
         <servlet-name>FineAdminController</servlet-name>
         <url-pattern>/FineAdminController</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>NewBookController</servlet-name>
-        <url-pattern>/NewBookController</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+  <welcome-file-list>
+    <welcome-file>NewBookController</welcome-file>
+  </welcome-file-list>
+
+  <servlet>
+    <servlet-name>NewBookController</servlet-name>
+    <servlet-class>controller.NewBookController</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>NewBookController</servlet-name>
+    <url-pattern>/NewBookController</url-pattern>
+  </servlet-mapping>
+
 </web-app>
