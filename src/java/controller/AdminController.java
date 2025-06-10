@@ -14,6 +14,7 @@ public class AdminController extends HttpServlet {
     private final BookService bookService = new BookService();
     private final BookRequestService bookRequestService = new BookRequestService();
     private final FineService fineService = new FineService();
+    private final BorrowRecordService borrowRecordService = new BorrowRecordService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,6 +26,8 @@ public class AdminController extends HttpServlet {
             request.setAttribute("totalBooks", bookService.getTotalBooks());
             request.setAttribute("pendingRequests", bookRequestService.countPendingRequests());
             request.setAttribute("unpaidFines", fineService.countUnpaidFines());
+            request.setAttribute("borrowedCount", borrowRecordService.countCurrentlyBorrowedBooks());
+            request.setAttribute("mostBorrowedBooks", borrowRecordService.getMostBorrowedBooks());
 
             request.getRequestDispatcher("/admin/layout.jsp").forward(request, response);
         } catch (Exception e) {

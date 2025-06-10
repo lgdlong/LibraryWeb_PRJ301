@@ -3,6 +3,7 @@ package mapper;
 import dto.*;
 import entity.*;
 import service.*;
+import java.util.Map;
 
 public class BorrowRecordMapping {
     private static final BookService bookService = new BookService();
@@ -29,5 +30,16 @@ public class BorrowRecordMapping {
             record.getReturnDate(),
             record.getStatus() != null ? record.getStatus().toString() : null
         );
+    }
+
+    public static MostBorrowedBookDTO toMostBorrowedBookDTO(Map.Entry<Long, Long> entry) {
+        if (entry == null) {
+            return null;
+        }
+
+        Book book = bookService.getBookById(entry.getKey());
+        String title = book != null ? book.getTitle() : "Unknown Book";
+
+        return new MostBorrowedBookDTO(entry.getKey(), title, entry.getValue());
     }
 }

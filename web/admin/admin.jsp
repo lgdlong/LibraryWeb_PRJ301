@@ -65,6 +65,32 @@
     </div>
   </div>
 </div>
+
+<!-- Row for borrowed count and top books -->
+<div class="row mt-4">
+  <div class="col-md-3">
+    <div class="card text-white bg-secondary mb-3">
+      <div class="card-header">Currently Borrowed</div>
+      <div class="card-body">
+        <h5 class="card-title">${borrowedCount}</h5>
+        <p class="card-text">Books currently checked out.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="card mb-3">
+      <div class="card-header">Top 5 Most Borrowed Books</div>
+      <ul class="list-group list-group-flush">
+        <c:forEach var="b" items="${mostBorrowedBooks}">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            ${b.bookTitle}
+            <span class="badge bg-primary rounded-pill">${b.borrowCount}</span>
+          </li>
+        </c:forEach>
+      </ul>
+    </div>
+  </div>
+</div>
         
         <%
             }
