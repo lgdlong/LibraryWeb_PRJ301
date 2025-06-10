@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import service.BookService;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,8 +19,8 @@ public class NewBookController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         try {
-            BookDao dao = new BookDao();
-            List<Book> newBooks = dao.getNewBooks(); // đã tối ưu với try-with-resources
+            BookService bookService = new BookService();
+            List<Book> newBooks = bookService.getNewBook(); // đã tối ưu với try-with-resources
 
             request.setAttribute("newBooks", newBooks);
             request.getRequestDispatcher("guest/guest.jsp").forward(request, response);

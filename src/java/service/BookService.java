@@ -112,4 +112,6 @@ public class BookService {
     public long getTotalBooks() {
         return bookDao.bookCount();
     }
+
+    public ArrayList<Book>  getNewBook(){ return bookDao.getNewBooks();}
 }

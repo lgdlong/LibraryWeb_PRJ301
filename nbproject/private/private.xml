@@ -3,18 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/guest/guest.jsp</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/user/login.jsp</file>
+            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/WEB-INF/web.xml</file>
+            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/controller/NewBookController.java</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/dao/BookDao.java</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/controller/newBookController.java</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/admin/admin-sidebar.jsp</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/admin/system-config.jsp</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/user/user.jsp</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/admin/book-management.jsp</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/admin/layout.jsp</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/admin/user-management.jsp</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/admin/admin.jsp</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/admin/error.jsp</file>
+            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/service/BookService.java</file>
         </group>
     </open-files>
 </project-private>
