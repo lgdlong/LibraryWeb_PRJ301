@@ -43,7 +43,7 @@
           <td>${user.name}</td>
           <td>${user.email}</td>
           <td>${user.role}</td>
-          <td><span class="status-badge status-badge-${user.status}">${user.status}</span></td>
+          <td><span class="status-badge status-badge-${fn:escapeXml(user.status)}">${user.status}</span></td>
         </tr>
       </c:forEach>
       </tbody>
