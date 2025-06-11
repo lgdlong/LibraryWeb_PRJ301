@@ -82,59 +82,77 @@
 <body>
 
 <div class="navbar">
-    <a href="#">Search Books</a>
+    <a href="guest.jsp">Search Books</a>
     <a href="#">View Book Status</a>
     <a href="#">Register Account</a>
     <a href="#">Login</a>
 </div>
+<div class="main-content" style="display: flex; gap: 20px;">
 
-<div class="main-content">
-    <h2>New Book</h2>
-    <%
-        ArrayList<Book> books = (ArrayList<Book>) request.getAttribute("newBooks");
-        if (books == null || books.isEmpty()) {
-    %>
-    <p style="text-align:center; color:red;">No new book published this year.</p>
-    <%
-        } else {
-    %>
-    <table>
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>ISBN</th>
-            <th>Category</th>
-            <th>Year</th>
-            <th>Available</th>
-        </tr>
-        </thead>
-        <tbody>
+    <!-- Search Panel -->
+    <div style="width: 250px; background-color: #ecf0f1; padding: 20px; border-radius: 8px;">
+        <form action="SearchBookController" method="get">
+            <h3 style="margin-top: 0; color: #2c3e50;">Search Books</h3>
+            <label for="type">Search by:</label><br>
+            <select name="type" id="type" style="width: 100%; padding: 8px; margin: 10px 0;">
+                <option value="all">All</option>
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+                <option value="category">Category</option>
+            </select>
+            <input type="text" name="keyword" placeholder="Enter keyword..." style="width: 100%; padding: 8px; margin-bottom: 10px;">
+            <button type="submit" style="width: 100%; background-color: #2c3e50; color: white; border: none; padding: 10px;">Search</button>
+        </form>
+    </div>
+    <!-- Book List -->
+    <div style="flex: 1;">
+        <h2>New Book</h2>
         <%
-            int count = 1;
-            for (Book b : books) {
+            ArrayList<Book> books = (ArrayList<Book>) request.getAttribute("newBooks");
+            if (books == null || books.isEmpty()) {
         %>
-        <tr>
-            <td><%= count++ %></td>
-            <td><img src="<%= b.getCoverUrl() %>" class="book-cover" alt="cover"></td>
-            <td><%= b.getTitle() %></td>
-            <td><%= b.getAuthor() %></td>
-            <td><%= b.getIsbn() %></td>
-            <td><%= b.getCategory() %></td>
-            <td><%= b.getPublishedYear() %></td>
-            <td><%= b.getAvailableCopies() %></td>
-        </tr>
+        <p style="text-align:center; color:red;">No new book published this year.</p>
+        <%
+            } else {
+        %>
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Cover</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Category</th>
+                <th>Year</th>
+                <th>Available</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%
+                int count = 1;
+                for (Book b : books) {
+            %>
+            <tr>
+                <td><%= count++ %></td>
+                <td><img src="<%= b.getCoverUrl() %>" class="book-cover" alt="cover"></td>
+                <td><%= b.getTitle() %></td>
+                <td><%= b.getAuthor() %></td>
+                <td><%= b.getIsbn() %></td>
+                <td><%= b.getCategory() %></td>
+                <td><%= b.getPublishedYear() %></td>
+                <td><%= b.getAvailableCopies() %></td>
+            </tr>
+            <%
+                }
+            %>
+            </tbody>
+        </table>
         <%
             }
         %>
-        </tbody>
-    </table>
-    <%
-        }
-    %>
-</div>
+    </div> <!-- End Book List -->
+</div> <!-- End main-content flex -->
 
 </body>
 </html>

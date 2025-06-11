@@ -114,4 +114,11 @@ public class BookService {
     }
 
     public ArrayList<Book>  getNewBook(){ return bookDao.getNewBooks();}
+
+    public List<Book> searchBookByKeyword(String keyword){
+        if(keyword == null || keyword.trim().isEmpty()){
+            return null;
+        }
+        return bookDao.searchBookByKeyword(keyword.trim());
+    }
 }
