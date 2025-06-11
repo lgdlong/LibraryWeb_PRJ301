@@ -8,14 +8,6 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<!-- Debug Info -->
-<!-- UserCount: ${userCount} -->
-<!-- TotalBooks: ${totalBooks} -->
-<!-- PendingRequests: ${pendingRequests} -->
-<!-- UnpaidFines: ${unpaidFines} -->
-<!-- BorrowedCount: ${borrowedCount} -->
-<!-- MostBorrowedBooks: ${not empty mostBorrowedBooks ? 'Has Data' : 'No Data'} -->
-
 <!-- Improved Dashboard Header with Welcome Message and Quick Actions -->
 <div class="d-flex justify-content-between align-items-center mb-4">
   <div>
