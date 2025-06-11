@@ -7,6 +7,7 @@
 --%>
 <!-- user-management.jsp -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <h2>User Management</h2>
 <p>Manage system users: add, update, block/unblock.</p>
@@ -43,7 +44,11 @@
           <td>${user.name}</td>
           <td>${user.email}</td>
           <td>${user.role}</td>
-          <td><span class="status-badge status-badge-${fn:escapeXml(user.status)}">${fn:escapeXml(user.status)}</span></td>
+          <td>
+            <span class="status-badge status-badge-${fn:escapeXml(user.status)}">
+              ${fn:escapeXml(user.status)}
+            </span>
+          </td>
         </tr>
       </c:forEach>
       </tbody>
