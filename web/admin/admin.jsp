@@ -137,8 +137,10 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <i class="bi bi-book me-2 text-primary"></i>
-                                            ${b.bookTitle}
+-                                           <i class="bi bi-book me-2 text-primary"></i>
+-                                           ${b.bookTitle}
++                                           <i class="bi bi-book me-2 text-primary" aria-hidden="true"></i>
++                                           <c:out value="${b.bookTitle}" />
                                         </div>
                                     </td>
                                     <td class="text-center">
