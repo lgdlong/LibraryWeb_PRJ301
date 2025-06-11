@@ -202,4 +202,49 @@ public class BookDao {
 
         return books;
     }
+    public List<Book> searchBookByKeyword(String keyword){
+        List<Book> books = new ArrayList<>();
+        Connection cn = null;
+
+        try {
+            cn = DbConfig.getConnection();
+            if(cn!= null){
+                String sql = "SELECT [title], [author], [isbn], [category], [published_year], [total_copies], [cover_url]\n" +
+                    "FROM [dbo].[books]\n" +
+                    "WHERE LOWER([title]) LIKE ?\n" +
+                    "   OR LOWER([author]) LIKE ?\n" +
+                    "   OR LOWER([category]) LIKE ?\n";
+                PreparedStatement stmt = cn.prepareStatement(sql);
+                String searchTerm = "%" + keyword.toLowerCase() + "%";
+                stmt.setString(1,searchTerm);
+                stmt.setString(2,searchTerm);
+                stmt.setString(3,searchTerm);
+
+                ResultSet rs = stmt.executeQuery();
+                while(rs.next()){
+                    String title = rs.getString("title");
+                    String author = rs.getString("author");
+                    String isbn = rs.getString("isbn");
+                    String url = rs.getString("cover_url");
+                    String category = rs.getString("category");
+                    int publishedYear = rs.getInt("published_year");
+                    int totalCopies = rs.getInt("total_copies");
+
+                    Book book = new Book(title, author, isbn, url, category, publishedYear, totalCopies);
+
+                    books.add(book);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if(cn!= null) cn.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return books;
+    }
 }

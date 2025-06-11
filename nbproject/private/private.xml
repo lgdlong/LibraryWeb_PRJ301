@@ -5,6 +5,7 @@
         <group>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/WEB-INF/web.xml</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/controller/NewBookController.java</file>
+            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/controller/SearchBookController.java</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/dao/BookDao.java</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/admin/admin-sidebar.jsp</file>
             <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/admin/system-config.jsp</file>
