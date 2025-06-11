@@ -45,16 +45,26 @@
       <tbody>
       <c:forEach var="book" items="${bookList}" varStatus="loop">
         <tr
-          onclick="openBookForm(${book.id}, '${fn:escapeXml(book.title)}', '${fn:escapeXml(book.author)}', '${fn:escapeXml(book.isbn)}', '${fn:escapeXml(book.coverUrl)}', '${fn:escapeXml(book.category)}', ${book.publishedYear}, ${book.totalCopies}, ${book.availableCopies}, '${fn:escapeXml(book.status)}')">
+          onclick="openBookForm(
+          '${book.id}', 
+          '${fn:escapeXml(book.title)}', 
+          '${fn:escapeXml(book.author)}', 
+          '${fn:escapeXml(book.isbn)}', 
+          '${fn:escapeXml(book.coverUrl)}', 
+          '${fn:escapeXml(book.category)}', 
+          '${book.publishedYear}', 
+          '${book.totalCopies}', 
+          '${book.availableCopies}', 
+          '${fn:escapeXml(book.status)}')">
           <td>${loop.index + 1}</td>
           <td>${fn:escapeXml(book.title)}</td>
           <td>${fn:escapeXml(book.author)}</td>
           <td>${fn:escapeXml(book.isbn)}</td>
           <td>${fn:escapeXml(book.category)}</td>
-          <td>${book.publishedYear}</td>
+          <td>${book.publishedYear}</td>          
           <td>${book.totalCopies}</td>
           <td>${book.availableCopies}</td>
-          <td>${fn:escapeXml(book.status)}</td>
+          <td><span class="status-badge status-badge-${fn:escapeXml(book.status)}">${fn:escapeXml(book.status)}</span></td>
         </tr>
       </c:forEach>
       </tbody>
@@ -224,3 +234,22 @@
     form.submit();
   }
 </script>
+
+<style>
+  .status-badge {
+    display: inline-block;
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    font-size: 0.875em;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .status-badge-active {
+    background-color: #28a745;
+  }
+
+  .status-badge-inactive {
+    background-color: #dc3545;
+  }
+</style>

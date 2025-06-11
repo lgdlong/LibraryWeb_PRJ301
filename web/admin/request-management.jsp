@@ -50,12 +50,12 @@
           <c:forEach var="request" items="${requestList}" varStatus="loop">
             <c:if test="${request.status == 'pending'}">
               <tr
-                onclick="openRequestForm(${request.id}, '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'pending')">
+                onclick="openRequestForm('${request.id}', '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'pending')">
                 <td>${loop.index + 1}</td>
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
                 <td>${fn:escapeXml(request.requestDate)}</td>
-                <td>${fn:escapeXml(request.status)}</td>
+                <td><span class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span></td>
               </tr>
             </c:if>
           </c:forEach>
@@ -84,12 +84,12 @@
           <c:forEach var="request" items="${requestList}" varStatus="loop">
             <c:if test="${request.status == 'approved'}">
               <tr
-                onclick="openRequestForm(${request.id}, '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'approved')">
+                onclick="openRequestForm('${request.id}', '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'approved')">
                 <td>${loop.index + 1}</td>
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
                 <td>${fn:escapeXml(request.requestDate)}</td>
-                <td>${fn:escapeXml(request.status)}</td>
+                <td><span class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span></td>
               </tr>
             </c:if>
           </c:forEach>
@@ -118,12 +118,12 @@
           <c:forEach var="request" items="${requestList}" varStatus="loop">
             <c:if test="${request.status == 'rejected'}">
               <tr
-                onclick="openRequestForm(${request.id}, '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'rejected')">
+                onclick="openRequestForm('${request.id}', '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'rejected')">
                 <td>${loop.index + 1}</td>
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
                 <td>${fn:escapeXml(request.requestDate)}</td>
-                <td>${fn:escapeXml(request.status)}</td>
+                <td><span class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span></td>
               </tr>
             </c:if>
           </c:forEach>
@@ -200,4 +200,27 @@
     modal.show();
   }
 </script>
+
+<style>
+  .status-badge {
+    display: inline-block;
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    font-size: 0.875em;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .status-badge-pending {
+    background-color: #ffc107;
+  }
+
+  .status-badge-approved {
+    background-color: #28a745;
+  }
+
+  .status-badge-rejected {
+    background-color: #dc3545;
+  }
+</style>
 

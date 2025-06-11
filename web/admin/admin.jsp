@@ -3,96 +3,145 @@
     Document   : admin.jsp
     Created on : May 28, 2025, 9:02:54 AM
     Author     : Long
+    Updated    : June 11, 2025
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="java.util.Map" %>
-<%@page import="entity.User" %>
-<%
-      User us = (User) session.getAttribute("LOGIN_USER");
-      if(us==null){
-          response.sendRedirect("index.html");
-        }
-        else{
-        
-    %>
-<h2>Admin Dashboard</h2>
-<p>Welcome, admin! Here's a quick overview of the system.</p>
 
-  <a href="LogoutController">Logout</a>
-<div class="row">
-  <!-- Tổng số user -->
-  <div class="col-md-3">
-    <div class="card text-white bg-primary mb-3">
-      <div class="card-header">Users</div>
-      <div class="card-body">
-        <h5 class="card-title">${userCount}</h5>
-        <p class="card-text">Registered users in the system.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tổng số sách -->
-  <div class="col-md-3">
-    <div class="card text-white bg-warning mb-3">
-      <div class="card-header">Books</div>
-      <div class="card-body">
-        <h5 class="card-title">${totalBooks}</h5>
-        <p class="card-text">Books in library collection.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tổng yêu cầu đang chờ xử lý -->
-  <div class="col-md-3">
-    <div class="card text-white bg-info mb-3">
-      <div class="card-header">Pending Book Requests</div>
-      <div class="card-body">
-        <h5 class="card-title">${pendingRequests}</h5>
-        <p class="card-text">Book requests waiting for approval.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tổng tiền phạt chưa thanh toán -->
-  <div class="col-md-3">
-    <div class="card text-white bg-danger mb-3">
-      <div class="card-header">Unpaid Fines</div>
-      <div class="card-body">
-        <h5 class="card-title">${unpaidFines}</h5>
-        <p class="card-text">Fines not yet paid by users.</p>
-      </div>
-    </div>
+<!-- Improved Dashboard Header with Welcome Message and Quick Actions -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+      <h2 class="mb-0">Admin Dashboard</h2>
+      <p class="text-muted">Welcome, ${LOGIN_USER.name}! Here's your system overview.</p>
   </div>
 </div>
 
-<!-- Row for borrowed count and top books -->
-<div class="row mt-4">
-  <div class="col-md-3">
-    <div class="card text-white bg-secondary mb-3">
-      <div class="card-header">Currently Borrowed</div>
-      <div class="card-body">
-        <h5 class="card-title">${borrowedCount}</h5>
-        <p class="card-text">Books currently checked out.</p>
-      </div>
+<!-- Main Statistics Cards -->
+<div class="row g-4">
+    <!-- Users Card -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="icon-square text-bg-primary rounded-3 me-3">
+                        <i class="bi bi-people-fill fs-4"></i>
+                    </div>
+                    <h6 class="card-subtitle text-muted mb-0">Total Users</h6>
+                </div>
+                <h2 class="display-6 fw-bold mb-1">${userCount}</h2>
+                <p class="card-text text-muted">Registered users in the system</p>
+                <a href="${pageContext.request.contextPath}/admin/users" class="btn btn-sm btn-outline-primary">Manage Users</a>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="col-md-9">
-    <div class="card mb-3">
-      <div class="card-header">Top 5 Most Borrowed Books</div>
-      <ul class="list-group list-group-flush">
-        <c:forEach var="b" items="${mostBorrowedBooks}">
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            ${b.bookTitle}
-            <span class="badge bg-primary rounded-pill">${b.borrowCount}</span>
-          </li>
-        </c:forEach>
-      </ul>
+
+    <!-- Books Card -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="icon-square text-bg-warning rounded-3 me-3">
+                        <i class="bi bi-book-fill fs-4"></i>
+                    </div>
+                    <h6 class="card-subtitle text-muted mb-0">Total Books</h6>
+                </div>
+                <h2 class="display-6 fw-bold mb-1">${totalBooks}</h2>
+                <p class="card-text text-muted">Books in library collection</p>
+                <a href="${pageContext.request.contextPath}/admin/books" class="btn btn-sm btn-outline-warning">Manage Books</a>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <!-- Pending Requests Card -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="icon-square text-bg-info rounded-3 me-3">
+                        <i class="bi bi-inboxes-fill fs-4"></i>
+                    </div>
+                    <h6 class="card-subtitle text-muted mb-0">Pending Requests</h6>
+                </div>
+                <h2 class="display-6 fw-bold mb-1">${pendingRequests}</h2>
+                <p class="card-text text-muted">Book requests awaiting approval</p>
+                <a href="${pageContext.request.contextPath}/admin/requests" class="btn btn-sm btn-outline-info">Review Requests</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unpaid Fines Card -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="icon-square text-bg-danger rounded-3 me-3">
+                        <i class="bi bi-cash-coin fs-4"></i>
+                    </div>
+                    <h6 class="card-subtitle text-muted mb-0">Unpaid Fines</h6>
+                </div>
+                <h2 class="display-6 fw-bold mb-1">${unpaidFines}</h2>
+                <p class="card-text text-muted">Fines not yet paid by users</p>
+                <a href="${pageContext.request.contextPath}/admin/fines" class="btn btn-sm btn-outline-danger">Manage Fines</a>
+            </div>
+        </div>
+    </div>
 </div>
-        
-        <%
-            }
-        %>
+
+<!-- Secondary Stats and Charts -->
+<div class="row g-4 mt-2">
+    <!-- Currently Borrowed Card -->
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 pb-0">
+                <h5>Currently Borrowed</h5>
+            </div>
+            <div class="card-body pt-0">
+                <div class="d-flex align-items-center">
+                    <div class="icon-square text-bg-secondary rounded-3 me-3">
+                        <i class="bi bi-box-arrow-right fs-4"></i>
+                    </div>
+                    <h2 class="display-6 fw-bold mb-0">${borrowedCount}</h2>
+                </div>
+                <p class="card-text text-muted mt-3">Books currently checked out by users</p>
+                <a href="${pageContext.request.contextPath}/admin/borrow-records" class="btn btn-sm btn-outline-secondary">View Records</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Most Popular Books -->
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Most Popular Books</h5>
+                <span class="badge bg-primary">Top 5</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Book Title</th>
+                                <th class="text-center">Borrow Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="b" items="${mostBorrowedBooks}">
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                          <i class="bi bi-book me-2 text-primary" aria-hidden="true"></i>
+                                          <c:out value="${b.bookTitle}" />
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-primary rounded-pill">${b.borrowCount}</span>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>    </div>
+</div>
 

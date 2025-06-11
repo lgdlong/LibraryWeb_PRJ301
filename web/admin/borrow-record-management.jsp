@@ -59,7 +59,9 @@
                 <td>${fn:escapeXml(request.borrowDate)}</td>
                 <td>${fn:escapeXml(request.dueDate)}</td>
                 <td>${fn:escapeXml(request.returnDate)}</td>
-                <td>${fn:escapeXml(request.status)}</td>
+                <td><span
+                  class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
+                </td>
               </tr>
             </c:if>
           </c:forEach>
@@ -96,7 +98,9 @@
                 <td>${fn:escapeXml(request.borrowDate)}</td>
                 <td>${fn:escapeXml(request.dueDate)}</td>
                 <td>${fn:escapeXml(request.returnDate)}</td>
-                <td>${fn:escapeXml(request.status)}</td>
+                <td><span
+                  class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
+                </td>
               </tr>
             </c:if>
           </c:forEach>
@@ -133,7 +137,9 @@
                 <td>${fn:escapeXml(request.borrowDate)}</td>
                 <td>${fn:escapeXml(request.dueDate)}</td>
                 <td>${fn:escapeXml(request.returnDate)}</td>
-                <td>${fn:escapeXml(request.status)}</td>
+                <td><span
+                  class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
+                </td>
               </tr>
             </c:if>
           </c:forEach>
@@ -143,3 +149,27 @@
     </div>
   </div>
 </div>
+
+<style>
+  .status-badge {
+    display: inline-block;
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    font-size: 0.875em;
+    font-weight: 500;
+    color: #fff;
+    text-transform: capitalize;
+  }
+
+  .status-badge-borrowed {
+    background-color: #0dcaf0; /* Bootstrap info blue */
+  }
+
+  .status-badge-returned {
+    background-color: #198754; /* Bootstrap success green */
+  }
+
+  .status-badge-overdue {
+    background-color: #dc3545; /* Bootstrap danger red */
+  }
+</style>
