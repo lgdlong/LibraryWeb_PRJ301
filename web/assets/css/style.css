@@ -1,0 +1,97 @@
+/* 
+   Library Management System Custom Styles
+   Created: June 11, 2025
+*/
+
+/* Dashboard Card Styles */
+.icon-square {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Background color classes for icon squares */
+.text-bg-primary {
+    background-color: #0d6efd !important;
+    color: white !important;
+}
+
+.text-bg-warning {
+    background-color: #ffc107 !important;
+    color: white !important;
+}
+
+.text-bg-info {
+    background-color: #0dcaf0 !important;
+    color: white !important;
+}
+
+.text-bg-danger {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.text-bg-secondary {
+    background-color: #6c757d !important;
+    color: white !important;
+}
+
+/* Improved Sidebar Styles */
+.list-group-item {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+}
+
+.list-group-item.active {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+    border-color: #dee2e6;
+    font-weight: 600;
+    border-left: 4px solid #0d6efd;
+}
+
+/* Improved Card Styles */
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Table Hover Effect */
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Status badges */
+.status-active {
+    background-color: #198754;
+}
+
+.status-inactive {
+    background-color: #dc3545;
+}
+
+.status-pending {
+    background-color: #fd7e14;
+}
+
+/* Dashboard Specific */
+.display-6 {
+    font-size: 2rem;
+}
+
+/* Login/Register Form Styles */
+.auth-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

@@ -38,12 +38,12 @@
       </thead>
       <tbody>
       <c:forEach var="user" items="${userList}" varStatus="loop">
-        <tr onclick="openUserForm(${user.id}, '${user.email}', '${user.name}', '${user.role}', '${user.status}')">
+        <tr onclick="openUserForm('${user.id}', '${user.email}', '${user.name}', '${user.role}', '${user.status}')">
           <td>${loop.index + 1}</td> <!-- STT bắt đầu từ 1 -->
           <td>${user.name}</td>
           <td>${user.email}</td>
           <td>${user.role}</td>
-          <td>${user.status}</td>
+          <td><span class="status-badge status-badge-${user.status}">${user.status}</span></td>
         </tr>
       </c:forEach>
       </tbody>
@@ -146,3 +146,20 @@
     }
   }
 </script>
+
+<style>
+  .status-badge {
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    font-size: 0.875em;
+    color: #fff;
+  }
+
+  .status-badge-active {
+    background-color: #28a745;
+  }
+
+  .status-badge-blocked {
+    background-color: #dc3545;
+  }
+</style>

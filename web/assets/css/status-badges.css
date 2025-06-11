@@ -1,0 +1,80 @@
+/* Status Badge Styles for Admin Tables */
+
+/* User Status */
+.status-badge-active {
+    background-color: #198754 !important; /* Bootstrap success green */
+    color: white !important;
+}
+
+.status-badge-blocked {
+    background-color: #dc3545 !important; /* Bootstrap danger red */
+    color: white !important;
+}
+
+/* Book Status */
+.status-badge-available {
+    background-color: #198754 !important; /* Bootstrap success green */
+    color: white !important;
+}
+
+.status-badge-inactive {
+    background-color: #6c757d !important; /* Bootstrap secondary gray */
+    color: white !important;
+}
+
+/* Request Status */
+.status-badge-pending {
+    background-color: #fd7e14 !important; /* Bootstrap warning orange */
+    color: white !important;
+}
+
+.status-badge-approved {
+    background-color: #198754 !important; /* Bootstrap success green */
+    color: white !important;
+}
+
+.status-badge-rejected {
+    background-color: #dc3545 !important; /* Bootstrap danger red */
+    color: white !important;
+}
+
+/* Borrow Status */
+.status-badge-borrowed {
+    background-color: #0dcaf0 !important; /* Bootstrap info blue */
+    color: white !important;
+}
+
+.status-badge-returned {
+    background-color: #198754 !important; /* Bootstrap success green */
+    color: white !important;
+}
+
+.status-badge-overdue {
+    background-color: #dc3545 !important; /* Bootstrap danger red */
+    color: white !important;
+}
+
+/* Fine Status */
+.status-badge-paid {
+    background-color: #198754 !important; /* Bootstrap success green */
+    color: white !important;
+}
+
+.status-badge-unpaid {
+    background-color: #dc3545 !important; /* Bootstrap danger red */
+    color: white !important;
+}
+
+/* General status badge styling */
+.status-badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    text-transform: capitalize;
+}

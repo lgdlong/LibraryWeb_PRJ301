@@ -3,7 +3,6 @@ package dao;
 import db.*;
 import entity.*;
 import enums.*;
-
 import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
