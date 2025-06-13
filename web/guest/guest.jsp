@@ -1,10 +1,9 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="entity.Book"%>
-<!DOCTYPE html>
-<html>
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Guest - Library</title>
+    <meta charset="UTF-8">
+    <title>Library - Home</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,30 +12,9 @@
             padding: 0;
         }
 
-        .navbar {
-            width: 100%;
-            background-color: #2c3e50;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-        }
-
-        .navbar a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            display: block;
-        }
-
-        .navbar a:hover {
-            background-color: #34495e;
-            color: #1abc9c;
-        }
-
         .main-content {
             padding: 30px;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: auto;
             background-color: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -45,114 +23,89 @@
         h2 {
             text-align: center;
             color: #2c3e50;
+            margin-bottom: 30px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 10px;
+}
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
+.book-card {
+    background-color: #fff;
+    width: 260px; /* To hơn */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    transition: transform 0.2s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-8px);
+}
+
+.book-image {
+    height: 200px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.book-info {
+    text-align: center;
+    font-size: 15px;
+}
+
+.book-info strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+        .no-books {
             text-align: center;
-            vertical-align: middle;
-        }
-
-        th {
-            background-color: #2c3e50;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        img.book-cover {
-            height: 100px;
-            width: auto;
+            color: red;
         }
     </style>
 </head>
-<body>
 
-<div class="navbar">
-    <a href="guest.jsp">Search Books</a>
-    <a href="#">View Book Status</a>
-    <a href="#">Register Account</a>
-    <a href="#">Login</a>
-</div>
-<div class="main-content" style="display: flex; gap: 20px;">
 
-    <!-- Search Panel -->
-    <div style="width: 250px; background-color: #ecf0f1; padding: 20px; border-radius: 8px;">
-        <form action="SearchBookController" method="get">
-            <h3 style="margin-top: 0; color: #2c3e50;">Search Books</h3>
-            <label for="type">Search by:</label><br>
-            <select name="type" id="type" style="width: 100%; padding: 8px; margin: 10px 0;">
-                <option value="all">All</option>
-                <option value="title">Title</option>
-                <option value="author">Author</option>
-                <option value="category">Category</option>
-            </select>
-            <input type="text" name="keyword" placeholder="Enter keyword..." style="width: 100%; padding: 8px; margin-bottom: 10px;">
-            <button type="submit" style="width: 100%; background-color: #2c3e50; color: white; border: none; padding: 10px;">Search</button>
-        </form>
-    </div>
-    <!-- Book List -->
-    <div style="flex: 1;">
-        <h2>New Book</h2>
+<div class="main-content">
+    <h2>New Books</h2>
+    <%
+        ArrayList<Book> books = (ArrayList<Book>) request.getAttribute("newBooks");
+        if (books == null || books.isEmpty()) {
+    %>
+    <p class="no-books">No new books published this year.</p>
+    <%
+        } else {
+    %>
+    <div class="cards-container">
         <%
-            ArrayList<Book> books = (ArrayList<Book>) request.getAttribute("newBooks");
-            if (books == null || books.isEmpty()) {
+            for (Book b : books) {
         %>
-        <p style="text-align:center; color:red;">No new book published this year.</p>
-        <%
-            } else {
-        %>
-        <table>
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Cover</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>ISBN</th>
-                <th>Category</th>
-                <th>Year</th>
-                <th>Available</th>
-            </tr>
-            </thead>
-            <tbody>
-            <%
-                int count = 1;
-                for (Book b : books) {
-            %>
-            <tr>
-                <td><%= count++ %></td>
-                <td><img src="<%= b.getCoverUrl() %>" class="book-cover" alt="cover"></td>
-                <td><%= b.getTitle() %></td>
-                <td><%= b.getAuthor() %></td>
-                <td><%= b.getIsbn() %></td>
-                <td><%= b.getCategory() %></td>
-                <td><%= b.getPublishedYear() %></td>
-                <td><%= b.getAvailableCopies() %></td>
-            </tr>
-            <%
-                }
-            %>
-            </tbody>
-        </table>
+        <div class="book-card">
+            <img src="<%= b.getCoverUrl() %>" alt="Book Cover" class="book-image">
+            <div class="book-info">
+                <strong><%= b.getTitle() %></strong>
+            </div>
+        </div>
         <%
             }
         %>
-    </div> <!-- End Book List -->
-</div> <!-- End main-content flex -->
+    </div>
+    <%
+        }
+    %>
+</div>
 
-</body>
-</html>
+
