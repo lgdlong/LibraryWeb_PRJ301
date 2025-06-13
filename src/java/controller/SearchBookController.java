@@ -32,27 +32,17 @@ public class SearchBookController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       String type = request.getParameter("type");
        String keyword = request.getParameter("keyword");
-       BookService service = new BookService();
+
 
         List<Book> books;
-        switch (type){
-            case "title" :
-                books = service.searchBookByKeyword(keyword);
-                break;
-            case "author" :
-                books = service.searchBookByKeyword(keyword);
-                break;
-            case "category" :
-                books = service.searchBookByKeyword(keyword);
-                break;
-            default:
-                books = service.getAllBooks();
-        }
+        BookService service = new BookService();
+        books = service.searchBookByKeyword(keyword);
+        request.setAttribute("results", books);
+        request.setAttribute("contentPage","/guest/guest-search.jsp");
+        request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
 
-        request.setAttribute("newBooks", books);
-        request.getRequestDispatcher("guest/guest.jsp").forward(request,response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

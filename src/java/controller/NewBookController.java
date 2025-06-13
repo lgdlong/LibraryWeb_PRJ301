@@ -1,6 +1,5 @@
 package controller;
 
-import dao.BookDao;
 import entity.Book;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,7 +22,8 @@ public class NewBookController extends HttpServlet {
             List<Book> newBooks = bookService.getNewBook(); // đã tối ưu với try-with-resources
 
             request.setAttribute("newBooks", newBooks);
-            request.getRequestDispatcher("guest/guest.jsp").forward(request, response);
+            request.setAttribute("contentPage","/guest/guest.jsp");
+            request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
 
         } catch (Exception e) {
             System.err.println("Error in NewBookController: " + e.getMessage());
