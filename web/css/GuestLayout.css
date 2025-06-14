@@ -1,3 +1,4 @@
+/* Layout */
  body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -17,6 +18,8 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             margin-top: 20px;
         }
+
+        /*Search book and Get new book  */
         h2 {
                 text-align: center;
                 color: #2c3e50;
@@ -26,14 +29,14 @@
             .cards-container {
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: flex-start; /* Căn các card về trái */
-                gap: 20px; /* Khoảng cách giữa các card giống ảnh */
+                justify-content: flex-start;
+                gap: 20px;
                 padding: 10px;
             }
 
             .book-card {
                 background-color: #fff;
-                width: 180px; /* Nhỏ lại để khớp hình */
+                width: 180px;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
                 overflow: hidden;
                 display: flex;
@@ -43,7 +46,7 @@
             }
 
             .book-card:hover {
-                transform: translateY(-5px);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
             }
 
             .book-image {
@@ -72,17 +75,18 @@
                 font-size: 16px;
             }
 
-       .book-card {
-           background-color: #fff;
-           width: 180px;
-           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-           overflow: hidden;
-           display: flex;
-           flex-direction: column;
-           padding: 8px;
-           justify-content: space-between;
-           height: 300px;
-       }
+        .book-card {
+            background-color: #fff;
+            width: 180px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* shadow mặc định */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            justify-content: space-between;
+            height: 300px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease; /* mượt hơn */
+        }
 
        .book-info {
            text-align: left;
@@ -120,3 +124,132 @@
        .borrow-button:hover {
            background-color: #2980b9;
        }
+
+       /* View Book */
+        .book-container {
+            display: flex;
+            max-width: 900px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .book-image-details {
+            flex: 1;
+            background-color: #f2f2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .book-image-details img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-details {
+            flex: 2;
+            padding: 30px;
+        }
+
+        .book-details h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .book-details p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .book-details p span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Sidebar */
+   .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 40px;
+    background-color: #ecf0f1;
+    font-family: Arial, sans-serif;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+/* Nhóm trái/phải */
+.left, .right {
+    display: flex;
+    gap: 10px;
+}
+
+/* Các nút chung */
+.nav-link {
+    padding: 6px 14px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+
+/* Register */
+.nav-link.register {
+    background-color: #3498db !important;
+    color: white !important;
+    border: none !important;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+
+.nav-link:hover {
+    opacity: 0.85;
+}
+
+/* Search bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.search-bar input[type="text"] {
+    width: 320px;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.search-bar button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-left: none;
+    background-color: #2980b9;
+    color: white;
+    font-weight: bold;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-bar button:hover {
+    background-color: #1f5f8b;
+}

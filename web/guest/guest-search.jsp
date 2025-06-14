@@ -15,15 +15,17 @@
     %>
         <div class="cards-container">
             <%
-                for (Book book : books) {
+                for (Book b : books) {
             %>
             <div class="book-card">
-                <img class="book-image" src="<%= book.getCoverUrl() %>" alt="No Image">
+            <a href="ViewBookController?id=<%= b.getId() %>" class="book-link">
+                <img class="book-image" src="<%= b.getCoverUrl() %>" alt="No Image">
                 <div class="book-info">
-                    <strong><%= book.getTitle() %></strong>
+                    <strong><%= b.getTitle() %></strong>
                 </div>
+            </a>
                 <form action="borrow" method="post">
-                           <input type="hidden" name="bookId" value="<%= book.getId() %>">
+                           <input type="hidden" name="bookId" value="<%= b.getId() %>">
                            <button type="submit" class="borrow-button">Borrow</button>
                 </form>
             </div>

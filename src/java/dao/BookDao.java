@@ -33,8 +33,7 @@ public class BookDao {
 
     public ArrayList<Book> getNewBooks() {
         ArrayList<Book> books = new ArrayList<>();
-        String sql = "SELECT b.title, b.author, b.isbn, b.cover_url, b.category, " +
-            "b.published_year, b.total_copies, b.available_copies " +
+        String sql = "SELECT * " +
             "FROM books b " +
             "JOIN dbo.system_config c ON c.config_key = 'book_new_years' " +
             "WHERE YEAR(GETDATE()) - b.published_year <= CAST(c.config_value AS DECIMAL(5,2))";
@@ -44,6 +43,7 @@ public class BookDao {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String author = rs.getString("author");
                 String isbn = rs.getString("isbn");
@@ -52,10 +52,10 @@ public class BookDao {
                 int publishedYear = rs.getInt("published_year");
                 int totalCopies = rs.getInt("total_copies");
                 int availableCopies = rs.getInt("available_copies");
+                BookStatus status = BookStatus.valueOf(rs.getString("status").toUpperCase());
 
-                // Dùng constructor rút gọn, sau đó set availableCopies
-                Book book = new Book(title, author, isbn, url, category, publishedYear, totalCopies);
-                book.setAvailableCopies(availableCopies); // quan trọng nếu bạn muốn lấy đúng số bản sẵn có
+
+                Book book = new Book(id,title, author, isbn, url, category, publishedYear, totalCopies,availableCopies,status);
 
                 books.add(book);
             }

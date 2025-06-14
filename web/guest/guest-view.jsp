@@ -1,17 +1,28 @@
-<%-- 
+<%--
     Document   : guest-view
     Created on : Jun 11, 2025, 10:28:10 AM
     Author     : Dien Sanh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+<%@page import="entity.Book"%>
+<%
+    Book book = (Book) request.getAttribute("book");
+%>
+
+
+<div class="book-container">
+    <div class="book-image-details">
+        <img src="<%= book.getCoverUrl() %>">
+    </div>
+
+    <div class="book-details">
+        <h2>Detail</h2>
+        <p><span>Author:</span> <%= book.getAuthor() %></p>
+        <p><span>ISBN:</span> <%= book.getIsbn() %></p>
+        <p><span>Category:</span> <%= book.getCategory() %></p>
+        <p><span>Public Year:</span> <%= book.getPublishedYear() %></p>
+    </div>
+</div>
+
+

@@ -4,11 +4,11 @@
 <html>
 <head>
     <title>Library Guest Page</title>
-    <link rel="stylesheet" href="/css/GuestLayout.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/GuestLayout.css">
 </head>
 <body>
 
-<!-- Thanh điều hướng -->
+<!-- Sidebar -->
 <jsp:include page="/guest/guest-sidebar.jsp" />
 
 <!-- Nội dung chính -->
@@ -18,7 +18,7 @@
         if (contentPage == null || contentPage.trim().equals("")) {
             contentPage = "/guest/guest.jsp";
         }
-        request.setAttribute("contentPage", contentPage); // Gán lại để JSTL dùng được
+        request.setAttribute("contentPage", contentPage);
     %>
     <c:import url="${contentPage}" />
 </div>

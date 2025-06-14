@@ -48,6 +48,10 @@
         <servlet-name>SearchBookController</servlet-name>
         <servlet-class>controller.SearchBookController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewBookController</servlet-name>
+        <servlet-class>controller.ViewBookController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>SearchBookController</servlet-name>
         <url-pattern>/SearchBookController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewBookController</servlet-name>
+        <url-pattern>/ViewBookController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
