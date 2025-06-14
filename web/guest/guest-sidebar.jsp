@@ -3,9 +3,8 @@
     <!-- Menu -->
     <div class="nav-group">
         <a href="NewBookController">Home</a>
-        <a href="layout.jsp?page=/pages/view-book.jsp">View Book</a>
         <a href="#">Log In</a>
-        <a href="#">Resign</a>
+        <a href="#">Register</a>
     </div>
 
     <!-- Only Search Input -->
