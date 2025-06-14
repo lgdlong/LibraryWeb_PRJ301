@@ -40,10 +40,14 @@
         <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.LoginController</servlet-class>
     </servlet>
-  <servlet>
-    <servlet-name>RegisterController</servlet-name>
-    <servlet-class>controller.RegisterController</servlet-class>
-  </servlet>
+    <servlet>
+        <servlet-name>RegisterController</servlet-name>
+        <servlet-class>controller.RegisterController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchBookController</servlet-name>
+        <servlet-class>controller.SearchBookController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>

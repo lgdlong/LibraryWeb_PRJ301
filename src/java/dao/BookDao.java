@@ -204,4 +204,31 @@ public class BookDao {
         stmt.setInt(8, book.getAvailableCopies());
         stmt.setString(9, book.getStatus().toString());
     }
+
+    public List<Book> searchBookByKeyword(String keyword) {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books WHERE LOWER(title) LIKE ? OR LOWER(author) LIKE ? OR LOWER(category) LIKE ?";
+        String searchTerm = "%" + keyword.toLowerCase() + "%";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, searchTerm);
+            stmt.setString(2, searchTerm);
+            stmt.setString(3, searchTerm);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(mapRow(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error searching books by keyword", e);
+            throw new RuntimeException(e);
+        }
+
+        return books;
+    }
+
 }
