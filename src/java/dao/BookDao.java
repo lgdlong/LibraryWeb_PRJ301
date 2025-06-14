@@ -114,8 +114,6 @@ public class BookDao {
         return books;
     }
 
-
-
     public void add(Book book) {
         String sql = "INSERT INTO books (title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
