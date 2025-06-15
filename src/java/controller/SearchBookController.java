@@ -29,8 +29,7 @@ public class SearchBookController extends HttpServlet {
             List<Book> availableBooks = bookService.getAvailableBook();
 
             request.setAttribute("availableBooks", availableBooks);
--           request.setAttribute("isSearch", true);
-+           request.setAttribute("isSearch", false);
+            request.setAttribute("isSearch", false);
             request.setAttribute("contentPage","/guest/guest.jsp");
             request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
         }else{
