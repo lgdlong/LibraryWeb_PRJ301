@@ -15,8 +15,8 @@
      </div>
 
     <div class="nav-right">
-        <a href="Login.jsp" class="nav-link">Login</a>
-        <a href="Register.jsp"class="nav-link register">Register</a>
+        <a href="${pageContext.request.contextPath}/Login.jsp" class="nav-link">Login</a>
+        <a href="${pageContext.request.contextPath}/Register.jsp" class="nav-link register">Register</a>
     </div>
 
 </div>
