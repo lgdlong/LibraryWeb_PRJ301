@@ -229,4 +229,23 @@ public class BookDao {
         return books;
     }
 
+    public List<Book> getAvailableBook(){
+        List<Book> books = new ArrayList<>();
+        String sql ="select *\n" +
+                    "from [dbo].[books] \n" +
+                    "where available_copies > 0" ;
+        try(Connection cn = DbConfig.getConnection();
+            PreparedStatement stmt = cn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()){
+
+            while(rs.next()){
+                books.add(mapRow(rs));
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return books;
+    }
+
 }

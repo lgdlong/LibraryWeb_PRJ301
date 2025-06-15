@@ -113,12 +113,16 @@ public class BookService {
         return bookDao.bookCount();
     }
 
-    public ArrayList<Book>  getNewBook(){ return bookDao.getNewBooks();}
+    public ArrayList<Book>  getNewBooks(){ return bookDao.getNewBooks();}
 
     public List<Book> searchBookByKeyword(String keyword){
         if(keyword == null || keyword.trim().isEmpty()){
             return null;
         }
         return bookDao.searchBookByKeyword(keyword.trim());
+    }
+
+    public List<Book> getAvailableBook(){
+        return bookDao.getAvailableBook();
     }
 }

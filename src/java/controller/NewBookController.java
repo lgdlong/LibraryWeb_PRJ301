@@ -19,16 +19,14 @@ public class NewBookController extends HttpServlet {
         throws ServletException, IOException {
         try {
             BookService bookService = new BookService();
-            List<Book> newBooks = bookService.getNewBook();
+            List<Book> newBooks = bookService.getNewBooks();
 
             request.setAttribute("newBooks", newBooks);
             request.setAttribute("contentPage","/guest/guest.jsp");
-            request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
 
         } catch (Exception e) {
             System.err.println("Error in NewBookController: " + e.getMessage());
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Có lỗi xảy ra khi lấy sách mới.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving a new book.");
         }
     }
 
@@ -40,6 +38,6 @@ public class NewBookController extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Controller hiển thị danh sách sách mới xuất bản gần đây.";
+        return "Controller displays a list of recently published books.";
     }
 }

@@ -38,7 +38,7 @@
         }
 
 
-        /* Container chứa tất cả các thẻ sách */
+        /* Container containing all book tags */
         .cards-container {
             display: flex;
             flex-wrap: wrap;
@@ -47,7 +47,7 @@
             padding: 10px;
         }
 
-        /* Thẻ sách */
+        /* Book card */
         .book-card {
             background-color: #fff;
             width: 180px;
@@ -65,7 +65,7 @@
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
         }
 
-        /* Ảnh sách */
+        /* Book's image */
         .book-image {
             height: 160px;
             width: 100%;
@@ -73,7 +73,7 @@
             margin-bottom: 10px;
         }
 
-        /* Tiêu đề và tác giả */
+        /* Title and Author */
         .book-meta {
             flex-grow: 1;
             display: flex;
@@ -82,7 +82,7 @@
             min-height: 70px; 
         }
 
-                /* Tên sách */
+                /* Book's title */
         .book-title {
             font-size: 15px;
             font-weight: 600;
@@ -99,7 +99,7 @@
             height: 2.6em; 
         }
 
-        /* Tên tác giả */
+        /* Author */
         .book-author {
             font-size: 14px;
             color: #555;
@@ -109,7 +109,7 @@
             text-overflow: ellipsis;
         }
 
-        /* Nút mượn sách */
+        /* Borrow button */
         .borrow-form {
             margin-top: auto;
         }
@@ -179,82 +179,82 @@
         }
 
         /* Sidebar */
-   .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 40px;
-    background-color: #ecf0f1;
-    font-family: Arial, sans-serif;
-}
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 40px;
+            background-color: #ecf0f1;
+            font-family: Arial, sans-serif;
+        }
 
-.navbar a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-}
+        .navbar a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
 
-/* Nhóm trái/phải */
-.left, .right {
-    display: flex;
-    gap: 10px;
-}
+        /* Nhóm trái/phải */
+        .left, .right {
+            display: flex;
+            gap: 10px;
+        }
 
-/* Các nút chung */
-.nav-link {
-    padding: 6px 14px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-    transition: background-color 0.2s ease;
-}
-
-
-/* Register */
-.nav-link.register {
-    background-color: #3498db !important;
-    color: white !important;
-    border: none !important;
-    padding: 6px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-}
+        /* Common buttons */
+        .nav-link {
+            padding: 6px 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
 
 
-.nav-link:hover {
-    opacity: 0.85;
-}
+        /* Register */
+        .nav-link.register {
+            background-color: #3498db !important;
+            color: white !important;
+            border: none !important;
+            padding: 6px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
 
-/* Search bar */
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: 0;
-}
 
-.search-bar input[type="text"] {
-    width: 320px;
-    padding: 8px 12px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
-    outline: none;
-}
+        .nav-link:hover {
+            opacity: 0.85;
+        }
 
-.search-bar button {
-    padding: 8px 16px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-left: none;
-    background-color: #2980b9;
-    color: white;
-    font-weight: bold;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
+        /* Search bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
 
-.search-bar button:hover {
-    background-color: #1f5f8b;
-}
+        .search-bar input[type="text"] {
+            width: 320px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+        }
+
+        .search-bar button {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-left: none;
+            background-color: #2980b9;
+            color: white;
+            font-weight: bold;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #1f5f8b;
+        }

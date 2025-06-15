@@ -52,6 +52,14 @@
         <servlet-name>ViewBookController</servlet-name>
         <servlet-class>controller.ViewBookController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GuestAvailableBookController</servlet-name>
+        <servlet-class>controller.GuestAvailableBookController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GuestHomeController</servlet-name>
+        <servlet-class>controller.GuestHomeController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>
@@ -88,13 +96,21 @@
         <servlet-name>ViewBookController</servlet-name>
         <url-pattern>/ViewBookController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GuestAvailableBookController</servlet-name>
+        <url-pattern>/GuestAvailableBookController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GuestHomeController</servlet-name>
+        <url-pattern>/GuestHomeController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>NewBookController</welcome-file>
+        <welcome-file>GuestHomeController</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>NewBookController</servlet-name>
