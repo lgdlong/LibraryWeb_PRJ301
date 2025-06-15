@@ -19,7 +19,7 @@ public class NewBookController extends HttpServlet {
         throws ServletException, IOException {
         try {
             BookService bookService = new BookService();
-            List<Book> newBooks = bookService.getNewBook(); // đã tối ưu với try-with-resources
+            List<Book> newBooks = bookService.getNewBook();
 
             request.setAttribute("newBooks", newBooks);
             request.setAttribute("contentPage","/guest/guest.jsp");
@@ -35,7 +35,7 @@ public class NewBookController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        doGet(request, response); // dùng lại doGet để tránh lặp code
+        doGet(request, response);
     }
 
     @Override

@@ -68,6 +68,9 @@
                 color: #2c3e50;
                 font-weight: normal;
             }
+            .book-link .book-info strong {
+                text-decoration: none !important;
+            }
 
             .no-books {
                 text-align: center;
