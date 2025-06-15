@@ -20,10 +20,11 @@
             <div class="book-card">
             <a href="ViewBookController?id=<%= b.getId() %>" class="book-link">
                 <img class="book-image" src="<%= b.getCoverUrl() %>" alt="No Image">
-                <div class="book-info">
-                    <strong><%= b.getTitle() %></strong>
-                </div>
             </a>
+            <div class="book-meta">
+                <p class="book-title"><%= b.getTitle() %></p>
+                <p class="book-author"><%= b.getAuthor() %></p>
+            </div>
                 <form action="borrow" method="post">
                            <input type="hidden" name="bookId" value="<%= b.getId() %>">
                            <button type="submit" class="borrow-button">Borrow</button>

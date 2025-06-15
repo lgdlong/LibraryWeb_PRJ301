@@ -233,18 +233,22 @@ public class BookDao {
         List<Book> books = new ArrayList<>();
         String sql ="select *\n" +
                     "from [dbo].[books] \n" +
-                    "where available_copies > 0" ;
-        try(Connection cn = DbConfig.getConnection();
-            PreparedStatement stmt = cn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery()){
+                    "where available_copies > 0 AND status LIKE ?" ;
+        try (Connection cn = DbConfig.getConnection();
+             PreparedStatement stmt = cn.prepareStatement(sql)) {
 
-            while(rs.next()){
-                books.add(mapRow(rs));
+            stmt.setString(1, "active");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(mapRow(rs));
+                }
             }
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return books;
     }
 

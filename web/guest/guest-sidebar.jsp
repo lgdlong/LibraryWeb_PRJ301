@@ -2,7 +2,7 @@
 <div class="navbar">
     <!-- Menu -->
     <div class="navbar">
-        <a href="NewBookController"class="nav-link">Home</a>
+        <a href="GuestHomeController"class="nav-link">Home</a>
     </div>
 
     <!-- Only Search Input -->

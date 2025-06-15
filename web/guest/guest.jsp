@@ -3,41 +3,40 @@
 <div class="main-content">
 
     <%--Show New Book--%>
-    <h2>New Books</h2>
     <%
+        Boolean isSearch = (Boolean) request.getAttribute("isSearch");
         ArrayList<Book> newBooks = (ArrayList<Book>) request.getAttribute("newBooks");
-        if (newBooks == null || newBooks.isEmpty()) {
-    %>
-    <p class="no-books">No new books published this year.</p>
-    <%
-        } else {
-    %>
-    <div class="cards-container">
-        <%
-            for (Book b : newBooks) {
+        if (isSearch == null || !isSearch) {
+                if (newBooks == null || newBooks.isEmpty()) {
         %>
-<div class="book-card">
-    <a href="ViewBookController?id=<%= b.getId() %>" class="book-link">
-        <img src="<%= b.getCoverUrl() %>" alt="Book Cover" class="book-image">
-    </a>
-
-    <div class="book-meta">
-        <p class="book-title"><%= b.getTitle() %></p>
-        <p class="book-author"><%= b.getAuthor() %></p>
-    </div>
-
-    <form action="borrow" method="post" class="borrow-form">
-        <input type="hidden" name="bookId" value="<%= b.getId() %>">
-        <button type="submit" class="borrow-button">Borrow</button>
-    </form>
-</div>
+                    <h2>New Books</h2>
+                    <p class="no-books">No new books published this year.</p>
         <%
+                } else {
+        %>
+                    <h2>New Books</h2>
+                    <div class="cards-container">
+                        <% for (Book b : newBooks) { %>
+                            <div class="book-card">
+                                <a href="ViewBookController?id=<%= b.getId() %>" class="book-link">
+                                    <img src="<%= b.getCoverUrl() %>" alt="Book Cover" class="book-image">
+                                </a>
+                                <div class="book-meta">
+                                    <p class="book-title"><%= b.getTitle() %></p>
+                                    <p class="book-author"><%= b.getAuthor() %></p>
+                                </div>
+                                <form action="borrow" method="post" class="borrow-form">
+                                    <input type="hidden" name="bookId" value="<%= b.getId() %>">
+                                    <button type="submit" class="borrow-button">Borrow</button>
+                                </form>
+                            </div>
+                        <% } %>
+                    </div>
+        <%
+                }
             }
         %>
-    </div>
-    <%
-        }
-    %>
+
 <%--Show Available Book--%>
     <h2>Books</h2>
         <%

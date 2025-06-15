@@ -22,18 +22,27 @@ public class SearchBookController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
         String keyword = request.getParameter("keyword");
+        if (keyword == null ||keyword.trim().isEmpty()) {
+            BookService bookService = new BookService();
+            List<Book> availableBooks = bookService.getAvailableBook();
 
 
-        List<Book> books;
-        BookService service = new BookService();
-        books = service.searchBookByKeyword(keyword);
-        if (books == null) {
-            books = java.util.Collections.emptyList();
+            request.setAttribute("availableBooks", availableBooks);
+            request.setAttribute("isSearch", true);
+            request.setAttribute("contentPage","/guest/guest.jsp");
+            request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
+        }else{
+            List<Book> books;
+            BookService service = new BookService();
+            books = service.searchBookByKeyword(keyword);
+
+            request.setAttribute("results", books);
+            request.setAttribute("contentPage","/guest/guest-search.jsp");
+            request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
         }
-        request.setAttribute("results", books);
-        request.setAttribute("contentPage","/guest/guest-search.jsp");
-        request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
+
 
 
     }
