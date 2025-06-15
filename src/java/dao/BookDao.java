@@ -61,8 +61,8 @@ public class BookDao {
             }
 
         } catch (SQLException e) {
-            System.err.println("Error when fetching new books: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error when fetching new books", e);
+            throw new RuntimeException(e);
         }
 
         return books;
