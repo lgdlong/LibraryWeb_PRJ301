@@ -22,6 +22,7 @@
         <p><span>ISBN:</span> <%= book.getIsbn() %></p>
         <p><span>Category:</span> <%= book.getCategory() %></p>
         <p><span>Public Year:</span> <%= book.getPublishedYear() %></p>
+        <p><span>Available Copies:</span> <%= book.getAvailableCopies() %></p>
     </div>
 </div>
 
