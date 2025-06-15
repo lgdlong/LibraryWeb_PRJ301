@@ -31,43 +31,6 @@ public class BookDao {
         return books;
     }
 
-    public ArrayList<Book> getNewBooks() {
-        ArrayList<Book> books = new ArrayList<>();
-        String sql = "SELECT * " +
-            "FROM books b " +
-            "JOIN dbo.system_config c ON c.config_key = 'book_new_years' " +
-            "WHERE YEAR(GETDATE()) - b.published_year <= CAST(c.config_value AS DECIMAL(5,2))";
-
-        try (Connection cn = DbConfig.getConnection();
-             PreparedStatement stmt = cn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String title = rs.getString("title");
-                String author = rs.getString("author");
-                String isbn = rs.getString("isbn");
-                String url = rs.getString("cover_url");
-                String category = rs.getString("category");
-                int publishedYear = rs.getInt("published_year");
-                int totalCopies = rs.getInt("total_copies");
-                int availableCopies = rs.getInt("available_copies");
-                BookStatus status = BookStatus.valueOf(rs.getString("status").toUpperCase());
-
-
-                Book book = new Book(id,title, author, isbn, url, category, publishedYear, totalCopies,availableCopies,status);
-
-                books.add(book);
-            }
-
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error when fetching new books", e);
-            throw new RuntimeException(e);
-        }
-
-        return books;
-    }
-
     public Book getById(long id) {
         String sql = "SELECT * FROM books WHERE id = ?";
 
@@ -202,54 +165,4 @@ public class BookDao {
         stmt.setInt(8, book.getAvailableCopies());
         stmt.setString(9, book.getStatus().toString());
     }
-
-    public List<Book> searchBookByKeyword(String keyword) {
-        List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books WHERE LOWER(title) LIKE ? OR LOWER(author) LIKE ? OR LOWER(category) LIKE ?";
-        String searchTerm = "%" + keyword.toLowerCase() + "%";
-
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, searchTerm);
-            stmt.setString(2, searchTerm);
-            stmt.setString(3, searchTerm);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    books.add(mapRow(rs));
-                }
-            }
-
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error searching books by keyword", e);
-            throw new RuntimeException(e);
-        }
-
-        return books;
-    }
-
-    public List<Book> getAvailableBook(){
-        List<Book> books = new ArrayList<>();
-        String sql ="select *\n" +
-                    "from [dbo].[books] \n" +
-                    "where available_copies > 0 AND status LIKE ?" ;
-        try (Connection cn = DbConfig.getConnection();
-             PreparedStatement stmt = cn.prepareStatement(sql)) {
-
-            stmt.setString(1, "active");
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    books.add(mapRow(rs));
-                }
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return books;
-    }
-
 }

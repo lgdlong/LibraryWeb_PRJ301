@@ -40,26 +40,10 @@
         <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.LoginController</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>RegisterController</servlet-name>
-        <servlet-class>controller.RegisterController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SearchBookController</servlet-name>
-        <servlet-class>controller.SearchBookController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewBookController</servlet-name>
-        <servlet-class>controller.ViewBookController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GuestAvailableBookController</servlet-name>
-        <servlet-class>controller.GuestAvailableBookController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GuestHomeController</servlet-name>
-        <servlet-class>controller.GuestHomeController</servlet-class>
-    </servlet>
+  <servlet>
+    <servlet-name>RegisterController</servlet-name>
+    <servlet-class>controller.RegisterController</servlet-class>
+  </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>
@@ -89,35 +73,26 @@
         <url-pattern>/FineAdminController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SearchBookController</servlet-name>
-        <url-pattern>/SearchBookController</url-pattern>
+        <servlet-name>AdminBorrowRecordController</servlet-name>
+        <url-pattern>/AdminBorrowRecordController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ViewBookController</servlet-name>
-        <url-pattern>/ViewBookController</url-pattern>
+        <servlet-name>AdminRequestManagement</servlet-name>
+        <url-pattern>/AdminRequestManagement</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GuestAvailableBookController</servlet-name>
-        <url-pattern>/GuestAvailableBookController</url-pattern>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/LoginController</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GuestHomeController</servlet-name>
-        <url-pattern>/GuestHomeController</url-pattern>
-    </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RegisterController</servlet-name>
+    <url-pattern>/RegisterController</url-pattern>
+  </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-    <welcome-file-list>
-        <welcome-file>GuestHomeController</welcome-file>
-    </welcome-file-list>
-    <servlet>
-        <servlet-name>NewBookController</servlet-name>
-        <servlet-class>controller.NewBookController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>NewBookController</servlet-name>
-        <url-pattern>/NewBookController</url-pattern>
-    </servlet-mapping>
+    <servlet-name>AdminRequestManagement</servlet-name>
+    <servlet-class>controller.AdminRequestController</servlet-class>
 </web-app>
