@@ -31,6 +31,8 @@ public class GuestAvailableBookController extends HttpServlet {
             request.setAttribute("availableBooks", availableBooks);
             request.setAttribute("contentPage", "/guest/guest.jsp");
 
+            // Forward to the common layout
+            request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
         } catch (Exception e) {
             System.err.println("Error in GuestAvailableBookController: " + e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving books.");

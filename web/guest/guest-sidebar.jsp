@@ -2,7 +2,7 @@
 <div class="navbar">
     <!-- Menu -->
     <div class="navbar">
-        <a href="NewBookController"class="nav-link">Home</a>
+        <a href="GuestHomeController"class="nav-link">Home</a>
     </div>
 
     <!-- Only Search Input -->
@@ -15,8 +15,8 @@
      </div>
 
     <div class="nav-right">
-        <a href="Login.jsp" class="nav-link">Login</a>
-        <a href="Register.jsp"class="nav-link register">Register</a>
+        <a href="${pageContext.request.contextPath}/Login.jsp" class="nav-link">Login</a>
+        <a href="${pageContext.request.contextPath}/Register.jsp" class="nav-link register">Register</a>
     </div>
 
 </div>

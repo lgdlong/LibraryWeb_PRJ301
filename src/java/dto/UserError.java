@@ -13,7 +13,7 @@ public class UserError {
     private String passwordError;
     private String fullnameError;
     private String confirmError;
-    private  String error;
+    private String error;
 
     public UserError() {
         this.emailError="";
