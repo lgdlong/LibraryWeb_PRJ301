@@ -28,6 +28,9 @@ public class SearchBookController extends HttpServlet {
         List<Book> books;
         BookService service = new BookService();
         books = service.searchBookByKeyword(keyword);
+        if (books == null) {
+            books = java.util.Collections.emptyList();
+        }
         request.setAttribute("results", books);
         request.setAttribute("contentPage","/guest/guest-search.jsp");
         request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
