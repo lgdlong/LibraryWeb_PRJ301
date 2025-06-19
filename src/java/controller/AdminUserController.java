@@ -21,6 +21,9 @@ public class AdminUserController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String search = req.getParameter("search");
         String statusParam = req.getParameter("status");
+        if (statusParam == null) {
+            statusParam = UserStatus.ACTIVE.toString();
+        }
 
         List<User> userEntities = userService.getUsersByStatus(statusParam);
 
