@@ -35,6 +35,7 @@ public class UserService {
             UserStatus userStatus = UserStatus.fromString(status);
             return userDao.getByStatus(userStatus);
         } catch (IllegalArgumentException e) {
+            System.err.println("Invalid status input: " + status + ". Error: " + e.getMessage());
             return new ArrayList<>();
         }
     }
