@@ -12,9 +12,16 @@
 <h2>User Management</h2>
 <p>Manage system users: add, update, block/unblock.</p>
 
-<!-- Search bar -->
-<form method="get" action="${pageContext.request.contextPath}/admin/users" class="d-flex mb-3">
-  <input type="text" name="search" class="form-control me-2" placeholder="Search by email" value="${param.search}"/>
+<!-- Combined Search + Status Filter Form -->
+<form method="get" action="${pageContext.request.contextPath}/admin/users" class="d-flex mb-3 gap-2">
+  <select name="status" class="form-select" style="max-width: 150px;" onchange="this.form.submit()">
+    <option value="all" ${param.status == 'all' ? 'selected' : ''}>All</option>
+    <option value="active" ${param.status == null || param.status == 'active' ? 'selected' : ''}>Active</option>
+    <option value="blocked" ${param.status == 'blocked' ? 'selected' : ''}>Blocked</option>
+  </select>
+
+  <input type="text" name="search" class="form-control" placeholder="Search by email" value="${param.search}"/>
+
   <button type="submit" class="btn btn-outline-primary">Search</button>
 </form>
 
@@ -46,7 +53,7 @@
           <td>${user.role}</td>
           <td>
             <span class="status-badge status-badge-${fn:escapeXml(user.status)}">
-              ${fn:escapeXml(user.status)}
+                ${fn:escapeXml(user.status)}
             </span>
           </td>
         </tr>

@@ -20,17 +20,24 @@ public class AdminUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String search = req.getParameter("search");
-        List<UserDTO> users = new ArrayList<>();
+        String statusParam = req.getParameter("status");
+        if (statusParam == null || statusParam.trim().isEmpty()) {
+            statusParam = UserStatus.ACTIVE.toString();
+        }
+
+        List<User> userEntities = userService.getUsersByStatus(statusParam);
 
         if (search != null && !search.trim().isEmpty()) {
-            users = userService.searchByNameOrEmail(search.trim()).stream()
-                .map(UserMapping::toUserDTO)
-                .collect(Collectors.toList());
-        } else {
-            users = userService.getAllUsers().stream()
-                .map(UserMapping::toUserDTO)
+            String keyword = search.trim().toLowerCase();
+            userEntities = userEntities.stream()
+                .filter(u -> (u.getEmail() != null && u.getEmail().toLowerCase().contains(keyword))
+                    || (u.getName() != null && u.getName().toLowerCase().contains(keyword)))
                 .collect(Collectors.toList());
         }
+
+        List<UserDTO> users = userEntities.stream()
+            .map(UserMapping::toUserDTO)
+            .collect(Collectors.toList());
 
         req.setAttribute("userList", users);
         req.setAttribute("pageTitle", "User Management");

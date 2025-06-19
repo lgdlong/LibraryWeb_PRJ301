@@ -105,6 +105,34 @@ public class UserDao {
         }
     }
 
+    public List<User> getByStatus(UserStatus status) {
+        if (status == null) {
+            return getAll();
+        }
+
+        String sql = "SELECT id, name, password, email, role, status FROM users WHERE status = ?";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, status.toString());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<User> users = new ArrayList<>();
+
+                while (rs.next()) {
+                    users.add(mapRow(rs));
+                }
+
+                return users;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching users by status: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Failed to fetch users by status", e);
+            throw new RuntimeException(e);
+        }
+    }
+
     public void add(User user) {
         if (user == null) {
             throw new IllegalArgumentException("User must not be null.");
