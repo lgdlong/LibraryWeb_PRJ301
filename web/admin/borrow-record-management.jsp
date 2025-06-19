@@ -45,7 +45,6 @@
             <th>Book Title</th>
             <th>Borrow Date</th>
             <th>Due Date</th>
-            <th>Return Date</th>
             <th>Status</th>
           </tr>
           </thead>
@@ -58,7 +57,6 @@
                 <td>${fn:escapeXml(request.bookTitle)}</td>
                 <td>${fn:escapeXml(request.borrowDate)}</td>
                 <td>${fn:escapeXml(request.dueDate)}</td>
-                <td>${fn:escapeXml(request.returnDate)}</td>
                 <td><span
                   class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
                 </td>
