@@ -14,6 +14,11 @@
 
 <!-- Search bar -->
 <form method="get" action="${pageContext.request.contextPath}/admin/users" class="d-flex mb-3">
+  <select name="status" class="form-select me-2" style="max-width: 150px;">
+    <option value="active" ${param.status == null || param.status == 'active' ? 'selected' : ''}>Active</option>
+    <option value="blocked" ${param.status == 'blocked' ? 'selected' : ''}>Blocked</option>
+    <option value="all" ${param.status == 'all' ? 'selected' : ''}>All</option>
+  </select>
   <input type="text" name="search" class="form-control me-2" placeholder="Search by email" value="${param.search}"/>
   <button type="submit" class="btn btn-outline-primary">Search</button>
 </form>

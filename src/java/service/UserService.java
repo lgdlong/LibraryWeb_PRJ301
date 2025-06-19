@@ -3,6 +3,7 @@ package service;
 
 import dao.*;
 import entity.*;
+import enums.*;
 
 import java.util.*;
 
@@ -23,6 +24,19 @@ public class UserService {
 
     public User searchByEmail(String email) {
         return userDao.getByEmail(email);
+    }
+
+    public List<User> getUsersByStatus(String status) {
+        if (status == null || status.trim().isEmpty() || "all".equalsIgnoreCase(status)) {
+            return userDao.getAll();
+        }
+
+        try {
+            UserStatus userStatus = UserStatus.fromString(status);
+            return userDao.getByStatus(userStatus);
+        } catch (IllegalArgumentException e) {
+            return new ArrayList<>();
+        }
     }
 
     public List<User> searchByNameOrEmail(String keyword) {
