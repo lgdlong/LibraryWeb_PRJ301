@@ -19,6 +19,7 @@
 </form>
 
 <form method="get" action="${pageContext.request.contextPath}/admin/users" class="d-flex mb-3">
+  <input type="hidden" name="search" value="${param.search}" />
   <select name="status" class="form-select me-2" style="max-width: 150px;" onchange="this.form.submit()">
     <option value="all" ${param.status == 'all' ? 'selected' : ''}>All</option>
     <option value="active" ${param.status == null || param.status == 'active' ? 'selected' : ''}>Active</option>
