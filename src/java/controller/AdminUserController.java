@@ -21,7 +21,7 @@ public class AdminUserController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String search = req.getParameter("search");
         String statusParam = req.getParameter("status");
-        if (statusParam == null) {
+        if (statusParam == null || statusParam.trim().isEmpty()) {
             statusParam = UserStatus.ACTIVE.toString();
         }
 
@@ -30,8 +30,8 @@ public class AdminUserController extends HttpServlet {
         if (search != null && !search.trim().isEmpty()) {
             String keyword = search.trim().toLowerCase();
             userEntities = userEntities.stream()
-                .filter(u -> u.getEmail().toLowerCase().contains(keyword)
-                    || u.getName().toLowerCase().contains(keyword))
+                .filter(u -> (u.getEmail() != null && u.getEmail().toLowerCase().contains(keyword))
+                    || (u.getName() != null && u.getName().toLowerCase().contains(keyword)))
                 .collect(Collectors.toList());
         }
 
