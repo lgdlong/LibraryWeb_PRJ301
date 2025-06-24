@@ -20,7 +20,6 @@
         }
 
         /*Search book and Get new book  */
-/* Tiêu đề */
         h2 {
             text-align: center;
             color: #2c3e50;
@@ -111,7 +110,8 @@
 
         /* Borrow button */
         .borrow-form {
-            margin-top: auto;
+            display: flex;
+            justify-content:  center;
         }
 
         .borrow-button {
@@ -123,6 +123,7 @@
             cursor: pointer;
             font-size: 14px;
             transition: background-color 0.2s ease;
+
         }
 
         .borrow-button:hover {
