@@ -23,6 +23,10 @@
         <p><span>Category:</span> <%= book.getCategory() %></p>
         <p><span>Public Year:</span> <%= book.getPublishedYear() %></p>
         <p><span>Available Copies:</span> <%= book.getAvailableCopies() %></p>
+        <form action="borrow" method="post" class="borrow-form">
+            <input type="hidden" name="bookId" value="${b.id}">
+            <button type="submit" class="borrow-button">Borrow</button>
+        </form>
     </div>
 </div>
 
