@@ -1,6 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page import="entity.User" %>
-<%@ page import="dto.UserError" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,14 +70,18 @@
         </div>
         <% } %>
         <%-- Display success message if any --%>
-        <%
-          String successMessage = (String) request.getAttribute("SUCCESS_MESSAGE");
-          if (successMessage != null) {
-        %>
-        <div class="alert alert-success">
-          <%= successMessage %>
-        </div>
-        <% } %>
+        <%--        <%--%>
+        <%--          String successMessage = (String) request.getAttribute("SUCCESS_MESSAGE");--%>
+        <%--          if (successMessage != null) {--%>
+        <%--        %>--%>
+        <%--        <div class="alert alert-success">--%>
+        <%--          <%= successMessage %>--%>
+        <%--        </div>--%>
+        <%--        <% } %>--%>
+        <c:if test="${not empty sessionScope.SUCCESS_MESSAGE}">
+          <div class="alert alert-success">${sessionScope.SUCCESS_MESSAGE}</div>
+          <c:remove var="SUCCESS_MESSAGE" scope="session"/>
+        </c:if>
 
         <div class="d-flex justify-content-between">
           <a href="<%= request.getContextPath() %>/profile" class="btn btn-secondary">Cancel</a>

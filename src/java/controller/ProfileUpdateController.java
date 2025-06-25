@@ -41,7 +41,6 @@ public class ProfileUpdateController extends HttpServlet {
         }
 
         try {
-            // Always get updated values from form/request
             String fullname = request.getParameter("fullname");
             String email = request.getParameter("email");
 
@@ -55,13 +54,11 @@ public class ProfileUpdateController extends HttpServlet {
 
             if (hasError) {
                 request.setAttribute("USER_ERROR", userError);
-                // Optional: re-fill form fields on error
-                request.setAttribute("USER", profileDto); // Use DTO if JSP expects "USER"
+                request.setAttribute("USER", profileDto);
                 request.getRequestDispatcher("/profile/edit-profile.jsp").forward(request, response);
                 return;
             }
 
-            // Update the user's profile in DB and session
             try {
                 userService.updateUserProfile(profileDto, currentUser, request.getSession());
             } catch (Exception ex) {
@@ -70,11 +67,9 @@ public class ProfileUpdateController extends HttpServlet {
                 throw new RuntimeException("Session update failed");
             }
 
-            request.setAttribute("SUCCESS_MESSAGE", "Profile updated successfully!");
-            // Optionally: set updated user for display
-            request.setAttribute("USER", userService.getUserById(currentUser.getId()));
-            // You may want to show a success message after redirect, see tip below!
+            request.getSession().setAttribute("SUCCESS_MESSAGE", "Profile updated successfully!");
             response.sendRedirect(request.getContextPath() + "/profile");
+            return;
 
         } catch (Exception e) {
             System.err.println("Error updating profile for user ID: " + currentUser.getId() + " - " + e.getMessage());
@@ -84,10 +79,10 @@ public class ProfileUpdateController extends HttpServlet {
             userError.setError("An unexpected error occurred while updating your profile. Please try again.");
             request.setAttribute("USER_ERROR", userError);
             request.setAttribute("USER", currentUser);
-            // You may want to show a success message after redirect, see tip below!
-            response.sendRedirect(request.getContextPath() + "/profile/update");
+            request.getRequestDispatcher("/profile/edit-profile.jsp").forward(request, response);
         }
     }
+
 
     private User getCurrentUser(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
