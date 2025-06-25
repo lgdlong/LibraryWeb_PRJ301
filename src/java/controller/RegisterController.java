@@ -39,7 +39,7 @@ public class RegisterController extends HttpServlet {
 
             // Validate input
             if (fullName.length() < 5 || fullName.length() > 30) {
-                userError.setFullnameError("Fullname must be 5-30 characters.");
+                userError.setNameError("Fullname must be 5-30 characters.");
                 check = false;
             }
 
