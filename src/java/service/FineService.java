@@ -6,6 +6,7 @@ import entity.*;
 import enums.*;
 import mapper.*;
 
+import java.time.*;
 import java.util.*;
 import java.util.stream.*;
 
@@ -62,6 +63,9 @@ public class FineService {
     }
 
     public void processOverdueFines() {
+        SystemConfigService configService = new SystemConfigService();
+        double finePerDay = configService.getConfigByConfigKey("overdue_fine_per_day").getConfigValue();
+
         // Lấy danh sách overdue
         List<BorrowRecordDTO> overdueRecords = borrowRecordService.getAllOverdue();
 
@@ -69,7 +73,7 @@ public class FineService {
             try {
                 Fine fine = fineDao.getByBorrowRecordId(record.getId());
                 FineDTO existingFine = fine != null ? FineMapping.toDTO(fine) : null;
-                double fineAmount = calculateFine(record);
+                double fineAmount = calculateFine(record, finePerDay);
 
                 if (existingFine == null) {
                     FineDTO fineDTO = new FineDTO();
@@ -90,11 +94,10 @@ public class FineService {
     }
 
     // Ví dụ hàm tính tiền phạt:
-    private double calculateFine(BorrowRecordDTO record) {
+    private double calculateFine(BorrowRecordDTO record, double finePerDay) {
         if (record.getDueDate() == null) return 0;
-        long overdueDays = java.time.temporal.ChronoUnit.DAYS.between(record.getDueDate(),
-            record.getReturnDate() != null ? record.getReturnDate() : java.time.LocalDate.now());
-        double finePerDay = 5000; // VD: 5,000đ/ngày
-        return overdueDays > 0 ? overdueDays * finePerDay : 0;
+        LocalDate endDate = record.getReturnDate() != null ? record.getReturnDate() : java.time.LocalDate.now();
+        long overdueDays = java.time.temporal.ChronoUnit.DAYS.between(record.getDueDate(), endDate);
+        return Math.max(0, overdueDays) * finePerDay;
     }
 }
