@@ -47,13 +47,10 @@
 
       <!-- Email input -->
       <div class="email-input">
-        <form>
-          <div class="mb-3">
-            <label for="email" class="form-label fw-bold">Email</label>
-            <input type="email" id="email" name="email" class="form-control" value="<%= us.getEmail() %>" readonly
-                   required>
-          </div>
-        </form>
+        <div class="mb-3">
+          <label for="email" class="form-label fw-bold">Email</label>
+          <input type="email" id="email" name="email" class="form-control" value="<%= us.getEmail() %>" readonly>
+        </div>
       </div>
     </div>
   </div>
