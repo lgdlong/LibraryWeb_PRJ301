@@ -27,8 +27,8 @@ public class FineService {
         } catch (Exception e) {
             // Log the error appropriately
             e.printStackTrace();
+            return Collections.emptyList();
         }
-        return null;
     }
 
 
