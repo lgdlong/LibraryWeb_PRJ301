@@ -30,6 +30,7 @@
   User us = (User) session.getAttribute("LOGIN_USER");
   if (us == null) {
     response.sendRedirect(request.getContextPath() + "/GuestHomeController");
+    return;
   } else {
 %>
 
@@ -40,7 +41,6 @@
       <h4 class="mb-0">Profile</h4>
     </div>
     <div class="card-body">
-
       <div class="text-center mb-4">
         <span class="user-name"><%= us.getName() %></span>
       </div>

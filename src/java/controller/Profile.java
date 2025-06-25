@@ -5,47 +5,38 @@
 
 package controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+
+import java.io.*;
 
 
 public class Profile extends HttpServlet {
-   
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-           
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Profile</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Profile at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    } 
 
-    @Override
-     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-         request.getRequestDispatcher("/view/view-profile.jsp").forward(request, response);
+    private boolean isUserAuthenticated(HttpServletRequest request) {
+        return request.getSession().getAttribute("LOGIN_USER") != null;
     }
 
-  
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        if (!isUserAuthenticated(request)) {
+            response.sendRedirect(request.getContextPath() + "/GuestHomeController");
+            return;
+        }
+        request.getRequestDispatcher("/view/view-profile.jsp").forward(request, response);
+    }
+
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+        throws ServletException, IOException {
+        // Handle profile update logic here
+        // Then forward to the JSP page
+        request.getRequestDispatcher("/view/view-profile.jsp").forward(request, response);
     }
 
- 
+
     @Override
     public String getServletInfo() {
         return "Short description";
