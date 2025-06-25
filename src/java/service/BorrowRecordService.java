@@ -84,8 +84,7 @@ public class BorrowRecordService {
         LocalDate now = LocalDate.now(ZoneId.systemDefault());
 
         for (BorrowRecordDTO dto : allBorrowed) {
-            if (BorrowStatus.BORROWED.toString().equals(dto.getStatus())
-                && dto.getDueDate() != null
+            if (dto.getDueDate() != null
                 && dto.getDueDate().isBefore(now)) {
                 // Nếu quá hạn, cập nhật trạng thái
                 try {

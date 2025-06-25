@@ -34,7 +34,7 @@ public class FineService {
 
     public FineDTO getFineById(long id) {
         Fine fine = fineDao.getById(id);
-        return FineMapping.toDTO(fine);
+        return fine != null ? FineMapping.toDTO(fine) : null;
     }
 
     public FineDTO getFineByBorrowRecordId(long borrowRecordId) {
@@ -42,7 +42,7 @@ public class FineService {
             throw new IllegalArgumentException("Borrow record ID must be positive");
         }
         Fine fine = fineDao.getByBorrowRecordId(borrowRecordId);
-        return FineMapping.toDTO(fine);
+        return fine != null ? FineMapping.toDTO(fine) : null;
     }
 
     public void updateFine(FineDTO fine) {

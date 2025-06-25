@@ -36,7 +36,8 @@ public class AdminFineController extends HttpServlet {
                 long id = Long.parseLong(idStr);
                 PaidStatus newStatus = PaidStatus.fromString(newStatusStr);
                 if (newStatus == null) {
-                    // Handle invalid status - return error or use default
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.getWriter().write("Invalid status provided");
                     return;
                 }
 
