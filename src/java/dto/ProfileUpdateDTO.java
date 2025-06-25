@@ -40,7 +40,7 @@ public class ProfileUpdateDTO {
 
     @Override
     public String toString() {
-        return "ProfileUpdateRequestDTO{" +
+        return "ProfileUpdateDTO{" +
             "id=" + id +
             ", fullname='" + fullname + '\'' +
             ", email='" + email + '\'' +

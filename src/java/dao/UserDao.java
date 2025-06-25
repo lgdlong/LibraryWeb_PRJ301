@@ -185,6 +185,13 @@ public class UserDao {
     }
 
     public void updateInfoForUser(ProfileUpdateDTO dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("ProfileUpdateDTO cannot be null");
+        }
+        if (dto.getId() <= 0) {
+            throw new IllegalArgumentException("User ID must be positive");
+        }
+
         String sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
         try (Connection conn = DbConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -193,10 +200,13 @@ public class UserDao {
             stmt.setString(2, dto.getEmail());
             stmt.setLong(3, dto.getId());
 
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new RuntimeException("No user found with ID: " + dto.getId());
+            }
 
         } catch (SQLException e) {
-            System.err.println("Error updating user info: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Failed to update user info for ID: " + dto.getId(), e);
             throw new RuntimeException(e);
         }
     }
