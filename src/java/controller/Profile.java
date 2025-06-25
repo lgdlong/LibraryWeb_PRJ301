@@ -1,11 +1,12 @@
-// File: Profile.java
 package controller;
 
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
 
 import java.io.*;
 
+@WebServlet("/profile")
 public class Profile extends HttpServlet {
 
     private boolean isUserNotAuthenticated(HttpServletRequest request) {
@@ -22,20 +23,12 @@ public class Profile extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/GuestHomeController");
             return;
         }
-        request.getRequestDispatcher("/view/view-profile.jsp").forward(request, response);
+        request.getRequestDispatcher("/profile/view-profile.jsp").forward(request, response);
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (isUserNotAuthenticated(request)) {
-            response.sendRedirect(request.getContextPath() + "/GuestHomeController");
-            return;
-        }
-        // Handle profile update logic here
-        // Then forward to the JSP page
-        request.getRequestDispatcher("/view/view-profile.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/profile");
     }
-
 }

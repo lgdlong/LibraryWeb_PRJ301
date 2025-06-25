@@ -1,8 +1,10 @@
 package dao;
 
 import db.*;
+import dto.*;
 import entity.*;
 import enums.*;
+
 import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
@@ -181,6 +183,24 @@ public class UserDao {
             throw new RuntimeException(e);
         }
     }
+
+    public void updateInfoForUser(ProfileUpdateDTO dto) {
+        String sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, dto.getFullname());
+            stmt.setString(2, dto.getEmail());
+            stmt.setLong(3, dto.getId());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error updating user info: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public void delete(long id) {
         String sql = "DELETE FROM users WHERE id = ?";
