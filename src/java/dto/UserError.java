@@ -5,28 +5,27 @@
 package dto;
 
 /**
- *
  * @author nguye
  */
 public class UserError {
     private String emailError;
     private String passwordError;
-    private String fullnameError;
+    private String nameError;
     private String confirmError;
     private String error;
 
     public UserError() {
-        this.emailError="";
-        this.passwordError="";
-        this.fullnameError="";
-        this.confirmError="";
-        this.error="";
+        this.emailError = "";
+        this.passwordError = "";
+        this.nameError = "";
+        this.confirmError = "";
+        this.error = "";
     }
-    
-    public UserError(String emailError, String passwordError, String fullnameError, String confirmError, String error) {
+
+    public UserError(String emailError, String passwordError, String nameError, String confirmError, String error) {
         this.emailError = emailError;
         this.passwordError = passwordError;
-        this.fullnameError = fullnameError;
+        this.nameError = nameError;
         this.confirmError = confirmError;
         this.error = error;
     }
@@ -38,8 +37,7 @@ public class UserError {
     public void setEmailError(String emailError) {
         this.emailError = emailError;
     }
-   
-  
+
 
     public String getPasswordError() {
         return passwordError;
@@ -49,12 +47,12 @@ public class UserError {
         this.passwordError = passwordError;
     }
 
-    public String getFullnameError() {
-        return fullnameError;
+    public String getNameError() {
+        return nameError;
     }
 
-    public void setFullnameError(String fullnameError) {
-        this.fullnameError = fullnameError;
+    public void setNameError(String nameError) {
+        this.nameError = nameError;
     }
 
     public String getConfirmError() {
@@ -72,5 +70,5 @@ public class UserError {
     public void setError(String error) {
         this.error = error;
     }
-    
+
 }

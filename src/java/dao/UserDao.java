@@ -196,7 +196,7 @@ public class UserDao {
         try (Connection conn = DbConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, dto.getFullname());
+            stmt.setString(1, dto.getName());
             stmt.setString(2, dto.getEmail());
             stmt.setLong(3, dto.getId());
 
