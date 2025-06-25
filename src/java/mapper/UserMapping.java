@@ -19,27 +19,27 @@ public class UserMapping {
         );
     }
 
-public static User toUser(UserDTO userDTO) {
-    if (userDTO == null) {
-        return null;
+    public static User toEntity(UserDTO userDTO) {
+        if (userDTO == null) {
+            return null;
+        }
+
+        UserRole role = null;
+        UserStatus status = null;
+
+        try {
+            role = userDTO.getRole() != null ? UserRole.fromString(userDTO.getRole()) : null;
+            status = userDTO.getStatus() != null ? UserStatus.fromString(userDTO.getStatus()) : null;
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid enum value in UserDTO: " + e.getMessage(), e);
+        }
+
+        return new User(
+            userDTO.getId(),
+            userDTO.getName(),
+            userDTO.getEmail(),
+            role,
+            status
+        );
     }
-
-    UserRole role = null;
-    UserStatus status = null;
-
-    try {
-        role = userDTO.getRole() != null ? UserRole.fromString(userDTO.getRole()) : null;
-        status = userDTO.getStatus() != null ? UserStatus.fromString(userDTO.getStatus()) : null;
-    } catch (IllegalArgumentException e) {
-        throw new IllegalArgumentException("Invalid enum value in UserDTO: " + e.getMessage(), e);
-    }
-
-    return new User(
-        userDTO.getId(),
-        userDTO.getName(),
-        userDTO.getEmail(),
-        role,
-        status
-    );
-}
 }
