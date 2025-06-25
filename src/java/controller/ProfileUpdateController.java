@@ -41,15 +41,15 @@ public class ProfileUpdateController extends HttpServlet {
         }
 
         try {
-            String fullname = request.getParameter("fullname");
+            String name = request.getParameter("name");
             String email = request.getParameter("email");
 
-            ProfileUpdateDTO profileDto = new ProfileUpdateDTO(currentUser.getId(), fullname, email);
+            ProfileUpdateDTO profileDto = new ProfileUpdateDTO(currentUser.getId(), name, email);
 
             UserError userError = profileValidator.validateProfileUpdate(profileDto, currentUser);
 
             boolean hasError = (userError.getError() != null && !userError.getError().isEmpty())
-                || (userError.getFullnameError() != null && !userError.getFullnameError().isEmpty())
+                || (userError.getNameError() != null && !userError.getNameError().isEmpty())
                 || (userError.getEmailError() != null && !userError.getEmailError().isEmpty());
 
             if (hasError) {

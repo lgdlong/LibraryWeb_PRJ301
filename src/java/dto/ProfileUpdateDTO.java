@@ -2,15 +2,15 @@ package dto;
 
 public class ProfileUpdateDTO {
     private long id;
-    private String fullname;
+    private String name;
     private String email;
 
     public ProfileUpdateDTO() {
     }
 
-    public ProfileUpdateDTO(long id, String fullname, String email) {
+    public ProfileUpdateDTO(long id, String name, String email) {
         this.id = id;
-        this.fullname = fullname;
+        this.name = name;
         this.email = email;
     }
 
@@ -22,12 +22,12 @@ public class ProfileUpdateDTO {
         this.id = id;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getName() {
+        return name;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -42,7 +42,7 @@ public class ProfileUpdateDTO {
     public String toString() {
         return "ProfileUpdateDTO{" +
             "id=" + id +
-            ", fullname='" + fullname + '\'' +
+            ", name='" + name + '\'' +
             ", email='" + email + '\'' +
             '}';
     }
