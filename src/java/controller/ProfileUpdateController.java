@@ -48,11 +48,7 @@ public class ProfileUpdateController extends HttpServlet {
 
             UserError userError = profileValidator.validateProfileUpdate(profileDto, currentUser);
 
-            boolean hasError = (userError.getError() != null && !userError.getError().isEmpty())
-                || (userError.getNameError() != null && !userError.getNameError().isEmpty())
-                || (userError.getEmailError() != null && !userError.getEmailError().isEmpty());
-
-            if (hasError) {
+            if (userError.hasAnyError()) {
                 request.setAttribute("USER_ERROR", userError);
                 request.setAttribute("USER", profileDto);
                 request.getRequestDispatcher("/profile/edit-profile.jsp").forward(request, response);

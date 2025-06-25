@@ -86,16 +86,13 @@ public class UserService {
 
         try {
             if (!updateSessionUser(session, currentUser.getId())) {
-                // Handle as you wish: log, throw, or redirect
                 System.err.println("Failed to update session user after profile update");
-                // Optional: throw or return custom result, or invalidate session for safety
-                // throw new RuntimeException("Session not updated");
+                throw new RuntimeException("Session update failed after profile update");
             }
         } catch (Exception ex) {
-            // This block catches any unexpected exceptions during session update
             System.err.println("Exception when updating session user: " + ex.getMessage());
             ex.printStackTrace();
-            // Optionally: session.invalidate(); or custom fallback
+            throw new RuntimeException("Session update failed", ex);
         }
 
         System.out.println("Profile update attempted for user ID: " + currentUser.getId());

@@ -4,9 +4,6 @@
  */
 package dto;
 
-/**
- * @author nguye
- */
 public class UserError {
     private String emailError;
     private String passwordError;
@@ -71,4 +68,11 @@ public class UserError {
         this.error = error;
     }
 
+    public boolean hasAnyError() {
+        return (emailError != null && !emailError.isEmpty())
+            || (passwordError != null && !passwordError.isEmpty())
+            || (nameError != null && !nameError.isEmpty())
+            || (confirmError != null && !confirmError.isEmpty())
+            || (error != null && !error.isEmpty());
+    }
 }
