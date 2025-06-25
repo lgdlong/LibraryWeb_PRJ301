@@ -18,18 +18,6 @@ public class AdminRequestController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Kiểm tra quyền admin
-//        HttpSession session = req.getSession();
-//        User currentUser = (User) session.getAttribute("currentUser");
-//        if (currentUser == null || !"ADMIN".equals(currentUser.getRole().toString())) {
-//            resp.sendRedirect(req.getContextPath() + "/login");
-//            return;
-//        }
-//
-//        // Thiết lập CSRF token nếu chưa có
-//        if (session.getAttribute("csrf_token") == null) {
-//            session.setAttribute("csrf_token", UUID.randomUUID().toString());
-//        }
 
         // Lấy tất cả yêu cầu mà không lọc theo trạng thái
         List<BookRequestDTO> requests = requestService.getAllRequests();
