@@ -67,15 +67,16 @@ public class FineService {
 
         for (BorrowRecordDTO record : overdueRecords) {
             try {
-                FineDTO existingFine = getFineByBorrowRecordId(record.getId());
+                Fine fine = fineDao.getByBorrowRecordId(record.getId());
+                FineDTO existingFine = fine != null ? FineMapping.toDTO(fine) : null;
                 double fineAmount = calculateFine(record);
 
                 if (existingFine == null) {
-                    FineDTO fine = new FineDTO();
-                    fine.setBorrowRecordId(record.getId());
-                    fine.setFineAmount(fineAmount);
-                    fine.setPaidStatus(PaidStatus.UNPAID.toString());
-                    addFine(fine);
+                    FineDTO fineDTO = new FineDTO();
+                    fineDTO.setBorrowRecordId(record.getId());
+                    fineDTO.setFineAmount(fineAmount);
+                    fineDTO.setPaidStatus(PaidStatus.UNPAID.toString());
+                    addFine(fineDTO);
                 } else {
                     if (Math.abs(existingFine.getFineAmount() - fineAmount) > 0.001) {
                         existingFine.setFineAmount(fineAmount);
