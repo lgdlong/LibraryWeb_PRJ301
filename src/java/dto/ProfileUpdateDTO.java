@@ -1,7 +1,7 @@
 package dto;
 
 public class ProfileUpdateDTO {
-    long id;
+    private long id;
     private String fullname;
     private String email;
 
