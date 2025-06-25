@@ -18,7 +18,7 @@ public class LogoutController extends HttpServlet {
                 s.invalidate();
 
             }
-            response.sendRedirect("index.html");
+           response.sendRedirect(request.getContextPath() + "/GuestHomeController");
 
 
         } catch (Exception e) {

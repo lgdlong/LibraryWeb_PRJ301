@@ -60,6 +60,10 @@
         <servlet-name>GuestHomeController</servlet-name>
         <servlet-class>controller.GuestHomeController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Profile</servlet-name>
+        <servlet-class>controller.Profile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>
@@ -103,6 +107,10 @@
     <servlet-mapping>
         <servlet-name>GuestHomeController</servlet-name>
         <url-pattern>/GuestHomeController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Profile</servlet-name>
+        <url-pattern>/Profile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
