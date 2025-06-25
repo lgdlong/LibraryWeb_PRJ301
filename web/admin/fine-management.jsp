@@ -44,9 +44,9 @@
           <c:forEach var="fine" items="${fineList}" varStatus="loop">
             <c:if test="${fine.paidStatus == 'unpaid'}">
               <tr
-                onclick="openFineForm('${fine.id}', '${fine.username}', '${fine.bookTitle}', '${fine.fineAmount}', '${fine.paidStatus}', 'unpaid')">
+                onclick="openFineForm('${fine.id}', '${fine.userName}', '${fine.bookTitle}', '${fine.fineAmount}', '${fine.paidStatus}', 'unpaid')">
                 <td>${loop.index + 1}</td>
-                <td>${fine.username}</td>
+                <td>${fine.userName}</td>
                 <td>${fine.bookTitle}</td>
                 <td>${fine.fineAmount}</td>
                 <td><span class="status-badge status-badge-${fine.paidStatus}">${fine.paidStatus}</span></td>
@@ -78,9 +78,9 @@
           <c:forEach var="fine" items="${fineList}" varStatus="loop">
             <c:if test="${fine.paidStatus == 'paid'}">
               <tr
-                onclick="openFineForm('${fine.id}', '${fine.username}', '${fine.bookTitle}', '${fine.fineAmount}', '${fine.paidStatus}', 'paid')">
+                onclick="openFineForm('${fine.id}', '${fine.userName}', '${fine.bookTitle}', '${fine.fineAmount}', '${fine.paidStatus}', 'paid')">
                 <td>${loop.index + 1}</td>
-                <td>${fine.username}</td>
+                <td>${fine.userName}</td>
                 <td>${fine.bookTitle}</td>
                 <td>${fine.fineAmount}</td>
                 <td><span class="status-badge status-badge-${fine.paidStatus}">${fine.paidStatus}</span></td>

@@ -2,6 +2,7 @@ package mapper;
 
 import dto.*;
 import entity.*;
+import enums.*;
 import service.*;
 
 public class FineMapping {
@@ -28,7 +29,7 @@ public class FineMapping {
             bookTitle,
             fine.getBorrowId(),
             fine.getFineAmount(),
-            fine.getPaidStatus()
+            fine.getPaidStatus() != null ? fine.getPaidStatus().toString() : null
         );
     }
 
@@ -41,7 +42,7 @@ public class FineMapping {
             fineDTO.getId(),
             fineDTO.getBorrowRecordId(),
             fineDTO.getFineAmount(),
-            fineDTO.getPaidStatus()
+            fineDTO.getPaidStatus() != null ? PaidStatus.fromString(fineDTO.getPaidStatus()) : null
         );
     }
 }

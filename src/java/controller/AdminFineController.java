@@ -1,7 +1,6 @@
 package controller;
 
 import dto.*;
-import entity.*;
 import enums.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
@@ -35,9 +34,10 @@ public class AdminFineController extends HttpServlet {
         if (idStr != null && newStatusStr != null) {
             try {
                 long id = Long.parseLong(idStr);
-                PaidStatus newStatus = PaidStatus.fromString(newStatusStr);
+                PaidStatus newStatusE = PaidStatus.fromString(newStatusStr);
+                String newStatus = (newStatusE != null) ? newStatusE.toString() : null;
 
-                Fine fine = fineService.getFineById(id);
+                FineDTO fine = fineService.getFineById(id);
                 if (fine != null) {
                     fine.setPaidStatus(newStatus);
                     fineService.updateFine(fine);

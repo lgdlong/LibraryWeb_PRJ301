@@ -2,18 +2,20 @@ package dto;
 
 public class FineDTO {
     private long id;
-    private String username;
+    private String userName;
     private String bookTitle;
+    private long borrowRecordId; // để liên kết nghiệp vụ, nhưng tên là borrowRecordId cho rõ nghĩa
     private double fineAmount;
     private String paidStatus;
 
     public FineDTO() {
     }
 
-    public FineDTO(long id, String username, String bookTitle, double fineAmount, String paidStatus) {
+    public FineDTO(long id, String userName, String bookTitle, long borrowRecordId, double fineAmount, String paidStatus) {
         this.id = id;
-        this.username = username;
+        this.userName = userName;
         this.bookTitle = bookTitle;
+        this.borrowRecordId = borrowRecordId;
         this.fineAmount = fineAmount;
         this.paidStatus = paidStatus;
     }
@@ -26,12 +28,12 @@ public class FineDTO {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getBookTitle() {
@@ -40,6 +42,14 @@ public class FineDTO {
 
     public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
+    }
+
+    public long getBorrowRecordId() {
+        return borrowRecordId;
+    }
+
+    public void setBorrowRecordId(long borrowRecordId) {
+        this.borrowRecordId = borrowRecordId;
     }
 
     public double getFineAmount() {
