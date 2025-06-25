@@ -10,7 +10,9 @@ public class Profile extends HttpServlet {
 
     private boolean isUserNotAuthenticated(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        return session == null || session.getAttribute("LOGIN_USER") == null;
+        if (session == null) return true;
+        Object loginUser = session.getAttribute("LOGIN_USER");
+        return !(loginUser instanceof entity.User);
     }
 
     @Override
