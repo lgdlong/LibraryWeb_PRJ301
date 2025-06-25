@@ -88,7 +88,11 @@ public class BorrowRecordService {
                 && dto.getDueDate() != null
                 && dto.getDueDate().isBefore(now)) {
                 // Nếu quá hạn, cập nhật trạng thái
-                updateStatus(dto.getId(), BorrowStatus.OVERDUE);
+                try {
+                    updateStatus(dto.getId(), BorrowStatus.OVERDUE);
+                } catch (Exception e) {
+                    System.err.println("Failed to update overdue status for record " + dto.getId() + ": " + e.getMessage());
+                }
             }
         }
     }

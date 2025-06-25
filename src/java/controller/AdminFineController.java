@@ -34,12 +34,15 @@ public class AdminFineController extends HttpServlet {
         if (idStr != null && newStatusStr != null) {
             try {
                 long id = Long.parseLong(idStr);
-                PaidStatus newStatusE = PaidStatus.fromString(newStatusStr);
-                String newStatus = (newStatusE != null) ? newStatusE.toString() : null;
+                PaidStatus newStatus = PaidStatus.fromString(newStatusStr);
+                if (newStatus == null) {
+                    // Handle invalid status - return error or use default
+                    return;
+                }
 
                 FineDTO fine = fineService.getFineById(id);
                 if (fine != null) {
-                    fine.setPaidStatus(newStatus);
+                    fine.setPaidStatus(newStatus.toString());
                     fineService.updateFine(fine);
                 }
             } catch (Exception e) {

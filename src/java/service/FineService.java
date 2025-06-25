@@ -66,21 +66,24 @@ public class FineService {
         List<BorrowRecordDTO> overdueRecords = borrowRecordService.getAllOverdue();
 
         for (BorrowRecordDTO record : overdueRecords) {
-            FineDTO existingFine = getFineByBorrowRecordId(record.getId());
-            double fineAmount = calculateFine(record);
+            try {
+                FineDTO existingFine = getFineByBorrowRecordId(record.getId());
+                double fineAmount = calculateFine(record);
 
-            if (existingFine == null) {
-                FineDTO fine = new FineDTO();
-                fine.setBorrowRecordId(record.getId());
-                fine.setFineAmount(fineAmount);
-                fine.setPaidStatus(PaidStatus.UNPAID.toString());
-
-                addFine(fine);
-            } else {
-                if (existingFine.getFineAmount() != fineAmount) {
-                    existingFine.setFineAmount(fineAmount);
-                    updateFine(existingFine);
+                if (existingFine == null) {
+                    FineDTO fine = new FineDTO();
+                    fine.setBorrowRecordId(record.getId());
+                    fine.setFineAmount(fineAmount);
+                    fine.setPaidStatus(PaidStatus.UNPAID.toString());
+                    addFine(fine);
+                } else {
+                    if (Math.abs(existingFine.getFineAmount() - fineAmount) > 0.001) {
+                        existingFine.setFineAmount(fineAmount);
+                        updateFine(existingFine);
+                    }
                 }
+            } catch (Exception e) {
+                System.err.println("Failed to process fine for record " + record.getId() + ": " + e.getMessage());
             }
         }
     }
