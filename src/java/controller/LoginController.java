@@ -46,7 +46,7 @@ public class LoginController extends HttpServlet {
                 if (role.equals(UserRole.ADMIN)) {
                     response.sendRedirect(request.getContextPath() + "/admin");
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/user.jsp");
+                    response.sendRedirect(request.getContextPath() + "/user-layout.jsp");
                 }
             } else {
                 request.setAttribute("ERROR", "Incorrect email or password");

@@ -2,12 +2,12 @@
 <div class="navbar">
     <!-- Menu -->
     <div class="navbar">
-        <a href="GuestHomeController"class="nav-link">Home</a>
+        <a href="${pageContext.request.contextPath}/GuestHomeController"class="nav-link">Home</a>
     </div>
 
     <!-- Only Search Input -->
      <div class="nav-center">
-        <form class="search-bar" action="SearchBookController" method="get">
+        <form class="search-bar" action="${pageContext.request.contextPath}/SearchBookController" method="get">
             <input type="text" name="keyword" placeholder="Search..."
                 value="<%= request.getParameter("keyword") != null ? request.getParameter("keyword") : "" %>" />
             <button type="submit">Search</button>

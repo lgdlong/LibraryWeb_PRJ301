@@ -18,14 +18,14 @@
                 for (Book b : books) {
             %>
             <div class="book-card">
-            <a href="ViewBookController?id=<%= b.getId() %>" class="book-link">
+            <a href="${pageContext.request.contextPath}/ViewBookController?id=<%= b.getId() %>" class="book-link">
                 <img class="book-image" src="<%= b.getCoverUrl() %>" alt="No Image">
             </a>
             <div class="book-meta">
                 <p class="book-title"><%= b.getTitle() %></p>
                 <p class="book-author"><%= b.getAuthor() %></p>
             </div>
-                <form action="borrow" method="post">
+                <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
                            <input type="hidden" name="bookId" value="<%= b.getId() %>">
                            <button type="submit" class="borrow-button">Borrow</button>
                 </form>

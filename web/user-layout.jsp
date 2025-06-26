@@ -9,7 +9,7 @@
 <body>
 
 <!-- Sidebar -->
-<jsp:include page="/guest/guest-sidebar.jsp" />
+<jsp:include page="/user-sidebar.jsp" />
 
 <!-- Main Contain -->
 <div class="main-contain">

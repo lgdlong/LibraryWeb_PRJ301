@@ -19,7 +19,7 @@
     <div class="cards-container">
         <% for (Book b : newBooks) { %>
         <div class="book-card">
-            <a href="ViewBookController?id=<%= b.getId() %>" class="book-link">
+            <a href="${pageContext.request.contextPath}/ViewBookController?id=<%= b.getId() %>" class="book-link">
                 <img src="<%= b.getCoverUrl() %>" alt="Book Cover" class="book-image">
             </a>
             <div class="book-meta">
@@ -28,7 +28,7 @@
                 <p class="book-author"><%= b.getAuthor() %>
                 </p>
             </div>
-            <form action="borrow" method="post" class="borrow-form">
+            <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
                 <input type="hidden" name="bookId" value="<%= b.getId() %>">
                 <button type="submit" class="borrow-button">Borrow</button>
             </form>
@@ -42,7 +42,7 @@
 
     <%--Show Book--%>
     <h2>Books</h2>
-    <c:set var="availableBooks" value="${sessionScope.availableBooks}"/>
+    <c:set var="availableBooks" value="${requestScope.availableBooks}"/>
     <c:if test="${availableBooks == null || empty availableBooks}">
         <p class="no-books">No books available at the moment.</p>
     </c:if>
@@ -51,7 +51,7 @@
         <c:if test="${availableBooks!= null && not empty availableBooks}">
             <c:forEach var="b" items="${availableBooks}">
                 <div class="book-card">
-                    <a href="ViewBookController?id=${b.id}" class="book-link">
+                    <a href="${pageContext.request.contextPath}/ViewBookController?id=${b.id}" class="book-link">
                         <img src="${b.coverUrl}" alt="Book Cover" class="book-image">
                     </a>
 
@@ -62,7 +62,7 @@
                         </p>
                     </div>
                     <c:if test="${b.availableCopies > 0}">
-                        <form action="borrow" method="post" class="borrow-form">
+                        <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
                             <input type="hidden" name="bookId" value="${b.id}">
                             <button type="submit" class="borrow-button">Borrow</button>
                         </form>
