@@ -19,6 +19,12 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            // **GỌI kiểm tra & cập nhật overdue trước khi lấy danh sách**
+            borrowRecordService.checkAndUpdateOverdue();
+
+            // **Xử lý các khoản phạt quá hạn**
+            fineService.processOverdueFines();
+
             request.setAttribute("pageTitle", "Admin Dashboard");
             request.setAttribute("contentPage", "/admin/admin.jsp");
 

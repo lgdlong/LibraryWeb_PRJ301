@@ -27,7 +27,7 @@ public class SystemConfigMapping {
         );
     }
 
-    public static SystemConfigDb toDb(SystemConfig config) {
+    public static SystemConfigDb toEntity(SystemConfig config) {
         if (config == null) {
             return null;
         }

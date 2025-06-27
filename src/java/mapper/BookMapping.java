@@ -23,7 +23,7 @@ public class BookMapping {
         );
     }
 
-    public static Book toBook(BookDTO dto) {
+    public static Book toEntity(BookDTO dto) {
         if (dto == null) return null;
 
         BookStatus status = null;

@@ -11,6 +11,7 @@ import java.util.logging.*;
 public class FineDao {
     private static final Logger LOGGER = Logger.getLogger(FineDao.class.getName());
 
+    // Lấy tất cả Fine entity (chỉ bảng fines)
     public List<Fine> getAll() {
         List<Fine> fines = new ArrayList<>();
         String sql = "SELECT id, borrow_id, fine_amount, paid_status FROM fines WHERE fine_amount > 0";
@@ -22,7 +23,6 @@ public class FineDao {
             while (rs.next()) {
                 fines.add(mapRow(rs));
             }
-
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error fetching all fines", e);
             throw new RuntimeException(e);
@@ -31,6 +31,28 @@ public class FineDao {
         return fines;
     }
 
+    // Lấy Fine theo borrowRecordId
+    public Fine getByBorrowRecordId(long borrowRecordId) {
+        String sql = "SELECT id, borrow_id, fine_amount, paid_status FROM fines WHERE borrow_id = ?";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, borrowRecordId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error fetching fine by borrow record ID", e);
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    // Lấy Fine theo id
     public Fine getById(long id) {
         String sql = "SELECT id, borrow_id, fine_amount, paid_status FROM fines WHERE id = ?";
 
@@ -43,7 +65,6 @@ public class FineDao {
                     return mapRow(rs);
                 }
             }
-
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error fetching fine by ID", e);
             throw new RuntimeException(e);
@@ -63,7 +84,6 @@ public class FineDao {
             stmt.setString(3, fine.getPaidStatus().toString());
 
             stmt.executeUpdate();
-
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error adding fine", e);
             throw new RuntimeException(e);
@@ -82,7 +102,6 @@ public class FineDao {
             stmt.setLong(4, fine.getId());
 
             stmt.executeUpdate();
-
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating fine", e);
             throw new RuntimeException(e);
@@ -97,7 +116,6 @@ public class FineDao {
 
             stmt.setLong(1, id);
             stmt.executeUpdate();
-
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error deleting fine", e);
             throw new RuntimeException(e);
@@ -114,7 +132,6 @@ public class FineDao {
             if (rs.next()) {
                 return rs.getLong(1);
             }
-
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error counting unpaid fines", e);
             throw new RuntimeException(e);
@@ -123,6 +140,7 @@ public class FineDao {
         return 0;
     }
 
+    // --- Hàm convert ResultSet sang Fine entity ---
     private Fine mapRow(ResultSet rs) throws SQLException {
         return new Fine(
             rs.getLong("id"),

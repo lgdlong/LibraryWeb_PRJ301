@@ -16,39 +16,26 @@ public class AdminBorrowRecordController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-//        // Kiểm tra quyền admin
-//        HttpSession session = request.getSession();
-//        User currentUser = (User) session.getAttribute("currentUser");
-//        if (currentUser == null || !"ADMIN".equals(currentUser.getRole().toString())) {
-//            response.sendRedirect(request.getContextPath() + "/login");
-//            return;
-//        }
-//
-//        // Thiết lập CSRF token nếu chưa có
-//        if (session.getAttribute("csrf_token") == null) {
-//            session.setAttribute("csrf_token", UUID.randomUUID().toString());
-//        }
 
-        // Lấy danh sách bản ghi mượn
         try {
-            // Lấy danh sách bản ghi mượn
+
+            // Lấy danh sách bản ghi mượn (sau khi update)
             List<BorrowRecordDTO> dtos = borrowRecordService.getAll();
 
             // Thiết lập thuộc tính cho JSP
             request.setAttribute("borrowRecordList", dtos);
             request.setAttribute("contentPage", "/admin/borrow-record-management.jsp");
 
-            // Chuyển tiếp đến layout
-            request.getRequestDispatcher("/admin/layout.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("errorMessage", "Unable to retrieve borrow records");
             request.setAttribute("borrowRecordList", Collections.emptyList());
         } finally {
             request.setAttribute("pageTitle", "Borrow Record Management");
-            // Đảm bảo luôn forward đến layout
+            // Luôn forward đến layout
             request.getRequestDispatcher("/admin/layout.jsp").forward(request, response);
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

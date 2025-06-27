@@ -32,6 +32,32 @@ public class SystemConfigDao {
         return configs;
     }
 
+    public SystemConfigDb getByConfigKey(String configKey) {
+        String sql = "SELECT id, config_key, config_value, description FROM system_config WHERE config_key = ?";
+        SystemConfigDb config = null;
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, configKey);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                config = new SystemConfigDb(
+                    rs.getLong("id"),
+                    rs.getString("config_key"),
+                    rs.getString("config_value"),
+                    rs.getString("description")
+                );
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching system configuration by key", e);
+        }
+
+        return config;
+    }
+
     public void add(SystemConfig config) {
         String sql = "INSERT INTO system_config (config_key, config_value, description) VALUES (?, ?, ?)";
 

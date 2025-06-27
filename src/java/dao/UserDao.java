@@ -1,8 +1,10 @@
 package dao;
 
 import db.*;
+import dto.*;
 import entity.*;
 import enums.*;
+
 import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
@@ -181,6 +183,34 @@ public class UserDao {
             throw new RuntimeException(e);
         }
     }
+
+    public void updateInfoForUser(ProfileUpdateDTO dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("ProfileUpdateDTO cannot be null");
+        }
+        if (dto.getId() <= 0) {
+            throw new IllegalArgumentException("User ID must be positive");
+        }
+
+        String sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, dto.getName());
+            stmt.setString(2, dto.getEmail());
+            stmt.setLong(3, dto.getId());
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new RuntimeException("No user found with ID: " + dto.getId());
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to update user info for ID: " + dto.getId(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public void delete(long id) {
         String sql = "DELETE FROM users WHERE id = ?";

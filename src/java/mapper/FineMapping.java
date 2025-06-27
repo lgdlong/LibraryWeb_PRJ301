@@ -2,6 +2,7 @@ package mapper;
 
 import dto.*;
 import entity.*;
+import enums.*;
 import service.*;
 
 public class FineMapping {
@@ -26,8 +27,22 @@ public class FineMapping {
             fine.getId(),
             username,
             bookTitle,
+            fine.getBorrowId(),
             fine.getFineAmount(),
-            fine.getPaidStatus().toString()
+            fine.getPaidStatus() != null ? fine.getPaidStatus().toString() : null
+        );
+    }
+
+    public static Fine toEntity(FineDTO fineDTO) {
+        if (fineDTO == null) {
+            throw new IllegalArgumentException("FineDTO cannot be null");
+        }
+
+        return new Fine(
+            fineDTO.getId(),
+            fineDTO.getBorrowRecordId(),
+            fineDTO.getFineAmount(),
+            fineDTO.getPaidStatus() != null ? PaidStatus.fromString(fineDTO.getPaidStatus()) : null
         );
     }
 }
