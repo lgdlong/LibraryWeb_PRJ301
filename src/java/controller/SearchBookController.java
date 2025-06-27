@@ -12,18 +12,22 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import service.BookService;
 
-/**
- *
- * @author Dien Sanh
- */
+
 public class SearchBookController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        HttpSession session = request.getSession();
         String keyword = request.getParameter("keyword");
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            session.setAttribute("searchKeyword", keyword);
+        } else {
+            keyword = (String) session.getAttribute("searchKeyword");
+        }
         if (keyword == null ||keyword.trim().isEmpty()) {
             BookService bookService = new BookService();
             List<Book> availableBooks = bookService.getAvailableBook();
@@ -33,6 +37,7 @@ public class SearchBookController extends HttpServlet {
             request.setAttribute("contentPage","/guest/guest.jsp");
             request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
         }else{
+            session.setAttribute("searchKeyword",keyword);
             List<Book> books;
             BookService service = new BookService();
             books = service.searchBookByKeyword(keyword);

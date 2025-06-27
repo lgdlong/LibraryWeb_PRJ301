@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import service.BookService;
 
 import java.io.IOException;
@@ -21,8 +22,10 @@ public class NewBookController extends HttpServlet {
             BookService bookService = new BookService();
             List<Book> newBooks = bookService.getNewBooks();
 
-            request.setAttribute("newBooks", newBooks);
-            request.setAttribute("contentPage","/guest/guest.jsp");
+
+            HttpSession session = request.getSession();
+            session.setAttribute("newBooks", newBooks);
+            session.setAttribute("contentPage", "/guest/guest.jsp");
 
         } catch (Exception e) {
             System.err.println("Error in NewBookController: " + e.getMessage());

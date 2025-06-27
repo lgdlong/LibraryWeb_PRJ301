@@ -47,8 +47,8 @@
     </servlet>
     <!-- Mapping chỉ cho các servlet không dùng annotation -->
     <servlet>
-        <servlet-name>ViewBorrowBook</servlet-name>
-        <servlet-class>controller.ViewBorrowBook</servlet-class>
+        <servlet-name>ViewBorrowBookController</servlet-name>
+        <servlet-class>controller.ViewBorrowBookController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
@@ -103,8 +103,8 @@
         <servlet-class>controller.BorrowController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ViewBorrowBook</servlet-name>
-        <url-pattern>/ViewBorrowBook</url-pattern>
+        <servlet-name>ViewBorrowBookController</servlet-name>
+        <url-pattern>/ViewBorrowBookController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

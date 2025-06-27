@@ -6,7 +6,13 @@
     <h2>Search Books</h2>
 
     <%
-        List<Book> books = (List<Book>) request.getAttribute("results");
+            List<Book> books = (List<Book>) request.getAttribute("results");
+            if (books == null) {
+                books = (List<Book>) session.getAttribute("searchResults");
+            } else {
+                session.setAttribute("searchResults", books);
+            }
+
         if (books == null || books.isEmpty()) {
     %>
         <p class="no-books">No books found for your search.</p>
@@ -27,7 +33,7 @@
             </div>
                 <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
                            <input type="hidden" name="bookId" value="<%= b.getId() %>">
-                           <input type="hidden" name="currentPage" value="search">
+                           <input type="hidden" name="currentPage" value="SearchBookController">
                            <button type="submit" class="borrow-button">Borrow</button>
                 </form>
             </div>

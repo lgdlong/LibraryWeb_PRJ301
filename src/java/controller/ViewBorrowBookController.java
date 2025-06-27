@@ -4,7 +4,11 @@
  */
 package controller;
 
+import entity.Book;
+import entity.User;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,12 +18,39 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Dien Sanh
  */
-public class ViewBorrowBook extends HttpServlet {
+public class ViewBorrowBookController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+        try {
+            HttpSession session = request.getSession();
+            User us = (User) session.getAttribute("LOGIN_USER");
+            if(us == null){
+                request.getRequestDispatcher("Login.jsp").forward(request,response);
+            }else{
+                ArrayList<Book> list = (ArrayList<Book>) session.getAttribute("borrowBook");
+                String action = request.getParameter("action");
+                String id = request.getParameter("bookId");
+                if(list == null){
+                    list = new ArrayList<>();
+                }
+                if("remove".equals(action)){
+                    long bookId = Long.parseLong(id);
+                    list.removeIf(book -> book.getId()==bookId);
+                    session.setAttribute("borrowBook", list);
+                    response.sendRedirect("ViewBorrowBookController");
+                    return;
+                }
+
+
+                request.setAttribute("borrowBook", list);
+                request.setAttribute("contentPage", "/guest/borrow-book.jsp");
+                request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

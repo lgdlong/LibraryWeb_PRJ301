@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="entity.Book"%>
 <%
-    Book book = (Book) request.getAttribute("book");
+    Book book = (Book) session.getAttribute("book");
 %>
 
 
@@ -24,10 +24,13 @@
         <p><span>Public Year:</span> <%= book.getPublishedYear() %></p>
         <p><span>Available Copies:</span> <%= book.getAvailableCopies() %></p>
         <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
-            <input type="hidden" name="bookId" value="${b.id}">
-            <input type="hidden" name="currentPage" value="view">
+            <input type="hidden" name="bookId" value="<%= book.getId() %>">
+            <input type="hidden" name="currentPage" value="ViewBookController?id=<%= book.getId() %>">
             <button type="submit" class="borrow-button">Borrow</button>
         </form>
+        <%
+            session.removeAttribute("book");
+        %>
     </div>
 </div>
 

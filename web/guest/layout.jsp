@@ -14,11 +14,10 @@
 <!-- Main Contain -->
 <div class="main-contain">
     <%
-        String contentPage = (String) request.getAttribute("contentPage");
+        String contentPage = (String) session.getAttribute("contentPage");
         if (contentPage == null || contentPage.trim().equals("")) {
             contentPage = "/guest/guest.jsp";
         }
-        request.setAttribute("contentPage", contentPage);
     %>
     <c:import url="${contentPage}" />
 </div>
