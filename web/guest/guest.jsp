@@ -30,6 +30,7 @@
             </div>
             <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
                 <input type="hidden" name="bookId" value="<%= b.getId() %>">
+                <input type="hidden" name="currentPage" value="home">
                 <button type="submit" class="borrow-button">Borrow</button>
             </form>
         </div>
@@ -64,6 +65,7 @@
                     <c:if test="${b.availableCopies > 0}">
                         <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
                             <input type="hidden" name="bookId" value="${b.id}">
+                            <input type="hidden" name="currentPage" value="home">
                             <button type="submit" class="borrow-button">Borrow</button>
                         </form>
                     </c:if>

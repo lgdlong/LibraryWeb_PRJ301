@@ -27,6 +27,7 @@
             </div>
                 <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
                            <input type="hidden" name="bookId" value="<%= b.getId() %>">
+                           <input type="hidden" name="currentPage" value="search">
                            <button type="submit" class="borrow-button">Borrow</button>
                 </form>
             </div>

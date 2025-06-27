@@ -29,7 +29,7 @@ public class BorrowController extends HttpServlet {
            }else{
                String id = request.getParameter("bookId");
                Book b = null;
-               if(id!= null){
+               if(id!= null && !id.trim().isEmpty()){
                    BookService service = new BookService();
                    b = service.getBookById(Long.parseLong(id));
                }
@@ -42,8 +42,13 @@ public class BorrowController extends HttpServlet {
                    else{
                        bookList.add(b);
                    }
+
+                   String currentPage = request.getParameter("currentPage");
+                   if(currentPage == null || currentPage.trim().isEmpty()){
+                       currentPage = "home";
+                   }
                    session.setAttribute("borrowBook",bookList);
-                   request.getRequestDispatcher("/user-layout.jsp").forward(request,response);
+                   response.sendRedirect(currentPage +".jsp");
                }
            }
 

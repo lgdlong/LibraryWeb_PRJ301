@@ -25,6 +25,7 @@
         <p><span>Available Copies:</span> <%= book.getAvailableCopies() %></p>
         <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
             <input type="hidden" name="bookId" value="${b.id}">
+            <input type="hidden" name="currentPage" value="view">
             <button type="submit" class="borrow-button">Borrow</button>
         </form>
     </div>
