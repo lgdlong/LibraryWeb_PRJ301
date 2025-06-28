@@ -1,6 +1,7 @@
 package dao;
 
 import db.*;
+import dto.BorrowRecordDTO;
 import entity.*;
 import enums.*;
 
@@ -251,4 +252,34 @@ public class BorrowRecordDao {
             return BorrowStatus.BORROWED; // Giá trị mặc định an toàn
         }
     }
+
+    public List<BorrowRecord> getBorrowHistoryByUserId(long userId) {
+        List<BorrowRecord> history = new ArrayList<>();
+
+        String sql =
+            "SELECT br.id, br.user_id, br.book_id, br.borrow_date, br.due_date, br.return_date, br.status " +
+                "FROM borrow_records br WHERE br.user_id = ? " +
+                "ORDER BY br.borrow_date DESC";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    BorrowRecord record = mapRow(rs);
+                    history.add(record);
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to fetch borrow history by user ID", e);
+            throw new RuntimeException(e);
+        }
+
+        return history;
+    }
+
+
 }

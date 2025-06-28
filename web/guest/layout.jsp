@@ -9,16 +9,20 @@
 <body>
 
 <!-- Sidebar -->
-<jsp:include page="/guest/guest-sidebar.jsp" />
+<c:choose>
+    <c:when test="${empty sidebarPage}">
+        <c:set var="sidebarPage" value="/guest/guest-sidebar.jsp" />
+    </c:when>
+</c:choose>
+<c:import url="${sidebarPage}" />
 
 <!-- Main Contain -->
 <div class="main-contain">
-    <%
-        String contentPage = (String) session.getAttribute("contentPage");
-        if (contentPage == null || contentPage.trim().equals("")) {
-            contentPage = "/guest/guest.jsp";
-        }
-    %>
+    <c:choose>
+        <c:when test="${empty contentPage}">
+            <c:set var="contentPage" value="/guest/guest.jsp" />
+        </c:when>
+    </c:choose>
     <c:import url="${contentPage}" />
 </div>
 
