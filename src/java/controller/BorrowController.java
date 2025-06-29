@@ -40,10 +40,18 @@ public class BorrowController extends HttpServlet {
                        bookList.add(b);
                    }
                    else{
-                       bookList.add(b);
+                       boolean found = false;
+                       for (Book book : bookList){
+                           if(book.getId() == b.getId()){
+                               found = true;
+                               break;
+                           }
+                       }
+                       if (!found){
+                           bookList.add(b);
+                       }
                    }
                    session.setAttribute("borrowBook",bookList);
-
                }
            }
             String currentPage = request.getParameter("currentPage");
