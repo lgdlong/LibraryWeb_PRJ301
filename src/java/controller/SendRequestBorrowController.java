@@ -2,7 +2,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import entity.Book;
@@ -19,7 +18,7 @@ public class SendRequestBorrowController extends HttpServlet {
 
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         User us = (User) session.getAttribute("LOGIN_USER");
@@ -31,26 +30,27 @@ public class SendRequestBorrowController extends HttpServlet {
 
         List<Book> books = (List<Book>) session.getAttribute("borrowBook");
         if(books == null || books.isEmpty()){
-            request.setAttribute("message","No books select to request");
+            session.setAttribute("message", null);
             request.setAttribute("contentPage", "/guest/view-cart.jsp");
             request.setAttribute("sidebarPage", "/guest/my-library-sidebar.jsp");
             request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
             return;
         }
+
         try {
             BorrowRecordService service = new BorrowRecordService();
-            int result = service.sendBorrowRequest(us.getId(),books);
+            int result = service.sendBorrowRequest(us.getId(), books);
             if(result > 0){
-                request.setAttribute("message", "Borrow request sent successfully for ");
+                request.setAttribute("message", "Borrow request sent successfully for selected books.");
                 session.removeAttribute("borrowBook");
             } else {
                 request.setAttribute("message", "Failed to send borrow request. Please try again.");
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
+            session.setAttribute("message", "An error occurred. Please try again.");
         }
+
         request.setAttribute("contentPage", "/guest/view-cart.jsp");
         request.setAttribute("sidebarPage", "/guest/my-library-sidebar.jsp");
         request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);

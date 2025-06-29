@@ -1,58 +1,61 @@
-<%--
-    Document   : history-borrow
-    Created on : Jun 28, 2025, 2:11:42 AM
-    Author     : Dien Sanh
---%>
-
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<h2>Borrowing History</h2>
+<div class="container my-4">
+    <h2 class="text-center mb-4">Borrowing History</h2>
 
-<c:if test="${empty borrowHistory}">
-    <p>You have no borrowing history yet.</p>
-</c:if>
+    <c:if test="${empty borrowHistory}">
+        <p class="text-danger text-center fw-bold">You have no borrowing history yet.</p>
+    </c:if>
 
-<c:if test="${not empty borrowHistory}">
-    <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; text-align: center;">
-        <tr style="background-color: #f2f2f2;">
-            <th>Book Title</th>
-            <th>Borrow Date</th>
-            <th>Due Date</th>
-            <th>Return Date</th>
-            <th>Status</th>
-        </tr>
-
-        <c:forEach var="record" items="${borrowHistory}">
-            <tr>
-                <td>${record.bookTitle}</td>
-                <td>
-                    <c:choose>
-                        <c:when test="${not empty record.borrowDate}">
-                            ${record.borrowDate}
-                        </c:when>
-                        <c:otherwise>-</c:otherwise>
-                    </c:choose>
-                </td>
-                <td>
-                    <c:choose>
-                        <c:when test="${not empty record.dueDate}">
-                            ${record.dueDate}
-                        </c:when>
-                        <c:otherwise>-</c:otherwise>
-                    </c:choose>
-                </td>
-                <td>
-                    <c:choose>
-                        <c:when test="${not empty record.returnDate}">
-                            ${record.returnDate}
-                        </c:when>
-                        <c:otherwise>-</c:otherwise>
-                    </c:choose>
-                </td>
-                <td>${record.status}</td>
-            </tr>
-        </c:forEach>
-    </table>
-</c:if>
-
+    <c:if test="${not empty borrowHistory}">
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Borrow Date</th>
+                        <th>Due Date</th>
+                        <th>Return Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="item" items="${borrowHistory}">
+                        <tr>
+                            <td>${item.bookTitle}</td>
+                            <td>${item.borrowDate}</td>
+                            <td>${item.dueDate}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${empty item.returnDate}">
+                                        <span class="text-danger fw-bold">Not Returned</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${item.returnDate}
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${item.status == 'returned'}">
+                                        <span class="text-success fw-bold">Returned</span>
+                                    </c:when>
+                                    <c:when test="${item.status == 'borrowed'}">
+                                        <span class="text-warning fw-bold">Borrowed</span>
+                                    </c:when>
+                                    <c:when test="${item.status == 'overdue'}">
+                                        <span class="text-danger fw-bold">Overdue</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="text-secondary">${item.status}</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </c:if>
+</div>
