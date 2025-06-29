@@ -1,11 +1,14 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="sidebar">
-    <h2 class="sidebar-title">My Library</h2>
-    <ul class="nav-list">
-            <li><a href="${pageContext.request.contextPath}/GuestHomeController">Home</a></li>
-            <li><a href="${pageContext.request.contextPath}/ViewBorrowBookController">Cart</a></li>
-            <li><a href="${pageContext.request.contextPath}/ViewHistoryBorrowController">Borrowed History</a></li>
-            <li><a href="${pageContext.request.contextPath}/ViewBooksRequestController">Borrow Requests</a></li>
-    </ul>
+<div class="navbar">
+
+    <div class="navbar">
+        <a href="${pageContext.request.contextPath}/GuestHomeController" class="nav-link">Home</a>
+    </div>
+
+    <div class="nav-right">
+        <a href="${pageContext.request.contextPath}/ViewBorrowBookController" class="nav-link">Cart</a>
+        <a href="${pageContext.request.contextPath}/ViewHistoryBorrowController" class="nav-link">Borrowed History</a>
+        <a href="${pageContext.request.contextPath}/ViewBooksRequestController" class="nav-link">Borrow Requests</a>
+    </div>
 </div>

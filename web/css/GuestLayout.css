@@ -112,6 +112,7 @@ h2 {
 /* Borrow button */
 .borrow-form {
     margin-top: auto;
+    text-align: center;
 }
 
 .borrow-button {
@@ -195,7 +196,6 @@ h2 {
     font-weight: bold;
 }
 
-/* Nhóm trái/phải */
 .left, .right {
     display: flex;
     gap: 10px;
