@@ -108,4 +108,29 @@ public class BorrowRecordService {
         borrowRecordDao.updateStatus(id, newStatus);
     }
 
+    public List<BorrowRecordDTO> getBorrowHistoryByUserId(long userId) {
+        if (userId <= 0) throw new IllegalArgumentException("Invalid user ID");
+
+        List<BorrowRecord> history = borrowRecordDao.getBorrowHistoryByUserId(userId);
+
+        if (history == null || history.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return history.stream()
+            .map(BorrowRecordMapping::toBorrowRecordDTO)
+            .collect(Collectors.toList());
+    }
+    public int sendBorrowRequest (long userId, List<Book> books){
+        if (userId <= 0) {
+            throw new IllegalArgumentException("User ID must be positive.");
+        }
+        if (books == null || books.isEmpty()) {
+            throw new IllegalArgumentException("Book list must not be empty.");
+        }
+
+        return borrowRecordDao.sendBorrowRequest(userId, books);
+    }
+
+
 }

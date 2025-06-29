@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import service.BookService;
 
 /**
@@ -23,13 +24,24 @@ public class ViewBookController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        try{
+            String idStr = request.getParameter("id");
+            if(idStr == null || idStr.trim().isEmpty()){
+                response.sendRedirect("GuestHomeController");
+                return;
+            }
+            int id = Integer.parseInt(idStr);
+            BookService service = new BookService();
+            Book book = service.getBookById(id);
 
-        int id = Integer.parseInt(request.getParameter("id"));
-        BookService service = new BookService();
-        Book book = service.getBookById(id);
-        request.setAttribute("book",book);
-        request.setAttribute("contentPage","/guest/guest-view.jsp");
-        request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
+            HttpSession session = request.getSession();
+            session.setAttribute("book",book);
+            session.setAttribute("contentPage","/guest/guest-view.jsp");
+            request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
