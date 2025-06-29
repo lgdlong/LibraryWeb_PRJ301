@@ -27,8 +27,9 @@ public class ViewBorrowBookController extends HttpServlet {
             HttpSession session = request.getSession();
             User us = (User) session.getAttribute("LOGIN_USER");
             if(us == null){
-                request.getRequestDispatcher("Login.jsp").forward(request,response);
-            }else{
+                response.sendRedirect("Login.jsp");
+                return;
+            }
                 ArrayList<Book> list = (ArrayList<Book>) session.getAttribute("borrowBook");
                 String action = request.getParameter("action");
                 String id = request.getParameter("bookId");
@@ -43,12 +44,10 @@ public class ViewBorrowBookController extends HttpServlet {
                     return;
                 }
 
-
                 request.setAttribute("borrowBook", list);
-                request.setAttribute("contentPage", "/guest/borrow-book.jsp");
+                request.setAttribute("contentPage", "/guest/view-cart.jsp");
                 request.setAttribute("sidebarPage", "/guest/my-library-sidebar.jsp");
                 request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

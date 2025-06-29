@@ -121,7 +121,16 @@ public class BorrowRecordService {
             .map(BorrowRecordMapping::toBorrowRecordDTO)
             .collect(Collectors.toList());
     }
+    public int sendBorrowRequest (long userId, List<Book> books){
+        if (userId <= 0) {
+            throw new IllegalArgumentException("User ID must be positive.");
+        }
+        if (books == null || books.isEmpty()) {
+            throw new IllegalArgumentException("Book list must not be empty.");
+        }
 
+        return borrowRecordDao.sendBorrowRequest(userId, books);
+    }
 
 
 }

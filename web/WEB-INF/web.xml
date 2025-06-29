@@ -54,6 +54,14 @@
         <servlet-name>ViewHistoryBorrowController</servlet-name>
         <servlet-class>controller.ViewHistoryBorrowController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SendRequestBorrowController</servlet-name>
+        <servlet-class>controller.SendRequestBorrowController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewBooksRequestController</servlet-name>
+        <servlet-class>controller.ViewBooksRequestController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestController</servlet-name>
         <url-pattern>/TestController</url-pattern>
@@ -113,6 +121,14 @@
     <servlet-mapping>
         <servlet-name>ViewHistoryBorrowController</servlet-name>
         <url-pattern>/ViewHistoryBorrowController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendRequestBorrowController</servlet-name>
+        <url-pattern>/SendRequestBorrowController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewBooksRequestController</servlet-name>
+        <url-pattern>/ViewBooksRequestController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

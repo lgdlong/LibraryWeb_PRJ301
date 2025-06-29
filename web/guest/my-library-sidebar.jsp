@@ -5,6 +5,7 @@
     <ul class="nav-list">
             <li><a href="${pageContext.request.contextPath}/GuestHomeController">Home</a></li>
             <li><a href="${pageContext.request.contextPath}/ViewBorrowBookController">Cart</a></li>
-            <li><a href="${pageContext.request.contextPath}/ViewHistoryBorrowController">Borrow History</a></li>
+            <li><a href="${pageContext.request.contextPath}/ViewHistoryBorrowController">Borrowed History</a></li>
+            <li><a href="${pageContext.request.contextPath}/ViewBooksRequestController">Borrow Requests</a></li>
     </ul>
 </div>

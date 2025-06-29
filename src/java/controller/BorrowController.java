@@ -29,7 +29,6 @@ public class BorrowController extends HttpServlet {
            }else{
                String id = request.getParameter("bookId");
                Book b = null;
-               String action = request.getParameter("action");
                if(id!= null && !id.trim().isEmpty()){
                    BookService service = new BookService();
                    b = service.getBookById(Long.parseLong(id));

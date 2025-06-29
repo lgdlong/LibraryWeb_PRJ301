@@ -281,5 +281,46 @@ public class BorrowRecordDao {
         return history;
     }
 
+    public int sendBorrowRequest(long userId, List<Book> books) {
+        int total = 0;
+        String sql = "insert [dbo].[book_requests] values(?,?,?,?)";
 
-}
+        try (Connection conn = DbConfig.getConnection()) {
+            if (conn != null) {
+                conn.setAutoCommit(false);
+
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Date requestDate = new Date(System.currentTimeMillis());
+
+                    for (Book book : books) {
+                        ps.setLong(1, userId);
+                        ps.setLong(2, book.getId());
+                        ps.setDate(3, requestDate);
+                        ps.setString(4, "pending");
+                        ps.addBatch();
+                    }
+
+                    int[] results = ps.executeBatch();
+                    conn.commit();
+
+                    for (int count : results) {
+                        if (count >= 1) total++;
+                    }
+                } catch (SQLException e) {
+                    conn.rollback();
+                    e.printStackTrace();
+                } finally {
+                    conn.setAutoCommit(true);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return total;
+    }
+    }
+
+
+
+
