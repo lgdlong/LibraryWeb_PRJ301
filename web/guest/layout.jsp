@@ -5,6 +5,7 @@
 <head>
     <title>Library Guest Page</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/GuestLayout.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/my-library-sidebar.css">
 </head>
 <body>
 

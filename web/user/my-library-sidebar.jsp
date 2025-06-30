@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container-fluid px-4">
@@ -16,9 +17,9 @@
 
         <!-- Right - Links -->
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav align-items-center">
+            <ul class="right-links-group d-flex flex-row navbar-nav align-items-center">
                 <li class="nav-item me-3">
-                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewBorrowBookController">Borrowed Books</a>
+                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewBorrowBookController">Selected Books</a>
                 </li>
                 <li class="nav-item me-3">
                     <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewHistoryBorrowController">Borrowed History</a>
@@ -30,4 +31,3 @@
         </div>
     </div>
 </nav>
-
