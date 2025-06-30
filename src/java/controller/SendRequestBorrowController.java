@@ -31,8 +31,8 @@ public class SendRequestBorrowController extends HttpServlet {
         List<Book> books = (List<Book>) session.getAttribute("borrowBook");
         if(books == null || books.isEmpty()){
             session.setAttribute("message", null);
-            request.setAttribute("contentPage", "/guest/view-cart.jsp");
-            request.setAttribute("sidebarPage", "/guest/my-library-sidebar.jsp");
+            request.setAttribute("contentPage", "/user/view-cart.jsp");
+            request.setAttribute("sidebarPage", "/user/my-library-sidebar.jsp");
             request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
             return;
         }
@@ -51,8 +51,8 @@ public class SendRequestBorrowController extends HttpServlet {
             session.setAttribute("message", "An error occurred. Please try again.");
         }
 
-        request.setAttribute("contentPage", "/guest/view-cart.jsp");
-        request.setAttribute("sidebarPage", "/guest/my-library-sidebar.jsp");
+        request.setAttribute("contentPage", "/user/view-cart.jsp");
+        request.setAttribute("sidebarPage", "/user/my-library-sidebar.jsp");
         request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
     }
 
