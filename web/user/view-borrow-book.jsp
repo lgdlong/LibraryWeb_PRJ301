@@ -12,37 +12,37 @@
     <c:if test="${booksRequest != null && not empty booksRequest}">
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover text-center">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Book ID</th>
-                        <th>Request Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="req" items="${booksRequest}">
-                        <tr>
-                            <td>${req.bookId}</td>
-                            <td>${req.requestDate}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${req.status == 'PENDING'}">
-                                        <span class="fw-bold text-dark">PENDING</span>
-                                    </c:when>
-                                    <c:when test="${req.status == 'APPROVED'}">
-                                        <span class="fw-bold text-success">APPROVED</span>
-                                    </c:when>
-                                    <c:when test="${req.status == 'REJECTED'}">
-                                        <span class="fw-bold text-danger">REJECTED</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="text-secondary">${req.status}</span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
+               <thead class="table-dark">
+                   <tr>
+                       <th>Book Title</th>
+                       <th>Request Date</th>
+                       <th>Status</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   <c:forEach var="req" items="${booksRequest}">
+                       <tr>
+                           <td>${bookTitles[req.bookId]}</td> <!-- Lấy tên từ map -->
+                           <td>${req.requestDate}</td>
+                           <td>
+                               <c:choose>
+                                   <c:when test="${req.status == 'PENDING'}">
+                                       <span class="fw-bold text-dark">PENDING</span>
+                                   </c:when>
+                                   <c:when test="${req.status == 'APPROVED'}">
+                                       <span class="fw-bold text-success">APPROVED</span>
+                                   </c:when>
+                                   <c:when test="${req.status == 'REJECTED'}">
+                                       <span class="fw-bold text-danger">REJECTED</span>
+                                   </c:when>
+                                   <c:otherwise>
+                                       <span class="text-secondary">${req.status}</span>
+                                   </c:otherwise>
+                               </c:choose>
+                           </td>
+                       </tr>
+                   </c:forEach>
+               </tbody>
             </table>
         </div>
     </c:if>

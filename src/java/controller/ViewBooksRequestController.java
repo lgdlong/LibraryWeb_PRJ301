@@ -5,8 +5,11 @@
 package controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import entity.Book;
 import entity.BookRequest;
 import entity.User;
 import jakarta.servlet.ServletException;
@@ -15,26 +18,43 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import service.BookRequestService;
+import service.BookService;
 
 public class ViewBooksRequestController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
+
+        try {
             HttpSession session = request.getSession();
             User us = (User) session.getAttribute("LOGIN_USER");
-            if(us == null){
+            if (us == null) {
                 response.sendRedirect("Login.jsp");
                 return;
             }
+
+
             BookRequestService service = new BookRequestService();
             List<BookRequest> list = service.viewBooksRequest(us.getId());
+            BookService bookService = new BookService();
 
-            request.setAttribute("booksRequest",list);
+            Map<Long, String> bookTitles = new HashMap<>();
+            for (BookRequest req : list) {
+                long bookId = req.getBookId();
+                if (!bookTitles.containsKey(bookId)) {
+                    Book book = bookService.getBookById(bookId);
+                    if (book != null) {
+                        bookTitles.put(bookId, book.getTitle());
+                    }
+                }
+            }
+
+            request.setAttribute("booksRequest", list);
+            request.setAttribute("bookTitles", bookTitles);
             request.setAttribute("contentPage", "/user/view-borrow-book.jsp");
             request.setAttribute("sidebarPage", "/user/my-library-sidebar.jsp");
-            request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
+            request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
