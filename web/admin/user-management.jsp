@@ -35,19 +35,20 @@
   <div class="card-header">User List</div>
   <div class="card-body">
     <table class="table table-bordered table-hover table-sm">
-      <thead class="table-light">
+      <thead class="table-dark">
       <tr>
-        <th>#</th> <!-- STT -->
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Status</th>
+        <th class="text-white text-uppercase">#</th>
+        <th class="text-white text-uppercase">Name</th>
+        <th class="text-white text-uppercase">Email</th>
+        <th class="text-white text-uppercase">Role</th>
+        <th class="text-white text-uppercase">Status</th>
+        <th class="text-white text-uppercase">Action</th>
       </tr>
       </thead>
       <tbody>
       <c:forEach var="user" items="${userList}" varStatus="loop">
-        <tr onclick="openUserForm('${user.id}', '${user.email}', '${user.name}', '${user.role}', '${user.status}')">
-          <td>${loop.index + 1}</td> <!-- STT bắt đầu từ 1 -->
+        <tr>
+          <td>${loop.index + 1}</td>
           <td>${user.name}</td>
           <td>${user.email}</td>
           <td>${user.role}</td>
@@ -55,6 +56,15 @@
             <span class="status-badge status-badge-${fn:escapeXml(user.status)}">
                 ${fn:escapeXml(user.status)}
             </span>
+          </td>
+          <td>
+            <button class="btn btn-warning btn-sm me-1" onclick="openUserForm('${user.id}', '${user.email}', '${user.name}', '${user.role}', '${user.status}')">
+              <i class="bi bi-pencil"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="toggleUserStatus('${user.id}', '${user.status}')">
+              <i class="bi bi-${user.status == 'active' ? 'lock' : 'unlock'}"></i> 
+              ${user.status == 'active' ? 'Block' : 'Unblock'}
+            </button>
           </td>
         </tr>
       </c:forEach>
@@ -102,13 +112,32 @@
           </div>
         </div>
         <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-danger" id="userDeleteBtn" onclick="submitUserDelete()">Delete</button>
+          <button type="button" class="btn btn-danger" id="userDeleteBtn" onclick="showDeleteConfirmModal()">Delete</button>
           <div>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Save</button>
           </div>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Confirm Action</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage">Are you sure you want to perform this action?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmActionBtn">Confirm</button>
+      </div>
     </div>
   </div>
 </div>
@@ -144,18 +173,68 @@
     modal.show();
   }
 
+  function showDeleteConfirmModal() {
+    const userId = document.getElementById('userId').value;
+    const userName = document.getElementById('name').value;
 
-  function submitUserDelete() {
-    if (confirm("Are you sure to delete this user?")) {
-      const id = document.getElementById('userId').value;
-      if (id) {
-        const form = document.createElement('form');
-        form.method = 'post';
-        form.action = "${pageContext.request.contextPath}/admin/users?delete=" + encodeURIComponent(id);
-        document.body.appendChild(form);
-        form.submit();
-      }
+    // Set confirmation message
+    document.getElementById('confirmMessage').innerText = `Are you sure you want to delete the user "${userName}"?`;
+
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+
+    // Show confirmation modal
+    confirmModal.show();
+
+    // Handle confirm button click
+    document.getElementById('confirmActionBtn').onclick = function() {
+      confirmModal.hide();
+      submitUserDelete(userId);
+    };
+  }
+
+  function submitUserDelete(userId) {
+    if (userId) {
+      const form = document.createElement('form');
+      form.method = 'post';
+      form.action = "${pageContext.request.contextPath}/admin/users?delete=" + encodeURIComponent(userId);
+      document.body.appendChild(form);
+      form.submit();
     }
+  }
+
+  function toggleUserStatus(userId, currentStatus) {
+    const newStatus = currentStatus === 'active' ? 'blocked' : 'active';
+    const action = newStatus === 'blocked' ? 'block' : 'unblock';
+    
+    // Set confirmation message
+    document.getElementById('confirmMessage').innerText = `Are you sure you want to ${action} this user?`;
+    
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    confirmModal.show();
+    
+    // Handle confirm button click
+    document.getElementById('confirmActionBtn').onclick = function() {
+      confirmModal.hide();
+      
+      const form = document.createElement('form');
+      form.method = 'post';
+      form.action = "${pageContext.request.contextPath}/admin/users";
+      
+      const idField = document.createElement('input');
+      idField.type = 'hidden';
+      idField.name = 'id';
+      idField.value = userId;
+      
+      const statusField = document.createElement('input');
+      statusField.type = 'hidden';
+      statusField.name = 'status';
+      statusField.value = newStatus;
+      
+      form.appendChild(idField);
+      form.appendChild(statusField);
+      document.body.appendChild(form);
+      form.submit();
+    };
   }
 </script>
 

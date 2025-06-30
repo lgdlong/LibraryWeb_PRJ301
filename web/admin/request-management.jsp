@@ -37,25 +37,33 @@
       <div class="card-header">Pending Requests</div>
       <div class="card-body">
         <table class="table table-bordered table-hover table-sm">
-          <thead class="table-light">
+          <thead class="table-dark">
           <tr>
-            <th>#</th>
-            <th>User Name</th>
-            <th>Book Title</th>
-            <th>Request Date</th>
-            <th>Status</th>
+            <th class="text-white text-uppercase">#</th>
+            <th class="text-white text-uppercase">User Name</th>
+            <th class="text-white text-uppercase">Book Title</th>
+            <th class="text-white text-uppercase">Request Date</th>
+            <th class="text-white text-uppercase">Status</th>
+            <th class="text-white text-uppercase">Action</th>
           </tr>
           </thead>
           <tbody>
           <c:forEach var="request" items="${requestList}" varStatus="loop">
             <c:if test="${request.status == 'pending'}">
-              <tr
-                onclick="openRequestForm('${request.id}', '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'pending')">
+              <tr>
                 <td>${loop.index + 1}</td>
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
                 <td>${fn:escapeXml(request.requestDate)}</td>
                 <td><span class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span></td>
+                <td>
+                  <button class="btn btn-success btn-sm me-1" onclick="approveRequest('${request.id}')">
+                    <i class="bi bi-check-circle"></i> Approve
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="rejectRequest('${request.id}')">
+                    <i class="bi bi-x-circle"></i> Reject
+                  </button>
+                </td>
               </tr>
             </c:if>
           </c:forEach>
@@ -71,20 +79,19 @@
       <div class="card-header">Approved Requests</div>
       <div class="card-body">
         <table class="table table-bordered table-hover table-sm">
-          <thead class="table-light">
+          <thead class="table-dark">
           <tr>
-            <th>#</th>
-            <th>User Name</th>
-            <th>Book Title</th>
-            <th>Request Date</th>
-            <th>Status</th>
+            <th class="text-white text-uppercase">#</th>
+            <th class="text-white text-uppercase">User Name</th>
+            <th class="text-white text-uppercase">Book Title</th>
+            <th class="text-white text-uppercase">Request Date</th>
+            <th class="text-white text-uppercase">Status</th>
           </tr>
           </thead>
           <tbody>
           <c:forEach var="request" items="${requestList}" varStatus="loop">
             <c:if test="${request.status == 'approved'}">
-              <tr
-                onclick="openRequestForm('${request.id}', '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'approved')">
+              <tr>
                 <td>${loop.index + 1}</td>
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
@@ -105,20 +112,19 @@
       <div class="card-header">Rejected Requests</div>
       <div class="card-body">
         <table class="table table-bordered table-hover table-sm">
-          <thead class="table-light">
+          <thead class="table-dark">
           <tr>
-            <th>#</th>
-            <th>User Name</th>
-            <th>Book Title</th>
-            <th>Request Date</th>
-            <th>Status</th>
+            <th class="text-white text-uppercase">#</th>
+            <th class="text-white text-uppercase">User Name</th>
+            <th class="text-white text-uppercase">Book Title</th>
+            <th class="text-white text-uppercase">Request Date</th>
+            <th class="text-white text-uppercase">Status</th>
           </tr>
           </thead>
           <tbody>
           <c:forEach var="request" items="${requestList}" varStatus="loop">
             <c:if test="${request.status == 'rejected'}">
-              <tr
-                onclick="openRequestForm('${request.id}', '${fn:escapeXml(request.userName)}', '${fn:escapeXml(request.bookTitle)}', '${fn:escapeXml(request.status)}', 'rejected')">
+              <tr>
                 <td>${loop.index + 1}</td>
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
@@ -171,6 +177,25 @@
   </div>
 </div>
 
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Confirm Action</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage">Are you sure you want to perform this action?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmActionBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   function openRequestForm(id, userName, bookTitle, status, currentTab) {
     const modal = new bootstrap.Modal(document.getElementById('requestModal'));
@@ -199,6 +224,77 @@
 
     modal.show();
   }
+
+  function approveRequest(requestId) {
+    document.getElementById('confirmMessage').innerText = "Are you sure you want to approve this request?";
+    
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    confirmModal.show();
+    
+    document.getElementById('confirmActionBtn').onclick = function() {
+      confirmModal.hide();
+      updateRequestStatus(requestId, 'approved');
+    };
+  }
+
+  function rejectRequest(requestId) {
+    document.getElementById('confirmMessage').innerText = "Are you sure you want to reject this request?";
+    
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    confirmModal.show();
+    
+    document.getElementById('confirmActionBtn').onclick = function() {
+      confirmModal.hide();
+      updateRequestStatus(requestId, 'rejected');
+    };
+  }
+
+  function updateRequestStatus(requestId, status) {
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.action = "${pageContext.request.contextPath}/admin/requests";
+    
+    const idField = document.createElement('input');
+    idField.type = 'hidden';
+    idField.name = 'id';
+    idField.value = requestId;
+    
+    const statusField = document.createElement('input');
+    statusField.type = 'hidden';
+    statusField.name = 'status';
+    statusField.value = status.toUpperCase();
+    
+    form.appendChild(idField);
+    form.appendChild(statusField);
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+  // Confirmation modal logic
+  let currentRequestId;
+  let currentAction;
+
+  function showConfirmModal(requestId, action) {
+    currentRequestId = requestId;
+    currentAction = action;
+
+    const actionText = action === 'approve' ? 'approve' : 'reject';
+    document.getElementById('confirmMessage').innerText = `Are you sure you want to ${actionText} this request?`;
+
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    confirmModal.show();
+  }
+
+  document.getElementById('confirmActionBtn').addEventListener('click', function() {
+    if (currentAction === 'approve') {
+      updateRequestStatus(currentRequestId, 'approved');
+    } else if (currentAction === 'reject') {
+      updateRequestStatus(currentRequestId, 'rejected');
+    }
+
+    const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+    confirmModal.hide();
+  });
 </script>
 
 <style>

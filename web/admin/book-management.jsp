@@ -29,33 +29,23 @@
   <div class="card-header">Book List</div>
   <div class="card-body">
     <table class="table table-bordered table-hover table-sm">
-      <thead class="table-light">
+      <thead class="table-dark">
       <tr>
-        <th>#</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>ISBN</th>
-        <th>Category</th>
-        <th>Published Year</th>
-        <th>Total Copies</th>
-        <th>Available Copies</th>
-        <th>Status</th>
+        <th class="text-white text-uppercase">#</th>
+        <th class="text-white text-uppercase">Title</th>
+        <th class="text-white text-uppercase">Author</th>
+        <th class="text-white text-uppercase">ISBN</th>
+        <th class="text-white text-uppercase">Category</th>
+        <th class="text-white text-uppercase">Published Year</th>
+        <th class="text-white text-uppercase">Total Copies</th>
+        <th class="text-white text-uppercase">Available Copies</th>
+        <th class="text-white text-uppercase">Status</th>
+        <th class="text-white text-uppercase">Action</th>
       </tr>
       </thead>
       <tbody>
       <c:forEach var="book" items="${bookList}" varStatus="loop">
-        <tr
-          onclick="openBookForm(
-          '${book.id}', 
-          '${fn:escapeXml(book.title)}', 
-          '${fn:escapeXml(book.author)}', 
-          '${fn:escapeXml(book.isbn)}', 
-          '${fn:escapeXml(book.coverUrl)}', 
-          '${fn:escapeXml(book.category)}', 
-          '${book.publishedYear}', 
-          '${book.totalCopies}', 
-          '${book.availableCopies}', 
-          '${fn:escapeXml(book.status)}')">
+        <tr>
           <td>${loop.index + 1}</td>
           <td>${fn:escapeXml(book.title)}</td>
           <td>${fn:escapeXml(book.author)}</td>
@@ -65,6 +55,24 @@
           <td>${book.totalCopies}</td>
           <td>${book.availableCopies}</td>
           <td><span class="status-badge status-badge-${fn:escapeXml(book.status)}">${fn:escapeXml(book.status)}</span></td>
+          <td>
+            <button class="btn btn-warning btn-sm" onclick="openBookForm(
+              '${book.id}', 
+              '${fn:escapeXml(book.title)}', 
+              '${fn:escapeXml(book.author)}', 
+              '${fn:escapeXml(book.isbn)}', 
+              '${fn:escapeXml(book.coverUrl)}', 
+              '${fn:escapeXml(book.category)}', 
+              '${book.publishedYear}', 
+              '${book.totalCopies}', 
+              '${book.availableCopies}', 
+              '${fn:escapeXml(book.status)}')">
+              <i class="bi bi-pencil"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="confirmDeleteBook('${book.id}', '${fn:escapeXml(book.title)}')">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
         </tr>
       </c:forEach>
       </tbody>
@@ -184,6 +192,25 @@
   </div>
 </div>
 
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="deleteMessage">Are you sure you want to delete this book?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   function openBookForm(id, title, author, isbn, coverUrl, category, year, total, available, status) {
     const modal = new bootstrap.Modal(document.getElementById('bookModal'));
@@ -204,24 +231,31 @@
     modal.show();
   }
 
-  function submitBookDelete() {
-    if (confirm("Are you sure to delete this book?")) {
-      const id = document.getElementById('bookId').value;
-      if (id) {
-        const form = document.createElement('form');
-        form.method = 'post';
-        form.action = "${pageContext.request.contextPath}/admin/books?delete=" + encodeURIComponent(id);
-        
-        // Add CSRF token
-        const csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = 'csrf_token';
-        csrfInput.value = '${sessionScope.csrf_token}';
-        form.appendChild(csrfInput);
-        
-        document.body.appendChild(form);
-        form.submit();
-      }
+  function confirmDeleteBook(id, title) {
+    const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    document.getElementById('deleteMessage').innerText = `Are you sure you want to delete the book "${title}"?`;
+    document.getElementById('confirmDeleteBtn').onclick = function() {
+      submitBookDelete(id);
+      modal.hide();
+    }
+    modal.show();
+  }
+
+  function submitBookDelete(id) {
+    if (id) {
+      const form = document.createElement('form');
+      form.method = 'post';
+      form.action = "${pageContext.request.contextPath}/admin/books?delete=" + encodeURIComponent(id);
+      
+      // Add CSRF token
+      const csrfInput = document.createElement('input');
+      csrfInput.type = 'hidden';
+      csrfInput.name = 'csrf_token';
+      csrfInput.value = '${sessionScope.csrf_token}';
+      form.appendChild(csrfInput);
+      
+      document.body.appendChild(form);
+      form.submit();
     }
   }
 

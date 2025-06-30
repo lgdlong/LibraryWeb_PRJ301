@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <h2>System Config</h2>
 <p>This page use to set up system variable.</p>
@@ -20,19 +21,25 @@
   <div class="card-header">System Configuration Variables</div>
   <div class="card-body">
     <table class="table table-bordered table-hover table-sm">
-      <thead class="table-light">
+      <thead class="table-dark">
       <tr>
-        <th>Key</th>
-        <th>Value</th>
-        <th>Description</th>
+        <th class="text-white text-uppercase">Key</th>
+        <th class="text-white text-uppercase">Value</th>
+        <th class="text-white text-uppercase">Description</th>
+        <th class="text-white text-uppercase">Action</th>
       </tr>
       </thead>
       <tbody>
       <c:forEach var="config" items="${systemConfigs}">
-        <tr onclick="openForm(${config.id}, '${config.configKey}', '${config.configValue}', '${config.description}')">
+        <tr>
           <td>${config.configKey}</td>
           <td>${config.configValue}</td>
           <td>${config.description}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" onclick="openForm('${config.id}', '${fn:escapeXml(config.configKey)}', '${config.configValue}', '${fn:escapeXml(config.description)}')">
+              <i class="bi bi-pencil"></i> Edit
+            </button>
+          </td>
         </tr>
       </c:forEach>
       </tbody>
