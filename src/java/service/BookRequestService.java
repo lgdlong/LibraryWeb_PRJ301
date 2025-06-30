@@ -3,10 +3,9 @@ package service;
 import dao.*;
 import dto.*;
 import entity.*;
-import mapper.*;
-
 import java.util.*;
 import java.util.stream.*;
+import mapper.*;
 
 public class BookRequestService {
     private final BookRequestDao requestDao = new BookRequestDao();
@@ -45,11 +44,9 @@ public class BookRequestService {
     }
 
     public List<BookRequest> viewBooksRequest(long userId){
--        if(userId < 0){
--            throw new IllegalArgumentException("User Id must be positive");
-+        if(userId <= 0){
-+            throw new IllegalArgumentException("User ID must be positive");
-         }
-         return requestDao.viewBooksRequest(userId);
+        if(userId <= 0){
+            throw new IllegalArgumentException("User ID must be positive");
+        }
+        return requestDao.viewBooksRequest(userId);
      }
 }
