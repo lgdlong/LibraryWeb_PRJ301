@@ -62,7 +62,7 @@
                   class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
                 </td>
                 <td>
-                  <button class="btn btn-success btn-sm" onclick="openReturnModal('${request.id}', false)">
+                  <button class="btn btn-success btn-sm" onclick="openReturnModal('${fn:escapeXml(request.id)}', false)">
                     <i class="bi bi-arrow-return-left"></i> Return
                   </button>
                 </td>
