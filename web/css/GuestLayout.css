@@ -39,14 +39,15 @@ h2 {
 
 
 /* Container containing all book tags */
-
 .cards-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;  
+    justify-content: center;
+    align-items: flex-start; 
     gap: 20px;
-    max-width: 1200px; 
+    max-width: 1200px;
     width: 100%;
+    margin: 0 auto; 
 }
 
 /* Book card */
@@ -66,6 +67,7 @@ h2 {
 .book-card:hover {
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
+
 
 /* Book's image */
 .book-image {

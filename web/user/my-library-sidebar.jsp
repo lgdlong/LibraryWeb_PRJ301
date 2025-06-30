@@ -18,7 +18,7 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav align-items-center">
                 <li class="nav-item me-3">
-                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewBorrowBookController">Borrowed Requests</a>
+                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewBorrowBookController">Borrowed Books</a>
                 </li>
                 <li class="nav-item me-3">
                     <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewHistoryBorrowController">Borrowed History</a>

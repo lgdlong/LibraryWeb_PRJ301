@@ -32,8 +32,8 @@ public class ViewHistoryBorrowController extends HttpServlet {
 
 
             request.setAttribute("borrowHistory", history);
-            request.setAttribute("contentPage", "/guest/history-borrow.jsp");
-            request.setAttribute("sidebarPage", "/guest/my-library-sidebar.jsp");
+            request.setAttribute("contentPage", "/user/history-borrow.jsp");
+            request.setAttribute("sidebarPage", "/user/my-library-sidebar.jsp");
             request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
 
         } catch (Exception e) {

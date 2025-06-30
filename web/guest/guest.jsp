@@ -4,42 +4,35 @@
 <div class="main-content">
 
     <%--Show New Book--%>
-    <%
-      Boolean isSearch = (Boolean) session.getAttribute("isSearch");
-      ArrayList<Book> newBooks = (ArrayList<Book>) session.getAttribute("newBooks");
-      if (isSearch == null || !isSearch) {
-        if (newBooks == null || newBooks.isEmpty()) {
-    %>
-          <h2>New Books</h2>
-          <p class="no-books">No new books published this year.</p>
-    <%
-    } else {
-    %>
-    <h2>New Books</h2>
-    <div class="cards-container">
-        <% for (Book b : newBooks) { %>
-        <div class="book-card">
-            <a href="${pageContext.request.contextPath}/ViewBookController?id=<%= b.getId() %>" class="book-link">
-                <img src="<%= b.getCoverUrl() %>" alt="Book Cover" class="book-image">
-            </a>
-            <div class="book-meta">
-                <p class="book-title"><%= b.getTitle() %>
-                </p>
-                <p class="book-author"><%= b.getAuthor() %>
-                </p>
-            </div>
-            <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
-                <input type="hidden" name="bookId" value="<%= b.getId() %>">
-                <input type="hidden" name="currentPage" value="GuestHomeController">
-                <button type="submit" class="borrow-button">Borrow</button>
-            </form>
-         <% } %>
-        </div>
-    </div>
-    <%
-        }
-      }
-    %>
+    <c:if test="${sessionScope.isSearch == null || not sessionScope.isSearch}">
+        <h2>New Books</h2>
+
+        <c:choose>
+            <c:when test="${sessionScope.newBooks == null || empty sessionScope.newBooks}">
+                <p class="no-books">No new books published this year.</p>
+            </c:when>
+            <c:otherwise>
+                <div class="cards-container">
+                    <c:forEach var="b" items="${sessionScope.newBooks}">
+                        <div class="book-card">
+                            <a href="${pageContext.request.contextPath}/ViewBookController?id=${b.id}" class="book-link">
+                                <img src="${b.coverUrl}" alt="Book Cover" class="book-image">
+                            </a>
+                            <div class="book-meta">
+                                <p class="book-title">${b.title}</p>
+                                <p class="book-author">${b.author}</p>
+                            </div>
+                            <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
+                                <input type="hidden" name="bookId" value="${b.id}">
+                                <input type="hidden" name="currentPage" value="GuestHomeController">
+                                <button type="submit" class="borrow-button">Borrow</button>
+                            </form>
+                        </div>
+                    </c:forEach>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
 
     <%--Show Book--%>
     <h2>Books</h2>

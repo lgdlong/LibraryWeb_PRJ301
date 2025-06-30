@@ -2,16 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/guest/view-borrow-book.jsp</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/controller/ViewBooksRequestController.java</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/controller/ViewBorrowBookController.java</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/guest/guest-sidebar.jsp</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/controller/SendRequestBorrowController.java</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/guest/my-library-sidebar.jsp</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/guest/history-borrow.jsp</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/src/java/controller/ViewHistoryBorrowController.java</file>
-            <file>file:/D:/FPT%20Unversity/K4/PRJ301/LibraryWeb_PRJ301/web/guest/view-cart.jsp</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

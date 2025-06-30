@@ -32,8 +32,8 @@ public class ViewBooksRequestController extends HttpServlet {
             List<BookRequest> list = service.viewBooksRequest(us.getId());
 
             request.setAttribute("booksRequest",list);
-            request.setAttribute("contentPage", "/guest/view-borrow-book.jsp");
-            request.setAttribute("sidebarPage", "/guest/my-library-sidebar.jsp");
+            request.setAttribute("contentPage", "/user/view-borrow-book.jsp");
+            request.setAttribute("sidebarPage", "/user/my-library-sidebar.jsp");
             request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
 
         } catch (Exception e) {
