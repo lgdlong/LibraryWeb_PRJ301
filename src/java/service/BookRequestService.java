@@ -45,9 +45,11 @@ public class BookRequestService {
     }
 
     public List<BookRequest> viewBooksRequest(long userId){
-        if(userId < 0){
-            throw new IllegalArgumentException("User Id must be positive");
-        }
-        return requestDao.viewBooksRequest(userId);
-    }
+-        if(userId < 0){
+-            throw new IllegalArgumentException("User Id must be positive");
++        if(userId <= 0){
++            throw new IllegalArgumentException("User ID must be positive");
+         }
+         return requestDao.viewBooksRequest(userId);
+     }
 }
