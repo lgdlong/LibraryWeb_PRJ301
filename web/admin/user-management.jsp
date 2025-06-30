@@ -61,7 +61,7 @@
             <button class="btn btn-warning btn-sm me-1" onclick="openUserForm('${user.id}', '${user.email}', '${user.name}', '${user.role}', '${user.status}')">
               <i class="bi bi-pencil"></i> Edit
             </button>
-            <button class="btn btn-danger btn-sm" onclick="toggleUserStatus('${user.id}', '${user.status}')">
+            <button class="btn btn-danger btn-sm" onclick="toggleUserStatus('${fn:escapeXml(user.id)}', '${fn:escapeXml(user.status)}')">
               <i class="bi bi-${user.status == 'active' ? 'lock' : 'unlock'}"></i> 
               ${user.status == 'active' ? 'Block' : 'Unblock'}
             </button>
