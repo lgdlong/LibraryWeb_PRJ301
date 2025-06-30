@@ -22,12 +22,12 @@
                <tbody>
                    <c:forEach var="req" items="${booksRequest}">
                        <tr>
-                           <td>${bookTitles[req.bookId]}</td> <!-- Lấy tên từ map -->
+                           <td class="text-start">${bookTitles[req.bookId]}</td> <!-- Lấy tên từ map -->
                            <td>${req.requestDate}</td>
                            <td>
                                <c:choose>
                                    <c:when test="${req.status == 'PENDING'}">
-                                       <span class="fw-bold text-dark">PENDING</span>
+                                       <span class="fw-bold text-primary">PENDING</span>
                                    </c:when>
                                    <c:when test="${req.status == 'APPROVED'}">
                                        <span class="fw-bold text-success">APPROVED</span>
