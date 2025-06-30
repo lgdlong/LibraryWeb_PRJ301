@@ -61,7 +61,12 @@ public class BorrowController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/" + currentPage);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            // Log the error appropriately
+            getServletContext().log("Error in BorrowController", e);
+            
+            // Provide user feedback
+            request.setAttribute("errorMessage", "An error occurred while processing your request. Please try again.");
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
 
     }
