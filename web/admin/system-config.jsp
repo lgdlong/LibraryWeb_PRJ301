@@ -36,7 +36,7 @@
           <td>${config.configValue}</td>
           <td>${config.description}</td>
           <td>
-            <button class="btn btn-warning btn-sm" onclick="openForm('${config.id}', '${fn:escapeXml(config.configKey)}', '${config.configValue}', '${fn:escapeXml(config.description)}')">
+            <button class="btn btn-warning btn-sm" onclick="openForm('${config.id}', '${fn:escapeXml(config.configKey)}', '${fn:escapeXml(config.configValue)}', '${fn:escapeXml(config.description)}')">
               <i class="bi bi-pencil"></i> Edit
             </button>
           </td>
