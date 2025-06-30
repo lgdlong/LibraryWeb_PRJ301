@@ -39,24 +39,26 @@ h2 {
 
 
 /* Container containing all book tags */
+
 .cards-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;  
     gap: 20px;
-    padding: 10px;
+    max-width: 1200px; 
+    width: 100%;
 }
 
 /* Book card */
 .book-card {
     background-color: #fff;
     width: 180px;
-    height: 300px;
+    height: auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    align-items: center;
     padding: 8px;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
 }

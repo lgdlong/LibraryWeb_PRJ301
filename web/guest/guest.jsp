@@ -10,8 +10,8 @@
       if (isSearch == null || !isSearch) {
         if (newBooks == null || newBooks.isEmpty()) {
     %>
-    <%--                    <h2>New Books</h2>--%>
-    <%--                    <p class="no-books">No new books published this year.</p>--%>
+          <h2>New Books</h2>
+          <p class="no-books">No new books published this year.</p>
     <%
     } else {
     %>
@@ -33,8 +33,8 @@
                 <input type="hidden" name="currentPage" value="GuestHomeController">
                 <button type="submit" class="borrow-button">Borrow</button>
             </form>
+         <% } %>
         </div>
-        <% } %>
     </div>
     <%
         }
