@@ -24,7 +24,7 @@ public class SendRequestBorrowController extends HttpServlet {
         User us = (User) session.getAttribute("LOGIN_USER");
 
         if(us == null){
-            response.sendRedirect("Login.jsp");
+            response.sendRedirect(request.getContextPath() + "/Login.jsp");
             return;
         }
 
