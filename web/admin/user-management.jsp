@@ -58,7 +58,7 @@
             </span>
           </td>
           <td>
-            <button class="btn btn-warning btn-sm me-1" onclick="openUserForm('${user.id}', '${user.email}', '${user.name}', '${user.role}', '${user.status}')">
+            <button class="btn btn-warning btn-sm me-1" onclick="openUserForm('${fn:escapeXml(user.id)}', '${fn:escapeXml(user.email)}', '${fn:escapeXml(user.name)}', '${fn:escapeXml(user.role)}', '${fn:escapeXml(user.status)}')">
               <i class="bi bi-pencil"></i> Edit
             </button>
             <button class="btn btn-danger btn-sm" onclick="toggleUserStatus('${fn:escapeXml(user.id)}', '${fn:escapeXml(user.status)}')">
