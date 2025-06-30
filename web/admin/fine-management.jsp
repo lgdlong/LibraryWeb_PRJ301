@@ -31,13 +31,13 @@
       <div class="card-header">Unpaid Fines</div>
       <div class="card-body">
         <table class="table table-bordered table-hover table-sm">
-          <thead class="table-light">
+          <thead class="table-dark">
           <tr>
-            <th>#</th>
-            <th>Username</th>
-            <th>Book Title</th>
-            <th>Amount</th>
-            <th>Status</th>
+            <th class="text-white text-uppercase">#</th>
+            <th class="text-white text-uppercase">Username</th>
+            <th class="text-white text-uppercase">Book Title</th>
+            <th class="text-white text-uppercase">Amount</th>
+            <th class="text-white text-uppercase">Status</th>
           </tr>
           </thead>
           <tbody>
@@ -48,7 +48,7 @@
                 <td>${loop.index + 1}</td>
                 <td>${fine.userName}</td>
                 <td>${fine.bookTitle}</td>
-                <td>${fine.fineAmount}</td>
+                <td class="fw-bold text-primary">${fine.fineAmount}</td>
                 <td><span class="status-badge status-badge-${fine.paidStatus}">${fine.paidStatus}</span></td>
               </tr>
             </c:if>
@@ -65,13 +65,13 @@
       <div class="card-header">Paid Fines</div>
       <div class="card-body">
         <table class="table table-bordered table-hover table-sm">
-          <thead class="table-light">
+          <thead class="table-dark">
           <tr>
-            <th>#</th>
-            <th>Username</th>
-            <th>Book Title</th>
-            <th>Amount</th>
-            <th>Status</th>
+            <th class="text-white text-uppercase">#</th>
+            <th class="text-white text-uppercase">Username</th>
+            <th class="text-white text-uppercase">Book Title</th>
+            <th class="text-white text-uppercase">Amount</th>
+            <th class="text-white text-uppercase">Status</th>
           </tr>
           </thead>
           <tbody>
@@ -82,7 +82,7 @@
                 <td>${loop.index + 1}</td>
                 <td>${fine.userName}</td>
                 <td>${fine.bookTitle}</td>
-                <td>${fine.fineAmount}</td>
+                <td class="fw-bold text-primary">${fine.fineAmount}</td>
                 <td><span class="status-badge status-badge-${fine.paidStatus}">${fine.paidStatus}</span></td>
               </tr>
             </c:if>

@@ -38,14 +38,15 @@
       <div class="card-header">Borrowed Records</div>
       <div class="card-body">
         <table class="table table-bordered table-hover table-sm">
-          <thead class="table-light">
+          <thead class="table-dark">
           <tr>
-            <th>#</th>
-            <th>User Name</th>
-            <th>Book Title</th>
-            <th>Borrow Date</th>
-            <th>Due Date</th>
-            <th>Status</th>
+            <th class="text-white text-uppercase">#</th>
+            <th class="text-white text-uppercase">User Name</th>
+            <th class="text-white text-uppercase">Book Title</th>
+            <th class="text-white text-uppercase">Borrow Date</th>
+            <th class="text-white text-uppercase">Due Date</th>
+            <th class="text-white text-uppercase">Status</th>
+            <th class="text-white text-uppercase">Action</th>
           </tr>
           </thead>
           <tbody>
@@ -59,6 +60,11 @@
                 <td>${fn:escapeXml(request.dueDate)}</td>
                 <td><span
                   class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
+                </td>
+                <td>
+                  <button class="btn btn-success btn-sm" onclick="openReturnModal('${fn:escapeXml(request.id)}', false)">
+                    <i class="bi bi-arrow-return-left"></i> Return
+                  </button>
                 </td>
               </tr>
             </c:if>
@@ -75,15 +81,15 @@
       <div class="card-header">Returned Records</div>
       <div class="card-body">
         <table class="table table-bordered table-hover table-sm">
-          <thead class="table-light">
+          <thead class="table-dark">
           <tr>
-            <th>#</th>
-            <th>User Name</th>
-            <th>Book Title</th>
-            <th>Borrow Date</th>
-            <th>Due Date</th>
-            <th>Return Date</th>
-            <th>Status</th>
+            <th class="text-white text-uppercase">#</th>
+            <th class="text-white text-uppercase">User Name</th>
+            <th class="text-white text-uppercase">Book Title</th>
+            <th class="text-white text-uppercase">Borrow Date</th>
+            <th class="text-white text-uppercase">Due Date</th>
+            <th class="text-white text-uppercase">Return Date</th>
+            <th class="text-white text-uppercase">Status</th>
           </tr>
           </thead>
           <tbody>
@@ -114,15 +120,16 @@
       <div class="card-header">Overdue Records</div>
       <div class="card-body">
         <table class="table table-bordered table-hover table-sm">
-          <thead class="table-light">
+          <thead class="table-dark">
           <tr>
-            <th>#</th>
-            <th>User Name</th>
-            <th>Book Title</th>
-            <th>Borrow Date</th>
-            <th>Due Date</th>
-            <th>Return Date</th>
-            <th>Status</th>
+            <th class="text-white text-uppercase">#</th>
+            <th class="text-white text-uppercase">User Name</th>
+            <th class="text-white text-uppercase">Book Title</th>
+            <th class="text-white text-uppercase">Borrow Date</th>
+            <th class="text-white text-uppercase">Due Date</th>
+            <th class="text-white text-uppercase">Return Date</th>
+            <th class="text-white text-uppercase">Status</th>
+            <th class="text-white text-uppercase">Action</th>
           </tr>
           </thead>
           <tbody>
@@ -138,6 +145,11 @@
                 <td><span
                   class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
                 </td>
+                <td>
+                  <button class="btn btn-success btn-sm" onclick="openReturnModal('${request.id}', true)">
+                    <i class="bi bi-arrow-return-left"></i> Return
+                  </button>
+                </td>
               </tr>
             </c:if>
           </c:forEach>
@@ -147,6 +159,86 @@
     </div>
   </div>
 </div>
+
+<!-- Return Confirmation Modal -->
+<div class="modal fade" id="returnConfirmModal" tabindex="-1" aria-labelledby="returnConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="returnConfirmModalLabel">Confirm Return</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="returnMessage">Are you sure you want to mark this book as returned?</p>
+        <div id="finePaymentSection" style="display: none;">
+          <hr>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="finePaidCheck">
+            <label class="form-check-label" for="finePaidCheck">
+              Has the fine been paid?
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" id="confirmReturnBtn">Confirm Return</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentBorrowId;
+  let isCurrentOverdue;
+
+  function openReturnModal(borrowId, isOverdue) {
+    currentBorrowId = borrowId;
+    isCurrentOverdue = isOverdue;
+
+    const message = isOverdue ?
+      "This book is overdue. Please confirm if you want to mark it as returned." :
+      "Are you sure you want to mark this book as returned?";
+
+    document.getElementById('returnMessage').innerText = message;
+    document.getElementById('finePaymentSection').style.display = isOverdue ? 'block' : 'none';
+
+    const modal = new bootstrap.Modal(document.getElementById('returnConfirmModal'));
+    modal.show();
+  }
+
+  document.getElementById('confirmReturnBtn').addEventListener('click', function () {
+    const isPaid = document.getElementById('finePaidCheck').checked;
+    returnBook(currentBorrowId, isCurrentOverdue, isPaid);
+  });
+
+  function returnBook(borrowId, isOverdue, isPaid) {
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.action = "${pageContext.request.contextPath}/admin/borrow-records";
+
+    const idField = document.createElement('input');
+    idField.type = 'hidden';
+    idField.name = 'id';
+    idField.value = borrowId;
+
+    const statusField = document.createElement('input');
+    statusField.type = 'hidden';
+    statusField.name = 'status';
+    statusField.value = 'returned';
+
+    const paidField = document.createElement('input');
+    paidField.type = 'hidden';
+    paidField.name = 'finePaid';
+    paidField.value = isPaid ? 'true' : 'false';
+
+    form.appendChild(idField);
+    form.appendChild(statusField);
+    form.appendChild(paidField);
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>
 
 <style>
   .status-badge {
