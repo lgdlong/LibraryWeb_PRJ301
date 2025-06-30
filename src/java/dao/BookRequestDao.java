@@ -89,8 +89,8 @@ public class BookRequestDao {
 
         public List<BookRequest> viewBooksRequest(long userId) {
             List<BookRequest> list = new ArrayList<>();
-            String sql = "SELECT [id], [user_id], [book_id], [request_date], [status] " +
-                "FROM [dbo].[book_requests] WHERE [user_id] = ?";
+            String sql = "SELECT id, user_id, book_id, request_date, status " +
+                "FROM book_requests WHERE user_id = ?";
 
             try (Connection conn = DbConfig.getConnection();
                  PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -103,15 +103,15 @@ public class BookRequestDao {
                         long uid = rs.getLong("user_id");
                         long bookId = rs.getLong("book_id");
                         LocalDate requestDate = rs.getDate("request_date").toLocalDate();
-                        RequestStatus status = RequestStatus.valueOf(rs.getString("status").toUpperCase());
+                        RequestStatus status = RequestStatus.fromString(rs.getString("status"));
 
                         BookRequest request = new BookRequest(id, uid, bookId, requestDate, status);
                         list.add(request);
                     }
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (SQLException e) {
+                throw new RuntimeException("Error retrieving book requests by user ID", e);
             }
 
             return list;
