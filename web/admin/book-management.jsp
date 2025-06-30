@@ -233,7 +233,7 @@
 
   function confirmDeleteBook(id, title) {
     const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-    document.getElementById('deleteMessage').innerText = `Are you sure you want to delete the book "${title}"?`;
+    document.getElementById('deleteMessage').innerText = `Are you sure you want to delete the book?`;
     document.getElementById('confirmDeleteBtn').onclick = function() {
       submitBookDelete(id);
       modal.hide();
