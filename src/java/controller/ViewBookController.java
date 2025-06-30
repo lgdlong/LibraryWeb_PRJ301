@@ -38,8 +38,12 @@ public class ViewBookController extends HttpServlet {
             session.setAttribute("book",book);
             session.setAttribute("contentPage","/guest/guest-view.jsp");
             request.getRequestDispatcher("/guest/layout.jsp").forward(request,response);
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid book ID format: " + request.getParameter("id"));
+            response.sendRedirect(request.getContextPath() + "/GuestHomeController");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error in ViewBookController: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the book.");
         }
 
 
