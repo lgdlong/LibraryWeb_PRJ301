@@ -33,6 +33,7 @@
     <div class="user-nav">
       <span class="welcome-text"> Welcome, <%= us.getName() %></span>
       <a href="<%= request.getContextPath() %>/profile" class="nav-link">Profile</a>
+      <a href="${pageContext.request.contextPath}/ViewBorrowBookController" class="nav-link">My Library</a>
       <a href="LogoutController" class="nav-link logout-btn">Logout</a>
     </div>
     <%
@@ -40,3 +41,6 @@
     %>
   </div>
 </div>
+
+
+

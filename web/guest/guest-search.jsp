@@ -1,41 +1,35 @@
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List" %>
-<%@ page import="entity.Book" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <div class="main-content">
     <h2>Search Books</h2>
 
-    <%
-        List<Book> books = (List<Book>) request.getAttribute("results");
-        if (books == null || books.isEmpty()) {
-    %>
-        <p class="no-books">No books found for your search.</p>
-    <%
-        } else {
-    %>
-        <div class="cards-container">
-            <%
-                for (Book b : books) {
-            %>
-            <div class="book-card">
-            <a href="ViewBookController?id=<%= b.getId() %>" class="book-link">
-                <img class="book-image" src="<%= b.getCoverUrl() %>" alt="No Image">
-            </a>
-            <div class="book-meta">
-                <p class="book-title"><%= b.getTitle() %></p>
-                <p class="book-author"><%= b.getAuthor() %></p>
+    <c:set var="books" value="${requestScope.results != null ? requestScope.results : sessionScope.searchResults}" />
+
+    <c:choose>
+        <c:when test="${books == null || empty books}">
+            <p class="no-books">No books found for your search.</p>
+        </c:when>
+        <c:otherwise>
+            <div class="cards-container">
+                <c:forEach var="b" items="${books}">
+                    <div class="book-card">
+                        <a href="${pageContext.request.contextPath}/ViewBookController?id=${b.id}" class="book-link">
+                            <img class="book-image" src="${b.coverUrl}" alt="No Image">
+                        </a>
+                        <div class="book-meta">
+                            <p class="book-title">${b.title}</p>
+                            <p class="book-author">${b.author}</p>
+                        </div>
+                        <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
+                            <input type="hidden" name="bookId" value="${b.id}">
+                            <input type="hidden" name="currentPage" value="SearchBookController">
+                            <button type="submit" class="borrow-button">Borrow</button>
+                        </form>
+                    </div>
+                </c:forEach>
             </div>
-                <form action="borrow" method="post">
-                           <input type="hidden" name="bookId" value="<%= b.getId() %>">
-                           <button type="submit" class="borrow-button">Borrow</button>
-                </form>
-            </div>
-            <%
-                }
-            %>
-        </div>
-    <%
-        }
-    %>
+        </c:otherwise>
+    </c:choose>
 </div>
 

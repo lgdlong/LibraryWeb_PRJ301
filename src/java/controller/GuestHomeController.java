@@ -13,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import service.BookService;
 
 /**
@@ -29,9 +30,10 @@ public class GuestHomeController extends HttpServlet {
             List<Book> newBooks = bookService.getNewBooks();
             List<Book> availableBooks = bookService.getAvailableBook();
 
-            request.setAttribute("newBooks", newBooks);
-            request.setAttribute("availableBooks", availableBooks);
-            request.setAttribute("contentPage", "/guest/guest.jsp");
+            HttpSession session = request.getSession();
+            session.setAttribute("newBooks", newBooks);
+            session.setAttribute("availableBooks", availableBooks);
+            session.setAttribute("contentPage", "/guest/guest.jsp");
 
             request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
 

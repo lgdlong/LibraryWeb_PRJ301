@@ -1,0 +1,36 @@
+/* my-library-sidebar.css */
+/* === Navbar Right Links Group (override all) === */
+nav .right-links-group {
+    background-color: #dff0f7 !important;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05) !important;
+    border-radius: 0.6rem !important;
+    display: flex !important;
+    padding: 2px 8px !important;
+}
+/* Override all nav-link styles inside right-links-group */
+nav .right-links-group .nav-link {
+    transition: background 0.2s, color 0.2s, font-weight 0.2s !important;
+    border-radius: 0.6rem !important;
+    padding: 0.5rem 1rem !important;
+    color: #000000 !important;
+    background: transparent !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    box-shadow: none !important;
+}
+/* Hover and focus effect: like button */
+nav .right-links-group .nav-link:hover,
+nav .right-links-group .nav-link:focus {
+    background-color: #e74c3c !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.1) !important;
+    outline: none !important;
+}
+/* Remove default border or background from previous nav-item style */
+nav .right-links-group .nav-item {
+    border: none !important;
+    background: none !important;
+    margin-bottom: 0 !important;
+}

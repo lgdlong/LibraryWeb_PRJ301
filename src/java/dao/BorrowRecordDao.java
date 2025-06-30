@@ -1,6 +1,7 @@
 package dao;
 
 import db.*;
+import dto.BorrowRecordDTO;
 import entity.*;
 import enums.*;
 
@@ -251,4 +252,75 @@ public class BorrowRecordDao {
             return BorrowStatus.BORROWED; // Giá trị mặc định an toàn
         }
     }
-}
+
+    public List<BorrowRecord> getBorrowHistoryByUserId(long userId) {
+        List<BorrowRecord> history = new ArrayList<>();
+
+        String sql =
+            "SELECT br.id, br.user_id, br.book_id, br.borrow_date, br.due_date, br.return_date, br.status " +
+                "FROM borrow_records br WHERE br.user_id = ? " +
+                "ORDER BY br.borrow_date DESC";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    BorrowRecord record = mapRow(rs);
+                    history.add(record);
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to fetch borrow history by user ID", e);
+            throw new RuntimeException(e);
+        }
+
+        return history;
+    }
+
+    public int sendBorrowRequest(long userId, List<Book> books) {
+        int total = 0;
+        String sql = "insert [dbo].[book_requests] values(?,?,?,?)";
+
+        try (Connection conn = DbConfig.getConnection()) {
+            if (conn != null) {
+                conn.setAutoCommit(false);
+
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    Date requestDate = new Date(System.currentTimeMillis());
+
+                    for (Book book : books) {
+                        ps.setLong(1, userId);
+                        ps.setLong(2, book.getId());
+                        ps.setDate(3, requestDate);
+                        ps.setString(4, "pending");
+                        ps.addBatch();
+                    }
+
+                    int[] results = ps.executeBatch();
+                    conn.commit();
+
+                    for (int count : results) {
+                        if (count >= 1) total++;
+                    }
+                } catch (SQLException e) {
+                    conn.rollback();
+                    e.printStackTrace();
+                } finally {
+                    conn.setAutoCommit(true);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return total;
+    }
+    }
+
+
+
+

@@ -5,6 +5,7 @@ import entity.*;
 import enums.*;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.*;
 
 public class BookRequestDao {
@@ -85,4 +86,34 @@ public class BookRequestDao {
             throw new RuntimeException("Error updating book request status", e);
         }
     }
+
+        public List<BookRequest> viewBooksRequest(long userId) {
+            List<BookRequest> list = new ArrayList<>();
+            String sql = "SELECT id, user_id, book_id, request_date, status " +
+                "FROM book_requests WHERE user_id = ?";
+
+            try (Connection conn = DbConfig.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setLong(1, userId);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        long id = rs.getLong("id");
+                        long uid = rs.getLong("user_id");
+                        long bookId = rs.getLong("book_id");
+                        LocalDate requestDate = rs.getDate("request_date").toLocalDate();
+                        RequestStatus status = RequestStatus.fromString(rs.getString("status"));
+
+                        BookRequest request = new BookRequest(id, uid, bookId, requestDate, status);
+                        list.add(request);
+                    }
+                }
+
+            } catch (SQLException e) {
+                throw new RuntimeException("Error retrieving book requests by user ID", e);
+            }
+
+            return list;
+        }
 }

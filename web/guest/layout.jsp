@@ -5,21 +5,25 @@
 <head>
     <title>Library Guest Page</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/GuestLayout.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/my-library-sidebar.css">
 </head>
 <body>
 
 <!-- Sidebar -->
-<jsp:include page="/guest/guest-sidebar.jsp" />
+<c:choose>
+    <c:when test="${empty sidebarPage}">
+        <c:set var="sidebarPage" value="/guest/guest-sidebar.jsp" />
+    </c:when>
+</c:choose>
+<c:import url="${sidebarPage}" />
 
-<!-- Nội dung chính -->
+<!-- Main Contain -->
 <div class="main-contain">
-    <%
-        String contentPage = (String) request.getAttribute("contentPage");
-        if (contentPage == null || contentPage.trim().equals("")) {
-            contentPage = "/guest/guest.jsp";
-        }
-        request.setAttribute("contentPage", contentPage);
-    %>
+    <c:choose>
+        <c:when test="${empty contentPage}">
+            <c:set var="contentPage" value="/guest/guest.jsp" />
+        </c:when>
+    </c:choose>
     <c:import url="${contentPage}" />
 </div>
 
