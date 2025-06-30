@@ -57,10 +57,10 @@
                 <td>${fn:escapeXml(request.requestDate)}</td>
                 <td><span class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span></td>
                 <td>
-                  <button class="btn btn-success btn-sm me-1" onclick="approveRequest('${request.id}')">
+                  <button class="btn btn-success btn-sm me-1" onclick="approveRequest('${fn:escapeXml(request.id)}')">
                     <i class="bi bi-check-circle"></i> Approve
                   </button>
-                  <button class="btn btn-danger btn-sm" onclick="rejectRequest('${request.id}')">
+                  <button class="btn btn-danger btn-sm" onclick="rejectRequest('${fn:escapeXml(request.id)}')">
                     <i class="bi bi-x-circle"></i> Reject
                   </button>
                 </td>
