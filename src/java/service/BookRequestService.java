@@ -112,9 +112,6 @@ public class BookRequestService {
             if (req.getStatus() == null) {
                 throw new IllegalArgumentException("Request status is null");
             }
-            if (requestId <= 0) {
-                throw new IllegalArgumentException("Request ID must be positive");
-            }
             if (!RequestStatus.PENDING.equals(req.getStatus())) {
                 throw new IllegalArgumentException("Request is not in PENDING status");
             }
