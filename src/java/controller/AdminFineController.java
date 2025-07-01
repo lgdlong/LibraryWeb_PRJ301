@@ -53,5 +53,4 @@ public class AdminFineController extends HttpServlet {
 
         response.sendRedirect(request.getContextPath() + "/admin/fines");
     }
-
 }

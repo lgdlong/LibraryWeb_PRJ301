@@ -41,9 +41,4 @@ public class AdminController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal error in Dashboard.");
         }
     }
-
-    @Override
-    public String getServletInfo() {
-        return "AdminController (Dashboard only)";
-    }
 }

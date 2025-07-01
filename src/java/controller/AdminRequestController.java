@@ -30,21 +30,6 @@ public class AdminRequestController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Kiểm tra quyền admin
-//        HttpSession session = req.getSession();
-//        User currentUser = (User) session.getAttribute("currentUser");
-//        if (currentUser == null || !"ADMIN".equals(currentUser.getRole().toString())) {
-//            resp.sendRedirect(req.getContextPath() + "/login");
-//            return;
-//        }
-//
-//        // Kiểm tra CSRF token
-//        String csrfToken = req.getParameter("csrf_token");
-//        if (csrfToken == null || !csrfToken.equals(session.getAttribute("csrf_token"))) {
-//            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid CSRF token.");
-//            return;
-//        }
-
         String idParam = req.getParameter("id");
         String statusParam = req.getParameter("status");
 
@@ -82,10 +67,5 @@ public class AdminRequestController extends HttpServlet {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error updating request status.");
         }
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Admin Request Controller for managing book requests";
     }
 }
