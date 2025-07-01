@@ -13,6 +13,7 @@ import java.util.stream.*;
 public class BorrowRecordService {
     private final BorrowRecordDao borrowRecordDao = new BorrowRecordDao();
     private final BookDao bookDao = new BookDao();
+    private final BookRequestDao bookRequestDao = new BookRequestDao();
 
     public List<BorrowRecordDTO> getAll() {
         List<BorrowRecord> records;
@@ -149,14 +150,18 @@ public void approveBookRequest(BookRequest request) {
     dto.setUserId(request.getUserId());
     dto.setBookId(request.getBookId());
     dto.setBorrowDate(LocalDate.now());
-    dto.setDueDate(LocalDate.now().plusDays(14));
+     dto.setDueDate(LocalDate.now().plusDays(getLoanPeriodDays()));
     dto.setStatus("BORROWED");
 
     // 2. Ghi bản ghi mượn và trừ sách
     addBorrowRecord(dto);
 
     // 3. Cập nhật trạng thái yêu cầu mượn
-    new BookRequestDao().updateStatus(request.getId(), "approved");
+    bookRequestDao.updateStatus(request.getId(), "approved");
 }
+private int getLoanPeriodDays() {
+       // TODO: Make this configurable via system_config table
+      return 14;
+  }
 
 }

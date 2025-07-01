@@ -56,8 +56,17 @@ public class BorrowRecordMapping {
     record.setBorrowDate(dto.getBorrowDate());
     record.setDueDate(dto.getDueDate());
     record.setReturnDate(dto.getReturnDate());
-    record.setStatus(BorrowStatus.valueOf(dto.getStatus()));
-
+    record.setStatus(safeValueOfBorrowStatus(dto.getStatus()));
     return record;
 }
+    private static BorrowStatus safeValueOfBorrowStatus(String status) {
+        if (status == null || status.isEmpty()) {
+            return null; 
+        }
+        try {
+            return BorrowStatus.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            return null; 
+        }
+    }
 }
