@@ -160,8 +160,8 @@ public void approveBookRequest(BookRequest request) {
     bookRequestDao.updateStatus(request.getId(), "approved");
 }
 private int getLoanPeriodDays() {
-       // TODO: Make this configurable via system_config table
-      return 14;
-  }
+    SystemConfigService configService = new SystemConfigService();
+    return (int) configService.getConfigByConfigKey("default_borrow_duration_days").getConfigValue();
+}
 
 }
