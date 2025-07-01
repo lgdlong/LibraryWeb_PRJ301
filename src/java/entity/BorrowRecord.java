@@ -6,7 +6,7 @@ import service.*;
 import java.time.*;
 
 public class BorrowRecord {
-    private static final SystemConfigService systemConfigService = new SystemConfigService();
+    private final SystemConfigService systemConfigService = new SystemConfigService();
 
     private long id;
     private long userId;
@@ -79,7 +79,11 @@ public class BorrowRecord {
         if (borrowDate == null) {
             throw new IllegalArgumentException("Borrow date must not be null");
         }
-        long defaultBorrowDurationDays = (long) systemConfigService.getConfigByConfigKey("default_borrow_duration_days").getConfigValue();
+        SystemConfig config = systemConfigService.getConfigByConfigKey("default_borrow_duration_days");
+        if (config == null) {
+            throw new IllegalStateException("Configuration for default_borrow_duration_days not found");
+        }
+        long defaultBorrowDurationDays = (long) config.getConfigValue();
         this.dueDate = borrowDate.plusDays(defaultBorrowDurationDays);
     }
 

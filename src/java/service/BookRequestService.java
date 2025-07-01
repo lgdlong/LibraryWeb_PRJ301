@@ -144,7 +144,8 @@ public class BookRequestService {
                 try {
                     conn.setAutoCommit(true);
                     conn.close();
-                } catch (Exception ignored) {
+                } catch (SQLException e) {
+                    System.err.println("Error closing connection: " + e.getMessage());
                 }
             }
         }
