@@ -63,10 +63,10 @@ public class AdminRequestController extends HttpServlet {
                 }
                 // Cập nhật trạng thái yêu cầu và sách
                 requestService.approveRequest(id);
+            } else {
+                // Cập nhật trạng thái cho rejection
+                requestService.updateStatus(id, newStatus.toString());
             }
-
-            // Cập nhật trạng thái
-            requestService.updateStatus(id, newStatus.toString());
             resp.sendRedirect(req.getContextPath() + "/admin/requests");
 
         } catch (NumberFormatException e) {

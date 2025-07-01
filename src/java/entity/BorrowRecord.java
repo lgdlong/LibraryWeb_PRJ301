@@ -6,6 +6,8 @@ import service.*;
 import java.time.*;
 
 public class BorrowRecord {
+    private static final SystemConfigService systemConfigService = new SystemConfigService();
+
     private long id;
     private long userId;
     private long bookId;
@@ -72,11 +74,11 @@ public class BorrowRecord {
         return dueDate;
     }
 
+
     public void setDueDate(LocalDate borrowDate) {
         if (borrowDate == null) {
             throw new IllegalArgumentException("Borrow date must not be null");
         }
-        SystemConfigService systemConfigService = new SystemConfigService();
         long defaultBorrowDurationDays = (long) systemConfigService.getConfigByConfigKey("default_borrow_duration_days").getConfigValue();
         this.dueDate = borrowDate.plusDays(defaultBorrowDurationDays);
     }
