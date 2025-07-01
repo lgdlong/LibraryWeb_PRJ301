@@ -265,9 +265,10 @@ public class BookDao {
         String sql =
             "UPDATE books " +
                 "SET available_copies = available_copies - 1 " +
-                "WHERE id = ? AND available_copies > 0 " +
-                "RETURNING " +
-                "id, title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status;";
+                "OUTPUT inserted.id, inserted.title, inserted.author, inserted.isbn, " +
+                "inserted.cover_url, inserted.category, inserted.published_year, " +
+                "inserted.total_copies, inserted.available_copies, inserted.status " +
+                "WHERE id = ? AND available_copies > 0;";
 
         try (Connection conn = DbConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -291,9 +292,10 @@ public class BookDao {
         String sql =
             "UPDATE books " +
                 "SET available_copies = available_copies - 1 " +
-                "WHERE id = ? AND available_copies > 0 " +
-                "RETURNING " +
-                "id, title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status;";
+                "OUTPUT inserted.id, inserted.title, inserted.author, inserted.isbn, " +
+                "inserted.cover_url, inserted.category, inserted.published_year, " +
+                "inserted.total_copies, inserted.available_copies, inserted.status " +
+                "WHERE id = ? AND available_copies > 0;";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -316,9 +318,11 @@ public class BookDao {
         String sql =
             "UPDATE books " +
                 "SET available_copies = available_copies + 1 " +
-                "WHERE id = ? " +
-                "RETURNING " +
-                "id, title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status;";
+                "OUTPUT inserted.id, inserted.title, inserted.author, inserted.isbn, " +
+                "inserted.cover_url, inserted.category, inserted.published_year, " +
+                "inserted.total_copies, inserted.available_copies, inserted.status " +
+                "WHERE id = ?;";
+
 
         try (Connection conn = DbConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

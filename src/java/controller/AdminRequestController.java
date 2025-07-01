@@ -15,6 +15,7 @@ import java.util.*;
 public class AdminRequestController extends HttpServlet {
 
     private final BookRequestService requestService = new BookRequestService();
+    private final BookService bookService = new BookService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,22 +38,31 @@ public class AdminRequestController extends HttpServlet {
             long id = Long.parseLong(idParam);
             RequestStatus newStatus = RequestStatus.valueOf(statusParam.toUpperCase());
 
-            // Kiểm tra trạng thái hợp lệ (chỉ cho phép APPROVED hoặc REJECTED)
+            // Chỉ cho phép duyệt hoặc từ chối
             if (newStatus != RequestStatus.APPROVED && newStatus != RequestStatus.REJECTED) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid status: Must be APPROVED or REJECTED.");
+                setErrorAndForward(req, resp, "Invalid status: Must be APPROVED or REJECTED.");
                 return;
             }
 
             BookRequest request = requestService.getRequestById(id);
             if (request == null) {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Request not found.");
+                setErrorAndForward(req, resp, "Request not found.");
                 return;
             }
 
-            // Kiểm tra trạng thái hiện tại là PENDING
             if (request.getStatus() != RequestStatus.PENDING) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Request is not in PENDING status.");
+                setErrorAndForward(req, resp, "Request is not in PENDING status.");
                 return;
+            }
+
+            if (newStatus == RequestStatus.APPROVED) {
+                // Nếu duyệt yêu cầu, kiểm tra sách còn không
+                if (!bookService.isBookAvailable(request.getBookId())) {
+                    setErrorAndForward(req, resp, "Book is not available for request.");
+                    return;
+                }
+                // Cập nhật trạng thái yêu cầu và sách
+                requestService.approveRequest(id);
             }
 
             // Cập nhật trạng thái
@@ -60,12 +70,24 @@ public class AdminRequestController extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/admin/requests");
 
         } catch (NumberFormatException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid request ID.");
+            setErrorAndForward(req, resp, "Invalid request ID.");
         } catch (IllegalArgumentException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid status value: " + e.getMessage());
+            setErrorAndForward(req, resp, "Invalid status value: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error updating request status.");
+            setErrorAndForward(req, resp, "Error updating request status.");
         }
     }
+
+    private void setErrorAndForward(HttpServletRequest req, HttpServletResponse resp, String errorMessage)
+        throws ServletException, IOException {
+        // Lấy lại danh sách request để trả về trang đúng
+        List<BookRequestDTO> requests = requestService.getAllRequests();
+        req.setAttribute("requestList", requests);
+        req.setAttribute("error", errorMessage);
+        req.setAttribute("pageTitle", "Book Request Management");
+        req.setAttribute("contentPage", "/admin/request-management.jsp");
+        req.getRequestDispatcher("/admin/layout.jsp").forward(req, resp);
+    }
+
 }

@@ -1,7 +1,6 @@
 package dao;
 
 import db.*;
-import dto.BorrowRecordDTO;
 import entity.*;
 import enums.*;
 
@@ -112,6 +111,30 @@ public class BorrowRecordDao {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Failed to add borrow record", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void add(Connection conn, BorrowRecord record) {
+        if (record == null) {
+            throw new IllegalArgumentException("BorrowRecord must not be null.");
+        }
+        if (conn == null) {
+            throw new IllegalArgumentException("Connection must not be null.");
+        }
+        String sql = "INSERT INTO borrow_records (user_id, book_id, borrow_date, due_date, status) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, record.getUserId());
+            stmt.setLong(2, record.getBookId());
+            stmt.setDate(3, Date.valueOf(record.getBorrowDate()));
+            stmt.setDate(4, Date.valueOf(record.getDueDate()));
+            stmt.setString(5, record.getStatus().toString());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to add borrow record with provided connection", e);
             throw new RuntimeException(e);
         }
     }
@@ -319,7 +342,7 @@ public class BorrowRecordDao {
 
         return total;
     }
-    }
+}
 
 
 

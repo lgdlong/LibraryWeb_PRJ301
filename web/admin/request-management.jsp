@@ -11,6 +11,11 @@
 <h2>Borrow Request Management</h2>
 <p>Manage and update borrow requests (approve/reject).</p>
 
+<%-- Error handling --%>
+<c:if test="${not empty error}">
+  <div class="alert alert-danger mb-3">${fn:escapeXml(error)}</div>
+</c:if>
+
 <!-- Tabs -->
 <ul class="nav nav-tabs mb-3" id="requestTabs" role="tablist">
   <li class="nav-item" role="presentation">
@@ -55,7 +60,9 @@
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
                 <td>${fn:escapeXml(request.requestDate)}</td>
-                <td><span class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span></td>
+                <td><span
+                  class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
+                </td>
                 <td>
                   <button class="btn btn-success btn-sm me-1" onclick="approveRequest('${fn:escapeXml(request.id)}')">
                     <i class="bi bi-check-circle"></i> Approve
@@ -96,7 +103,9 @@
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
                 <td>${fn:escapeXml(request.requestDate)}</td>
-                <td><span class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span></td>
+                <td><span
+                  class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
+                </td>
               </tr>
             </c:if>
           </c:forEach>
@@ -129,7 +138,9 @@
                 <td>${fn:escapeXml(request.userName)}</td>
                 <td>${fn:escapeXml(request.bookTitle)}</td>
                 <td>${fn:escapeXml(request.requestDate)}</td>
-                <td><span class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span></td>
+                <td><span
+                  class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
+                </td>
               </tr>
             </c:if>
           </c:forEach>
@@ -227,11 +238,11 @@
 
   function approveRequest(requestId) {
     document.getElementById('confirmMessage').innerText = "Are you sure you want to approve this request?";
-    
+
     const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
     confirmModal.show();
-    
-    document.getElementById('confirmActionBtn').onclick = function() {
+
+    document.getElementById('confirmActionBtn').onclick = function () {
       confirmModal.hide();
       updateRequestStatus(requestId, 'approved');
     };
@@ -239,11 +250,11 @@
 
   function rejectRequest(requestId) {
     document.getElementById('confirmMessage').innerText = "Are you sure you want to reject this request?";
-    
+
     const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
     confirmModal.show();
-    
-    document.getElementById('confirmActionBtn').onclick = function() {
+
+    document.getElementById('confirmActionBtn').onclick = function () {
       confirmModal.hide();
       updateRequestStatus(requestId, 'rejected');
     };
@@ -253,17 +264,17 @@
     const form = document.createElement('form');
     form.method = 'post';
     form.action = "${pageContext.request.contextPath}/admin/requests";
-    
+
     const idField = document.createElement('input');
     idField.type = 'hidden';
     idField.name = 'id';
     idField.value = requestId;
-    
+
     const statusField = document.createElement('input');
     statusField.type = 'hidden';
     statusField.name = 'status';
     statusField.value = status.toUpperCase();
-    
+
     form.appendChild(idField);
     form.appendChild(statusField);
     document.body.appendChild(form);
@@ -285,7 +296,7 @@
     confirmModal.show();
   }
 
-  document.getElementById('confirmActionBtn').addEventListener('click', function() {
+  document.getElementById('confirmActionBtn').addEventListener('click', function () {
     if (currentAction === 'approve') {
       updateRequestStatus(currentRequestId, 'approved');
     } else if (currentAction === 'reject') {

@@ -5,7 +5,7 @@ import entity.*;
 import enums.*;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.time.*;
 import java.util.*;
 
 public class BookRequestDao {
@@ -74,6 +74,28 @@ public class BookRequestDao {
         return null;
     }
 
+    public BookRequest findById(Connection transactionConnection, long id) {
+        String sql = "SELECT * FROM book_requests WHERE id = ?";
+        try (PreparedStatement stmt = transactionConnection.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new BookRequest(
+                        rs.getLong("id"),
+                        rs.getLong("user_id"),
+                        rs.getLong("book_id"),
+                        rs.getDate("request_date").toLocalDate(),
+                        RequestStatus.fromString(rs.getString("status"))
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving book request by ID", e);
+        }
+        return null;
+    }
+
     public void updateStatus(long id, String newStatus) {
         String sql = "UPDATE book_requests SET status = ? WHERE id = ?";
         try (Connection conn = DbConfig.getConnection();
@@ -87,33 +109,45 @@ public class BookRequestDao {
         }
     }
 
-        public List<BookRequest> viewBooksRequest(long userId) {
-            List<BookRequest> list = new ArrayList<>();
-            String sql = "SELECT id, user_id, book_id, request_date, status " +
-                "FROM book_requests WHERE user_id = ?";
+    public void updateStatus(Connection transactionConn, long id, String newStatus) {
+        String sql = "UPDATE book_requests SET status = ? WHERE id = ?";
+        try (PreparedStatement stmt = transactionConn.prepareStatement(sql)) {
 
-            try (Connection conn = DbConfig.getConnection();
-                 PreparedStatement ps = conn.prepareStatement(sql)) {
+            stmt.setString(1, newStatus.toLowerCase());
+            stmt.setLong(2, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating book request status", e);
+        }
+    }
 
-                ps.setLong(1, userId);
+    public List<BookRequest> viewBooksRequest(long userId) {
+        List<BookRequest> list = new ArrayList<>();
+        String sql = "SELECT id, user_id, book_id, request_date, status " +
+            "FROM book_requests WHERE user_id = ?";
 
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        long id = rs.getLong("id");
-                        long uid = rs.getLong("user_id");
-                        long bookId = rs.getLong("book_id");
-                        LocalDate requestDate = rs.getDate("request_date").toLocalDate();
-                        RequestStatus status = RequestStatus.fromString(rs.getString("status"));
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-                        BookRequest request = new BookRequest(id, uid, bookId, requestDate, status);
-                        list.add(request);
-                    }
+            ps.setLong(1, userId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    long id = rs.getLong("id");
+                    long uid = rs.getLong("user_id");
+                    long bookId = rs.getLong("book_id");
+                    LocalDate requestDate = rs.getDate("request_date").toLocalDate();
+                    RequestStatus status = RequestStatus.fromString(rs.getString("status"));
+
+                    BookRequest request = new BookRequest(id, uid, bookId, requestDate, status);
+                    list.add(request);
                 }
-
-            } catch (SQLException e) {
-                throw new RuntimeException("Error retrieving book requests by user ID", e);
             }
 
-            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving book requests by user ID", e);
         }
+
+        return list;
+    }
 }
