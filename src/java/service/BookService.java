@@ -3,11 +3,20 @@ package service;
 import dao.*;
 import entity.*;
 
+import java.sql.*;
 import java.util.*;
 import java.util.stream.*;
 
 public class BookService {
     private final BookDao bookDao = new BookDao();
+
+    public boolean isBookAvailable(long bookId) {
+        if (bookId <= 0) {
+            throw new IllegalArgumentException("Book ID must be positive");
+        }
+        Book book = bookDao.getById(bookId);
+        return book != null && book.getAvailableCopies() > 0;
+    }
 
     public List<Book> getAllBooks() {
         return bookDao.getAll();
@@ -113,16 +122,45 @@ public class BookService {
         return bookDao.bookCount();
     }
 
-    public ArrayList<Book>  getNewBooks(){ return bookDao.getNewBooks();}
+    public ArrayList<Book> getNewBooks() {
+        return bookDao.getNewBooks();
+    }
 
-    public List<Book> searchBookByKeyword(String keyword){
-        if(keyword == null || keyword.trim().isEmpty()){
+    public List<Book> searchBookByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
             return null;
         }
         return bookDao.searchBookByKeyword(keyword.trim());
     }
 
-    public List<Book> getAvailableBook(){
+    public List<Book> getAvailableBook() {
         return bookDao.getAvailableBook();
+    }
+
+    public boolean incrementAvailableCopies(long bookId) {
+        if (bookId <= 0) {
+            throw new IllegalArgumentException("Book ID must be positive");
+        }
+        Book b = bookDao.increaseBookAvailable(bookId);
+        return b != null && b.getAvailableCopies() >= 0;
+    }
+
+    public boolean decrementAvailableCopies(long bookId) {
+        if (bookId <= 0) {
+            throw new IllegalArgumentException("Book ID must be positive");
+        }
+        Book b = bookDao.decreaseBookAvailable(bookId);
+        return b != null && b.getAvailableCopies() >= 0;
+    }
+
+    public boolean decrementAvailableCopies(Connection conn, long bookId) {
+        if (bookId <= 0) {
+            throw new IllegalArgumentException("Book ID must be positive");
+        }
+        if (conn == null) {
+            throw new IllegalArgumentException("Connection must not be null");
+        }
+        Book b = bookDao.decreaseBookAvailable(conn, bookId);
+        return b != null && b.getAvailableCopies() >= 0;
     }
 }

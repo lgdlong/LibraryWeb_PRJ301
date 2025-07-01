@@ -4,7 +4,8 @@ import dto.*;
 import entity.*;
 import enums.BorrowStatus;
 import service.*;
-import java.util.Map;
+
+import java.util.*;
 
 public class BorrowRecordMapping {
     private static final BookService bookService = new BookService();

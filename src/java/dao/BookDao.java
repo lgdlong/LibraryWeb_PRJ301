@@ -13,7 +13,9 @@ public class BookDao {
 
     public List<Book> getAll() {
         List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books";
+        String sql = "SELECT " +
+            "id, title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status " +
+            "FROM books";
 
         try (Connection conn = DbConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -55,7 +57,7 @@ public class BookDao {
                 BookStatus status = BookStatus.valueOf(rs.getString("status").toUpperCase());
 
 
-                Book book = new Book(id,title, author, isbn, url, category, publishedYear, totalCopies,availableCopies,status);
+                Book book = new Book(id, title, author, isbn, url, category, publishedYear, totalCopies, availableCopies, status);
 
                 books.add(book);
             }
@@ -69,7 +71,9 @@ public class BookDao {
     }
 
     public Book getById(long id) {
-        String sql = "SELECT * FROM books WHERE id = ?";
+        String sql = "SELECT " +
+            "id, title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status " +
+            "FROM books WHERE id = ?";
 
         try (Connection conn = DbConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -91,7 +95,9 @@ public class BookDao {
 
     public List<Book> searchByKeyword(String keyword) {
         List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books WHERE LOWER(title) LIKE ? OR LOWER(author) LIKE ?";
+        String sql = "SELECT " +
+            "id, title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status " +
+            "FROM books WHERE LOWER(title) LIKE ? OR LOWER(author) LIKE ?";
         String searchTerm = "%" + keyword.toLowerCase() + "%";
 
         try (Connection conn = DbConfig.getConnection();
@@ -205,7 +211,9 @@ public class BookDao {
 
     public List<Book> searchBookByKeyword(String keyword) {
         List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books WHERE LOWER(title) LIKE ? OR LOWER(author) LIKE ? OR LOWER(category) LIKE ?";
+        String sql = "SELECT " +
+            "id, title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status" +
+            " FROM books WHERE LOWER(title) LIKE ? OR LOWER(author) LIKE ? OR LOWER(category) LIKE ?";
         String searchTerm = "%" + keyword.toLowerCase() + "%";
 
         try (Connection conn = DbConfig.getConnection();
@@ -229,11 +237,12 @@ public class BookDao {
         return books;
     }
 
-    public List<Book> getAvailableBook(){
+    public List<Book> getAvailableBook() {
         List<Book> books = new ArrayList<>();
-        String sql ="select *\n" +
-                    "from [dbo].[books] \n" +
-                    "where available_copies > 0 AND status LIKE ?" ;
+        String sql = "select " +
+            "id, title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status " +
+            "from [dbo].[books] " +
+            "where available_copies > 0 AND status LIKE ?";
         try (Connection cn = DbConfig.getConnection();
              PreparedStatement stmt = cn.prepareStatement(sql)) {
 
@@ -269,5 +278,86 @@ public void decreaseAvailableCopies(long bookId) {
     }
 }
 
+
+    public Book decreaseBookAvailable(long bookId) {
+        String sql =
+            "UPDATE books " +
+                "SET available_copies = available_copies - 1 " +
+                "OUTPUT inserted.id, inserted.title, inserted.author, inserted.isbn, " +
+                "inserted.cover_url, inserted.category, inserted.published_year, " +
+                "inserted.total_copies, inserted.available_copies, inserted.status " +
+                "WHERE id = ? AND available_copies > 0;";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, bookId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs); // dùng lại hàm mapRow đã chuẩn hóa
+                } else {
+                    throw new IllegalArgumentException("Book not found or no available copies to decrease");
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error decreasing book available copies", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Book decreaseBookAvailable(Connection conn, long bookId) {
+        String sql =
+            "UPDATE books " +
+                "SET available_copies = available_copies - 1 " +
+                "OUTPUT inserted.id, inserted.title, inserted.author, inserted.isbn, " +
+                "inserted.cover_url, inserted.category, inserted.published_year, " +
+                "inserted.total_copies, inserted.available_copies, inserted.status " +
+                "WHERE id = ? AND available_copies > 0;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, bookId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs); // dùng lại hàm mapRow đã chuẩn hóa
+                } else {
+                    throw new IllegalArgumentException("Book not found or no available copies to decrease");
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error decreasing book available copies", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Book increaseBookAvailable(long bookId) {
+        String sql =
+            "UPDATE books " +
+                "SET available_copies = available_copies + 1 " +
+                "OUTPUT inserted.id, inserted.title, inserted.author, inserted.isbn, " +
+                "inserted.cover_url, inserted.category, inserted.published_year, " +
+                "inserted.total_copies, inserted.available_copies, inserted.status " +
+                "WHERE id = ?;";
+
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, bookId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs); // dùng lại hàm mapRow đã chuẩn hóa
+                } else {
+                    throw new IllegalArgumentException("Book not found or no available copies to increase");
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error increasing book available copies", e);
+            throw new RuntimeException(e);
+        }
+    }
 
 }

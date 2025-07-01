@@ -43,9 +43,4 @@ public class AdminBorrowRecordController extends HttpServlet {
         // Hiện tại không xử lý POST vì yêu cầu chỉ cần hiển thị danh sách
         response.sendRedirect(request.getContextPath() + "/admin/borrow-records");
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Admin Borrow Record Controller for managing borrow records";
-    }
 }

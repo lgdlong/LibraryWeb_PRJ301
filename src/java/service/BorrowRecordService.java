@@ -6,6 +6,7 @@ import entity.*;
 import enums.*;
 import mapper.*;
 
+import java.sql.*;
 import java.time.*;
 import java.util.*;
 import java.util.stream.*;
@@ -14,6 +15,23 @@ public class BorrowRecordService {
     private final BorrowRecordDao borrowRecordDao = new BorrowRecordDao();
     private final BookDao bookDao = new BookDao();
     private final BookRequestDao bookRequestDao = new BookRequestDao();
+
+    public void addNewBorrowRecord(BorrowRecord record) {
+        if (record == null) {
+            throw new IllegalArgumentException("BorrowRecord must not be null");
+        }
+        borrowRecordDao.add(record);
+    }
+
+    public void addNewBorrowRecord(Connection conn, BorrowRecord record) {
+        if (record == null) {
+            throw new IllegalArgumentException("BorrowRecord must not be null");
+        }
+        if (conn == null) {
+            throw new IllegalArgumentException("Connection must not be null");
+        }
+        borrowRecordDao.add(conn, record);
+    }
 
     public List<BorrowRecordDTO> getAll() {
         List<BorrowRecord> records;
@@ -120,7 +138,8 @@ public class BorrowRecordService {
             .map(BorrowRecordMapping::toBorrowRecordDTO)
             .collect(Collectors.toList());
     }
-    public int sendBorrowRequest (long userId, List<Book> books){
+
+    public int sendBorrowRequest(long userId, List<Book> books) {
         if (userId <= 0) {
             throw new IllegalArgumentException("User ID must be positive.");
         }
