@@ -15,6 +15,7 @@ import java.util.*;
 public class AdminRequestController extends HttpServlet {
 
     private final BookRequestService requestService = new BookRequestService();
+     private final BorrowRecordService BorrowRecord = new BorrowRecordService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,14 +45,15 @@ public class AdminRequestController extends HttpServlet {
 //            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid CSRF token.");
 //            return;
 //        }
-
+           
         String idParam = req.getParameter("id");
         String statusParam = req.getParameter("status");
 
         try {
+            
             long id = Long.parseLong(idParam);
             RequestStatus newStatus = RequestStatus.valueOf(statusParam.toUpperCase());
-
+           
             // Kiểm tra trạng thái hợp lệ (chỉ cho phép APPROVED hoặc REJECTED)
             if (newStatus != RequestStatus.APPROVED && newStatus != RequestStatus.REJECTED) {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid status: Must be APPROVED or REJECTED.");
@@ -69,6 +71,10 @@ public class AdminRequestController extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Request is not in PENDING status.");
                 return;
             }
+               // Gọi xử lý tuỳ theo trạng thái
+            if (newStatus == RequestStatus.APPROVED) {
+                BorrowRecord.approveBookRequest(request);
+            } 
 
             // Cập nhật trạng thái
             requestService.updateStatus(id, newStatus.toString());

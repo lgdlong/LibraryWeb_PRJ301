@@ -7,10 +7,12 @@ import enums.*;
 
 import java.sql.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.*;
 
 public class BorrowRecordDao {
+
     private static final Logger LOGGER = Logger.getLogger(BorrowRecordDao.class.getName());
 
     // Lấy tất cả borrow records (không join, chỉ bảng borrow_records)
@@ -18,9 +20,7 @@ public class BorrowRecordDao {
         List<BorrowRecord> records = new ArrayList<>();
         String sql = "SELECT id, user_id, book_id, borrow_date, due_date, return_date, status FROM borrow_records";
 
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql);  ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 records.add(mapRow(rs));
@@ -38,9 +38,7 @@ public class BorrowRecordDao {
         List<BorrowRecord> records = new ArrayList<>();
         String sql = "SELECT id, user_id, book_id, borrow_date, due_date, return_date, status FROM borrow_records WHERE status = 'BORROWED'";
 
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql);  ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 records.add(mapRow(rs));
@@ -58,9 +56,7 @@ public class BorrowRecordDao {
         List<BorrowRecord> records = new ArrayList<>();
         String sql = "SELECT id, user_id, book_id, borrow_date, due_date, return_date, status FROM borrow_records WHERE status = 'overdue'";
 
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql);  ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 records.add(mapRow(rs));
@@ -77,11 +73,10 @@ public class BorrowRecordDao {
     public BorrowRecord getById(long id) {
         String sql = "SELECT id, user_id, book_id, borrow_date, due_date, return_date, status FROM borrow_records WHERE id = ?";
 
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
+            try ( ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return mapRow(rs);
                 }
@@ -100,8 +95,7 @@ public class BorrowRecordDao {
         }
         String sql = "INSERT INTO borrow_records (user_id, book_id, borrow_date, due_date, status) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, record.getUserId());
             stmt.setLong(2, record.getBookId());
@@ -122,8 +116,7 @@ public class BorrowRecordDao {
         }
         String sql = "UPDATE borrow_records SET user_id = ?, book_id = ?, borrow_date = ?, due_date = ?, return_date = ?, status = ? WHERE id = ?";
 
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, record.getUserId());
             stmt.setLong(2, record.getBookId());
@@ -146,8 +139,7 @@ public class BorrowRecordDao {
     public void updateStatus(long id, BorrowStatus newStatus) {
         String sql = "UPDATE borrow_records SET status = ? WHERE id = ?";
 
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, newStatus.toString());
             stmt.setLong(2, id);
@@ -165,8 +157,7 @@ public class BorrowRecordDao {
     public void delete(long id) {
         String sql = "DELETE FROM borrow_records WHERE id = ?";
 
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, id);
             stmt.executeUpdate();
@@ -179,9 +170,7 @@ public class BorrowRecordDao {
     public long countCurrentlyBorrowed() {
         String sql = "SELECT COUNT(*) FROM borrow_records WHERE status IN ('BORROWED', 'OVERDUE')";
 
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql);  ResultSet rs = stmt.executeQuery()) {
 
             if (rs.next()) {
                 return rs.getLong(1);
@@ -195,15 +184,13 @@ public class BorrowRecordDao {
     }
 
     public List<Map.Entry<Long, Long>> getMostBorrowedBooks() {
-        String sql = "SELECT TOP 5 book_id, COUNT(*) AS borrow_count " +
-            "FROM borrow_records " +
-            "GROUP BY book_id " +
-            "ORDER BY borrow_count DESC";
+        String sql = "SELECT TOP 5 book_id, COUNT(*) AS borrow_count "
+                + "FROM borrow_records "
+                + "GROUP BY book_id "
+                + "ORDER BY borrow_count DESC";
 
         List<Map.Entry<Long, Long>> mostBorrowed = new ArrayList<>();
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql);  ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 long bookId = rs.getLong("book_id");
@@ -256,17 +243,16 @@ public class BorrowRecordDao {
     public List<BorrowRecord> getBorrowHistoryByUserId(long userId) {
         List<BorrowRecord> history = new ArrayList<>();
 
-        String sql =
-            "SELECT br.id, br.user_id, br.book_id, br.borrow_date, br.due_date, br.return_date, br.status " +
-                "FROM borrow_records br WHERE br.user_id = ? " +
-                "ORDER BY br.borrow_date DESC";
+        String sql
+                = "SELECT br.id, br.user_id, br.book_id, br.borrow_date, br.due_date, br.return_date, br.status "
+                + "FROM borrow_records br WHERE br.user_id = ? "
+                + "ORDER BY br.borrow_date DESC";
 
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try ( Connection conn = DbConfig.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, userId);
 
-            try (ResultSet rs = stmt.executeQuery()) {
+            try ( ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     BorrowRecord record = mapRow(rs);
                     history.add(record);
@@ -285,11 +271,11 @@ public class BorrowRecordDao {
         int total = 0;
         String sql = "insert [dbo].[book_requests] values(?,?,?,?)";
 
-        try (Connection conn = DbConfig.getConnection()) {
+        try ( Connection conn = DbConfig.getConnection()) {
             if (conn != null) {
                 conn.setAutoCommit(false);
 
-                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                try ( PreparedStatement ps = conn.prepareStatement(sql)) {
                     Date requestDate = new Date(System.currentTimeMillis());
 
                     for (Book book : books) {
@@ -304,7 +290,9 @@ public class BorrowRecordDao {
                     conn.commit();
 
                     for (int count : results) {
-                        if (count >= 1) total++;
+                        if (count >= 1) {
+                            total++;
+                        }
                     }
                 } catch (SQLException e) {
                     conn.rollback();
@@ -319,8 +307,7 @@ public class BorrowRecordDao {
 
         return total;
     }
-    }
 
-
-
-
+    
+    
+}

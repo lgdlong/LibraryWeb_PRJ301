@@ -12,6 +12,7 @@ import java.util.stream.*;
 
 public class BorrowRecordService {
     private final BorrowRecordDao borrowRecordDao = new BorrowRecordDao();
+    private final BookDao bookDao = new BookDao();
 
     public List<BorrowRecordDTO> getAll() {
         List<BorrowRecord> records;
@@ -72,9 +73,6 @@ public class BorrowRecordService {
             .collect(Collectors.toList());
     }
 
-    public void addBorrowRecord(BorrowRecordDTO recordDTO) {
-        //
-    }
 
     public void checkAndUpdateOverdue() {
         List<BorrowRecordDTO> allBorrowed = getAllBorrowed(); // Chỉ lấy BORROWED
@@ -131,6 +129,34 @@ public class BorrowRecordService {
 
         return borrowRecordDao.sendBorrowRequest(userId, books);
     }
+ 
+public void addBorrowRecord(BorrowRecordDTO recordDTO) {
+     if(recordDTO == null) throw new IllegalArgumentException("Record must not be null");
+     long bookId = recordDTO.getBookId();
+     
+     BorrowRecord borrowRecord = BorrowRecordMapping.toBorrowRecord(recordDTO);
+     borrowRecordDao.add(borrowRecord);
+     
+     bookDao.decreaseAvailableCopies(bookId);
+}
+public void approveBookRequest(BookRequest request) {
+    if (request == null) {
+        throw new IllegalArgumentException("Request is null");
+    }
 
+    // 1. Tạo DTO để ghi bản ghi mượn sách
+    BorrowRecordDTO dto = new BorrowRecordDTO();
+    dto.setUserId(request.getUserId());
+    dto.setBookId(request.getBookId());
+    dto.setBorrowDate(LocalDate.now());
+    dto.setDueDate(LocalDate.now().plusDays(14));
+    dto.setStatus("BORROWED");
+
+    // 2. Ghi bản ghi mượn và trừ sách
+    addBorrowRecord(dto);
+
+    // 3. Cập nhật trạng thái yêu cầu mượn
+    new BookRequestDao().updateStatus(request.getId(), "approved");
+}
 
 }
