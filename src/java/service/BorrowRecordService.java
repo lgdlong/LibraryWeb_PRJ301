@@ -180,7 +180,7 @@ public class BorrowRecordService {
         addBorrowRecord(dto);
 
         // 3. Cập nhật trạng thái yêu cầu mượn
-        bookRequestDao.updateStatus(request.getId(), RequestStatus.APPROVED);
+        bookRequestDao.updateStatus(request.getId(), "approved");
     }
 
     private int getLoanPeriodDays() {
