@@ -13,6 +13,7 @@ import java.util.*;
 public class ViewHistoryBorrowController extends HttpServlet {
 
     private final BorrowRecordService borrowRecordService = new BorrowRecordService();
+    private final FineService fineService = new FineService();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -20,6 +21,9 @@ public class ViewHistoryBorrowController extends HttpServlet {
 
         // **GỌI kiểm tra & cập nhật overdue trước khi lấy danh sách**
         borrowRecordService.checkAndUpdateOverdue();
+
+        // **Xử lý các khoản phạt quá hạn**
+        fineService.processOverdueFines();
 
         try {
             HttpSession session = request.getSession();
