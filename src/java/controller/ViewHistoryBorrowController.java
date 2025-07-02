@@ -19,12 +19,6 @@ public class ViewHistoryBorrowController extends HttpServlet {
         throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        // **GỌI kiểm tra & cập nhật overdue trước khi lấy danh sách**
-        borrowRecordService.checkAndUpdateOverdue();
-
-        // **Xử lý các khoản phạt quá hạn**
-        fineService.processOverdueFines();
-
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
@@ -34,11 +28,15 @@ public class ViewHistoryBorrowController extends HttpServlet {
                 return;
             }
 
-            BorrowRecordService borrowRecordService = new BorrowRecordService();
+            // **GỌI kiểm tra & cập nhật overdue trước khi lấy danh sách**
+            borrowRecordService.checkAndUpdateOverdue();
+
+            // **Xử lý các khoản phạt quá hạn chỉ cho user hiện tại (tối ưu hiệu suất)**
+            fineService.processOverdueFines(user.getId());
+
             List<BorrowRecordDTO> history = borrowRecordService.getBorrowHistoryByUserId(user.getId());
 
             Map<Long, FineDTO> fineMap = new HashMap<>();
-            FineService fineService = new FineService();
             for (BorrowRecordDTO record : history) {
                 FineDTO fine = fineService.getFineByBorrowRecordId(record.getId());
                 if (fine != null) {
