@@ -33,8 +33,18 @@ public class ViewHistoryBorrowController extends HttpServlet {
             BorrowRecordService borrowRecordService = new BorrowRecordService();
             List<BorrowRecordDTO> history = borrowRecordService.getBorrowHistoryByUserId(user.getId());
 
+            Map<Long, FineDTO> fineMap = new HashMap<>();
+            FineService fineService = new FineService();
+            for (BorrowRecordDTO record : history) {
+                FineDTO fine = fineService.getFineByBorrowRecordId(record.getId());
+                if (fine != null) {
+                    fineMap.put(record.getId(), fine);
+                }
+            }
+
 
             request.setAttribute("borrowHistory", history);
+            request.setAttribute("fineMap", fineMap);
             request.setAttribute("contentPage", "/user/history-borrow.jsp");
             request.setAttribute("sidebarPage", "/user/my-library-sidebar.jsp");
             request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);

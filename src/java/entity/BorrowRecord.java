@@ -102,4 +102,18 @@ public class BorrowRecord {
     public void setStatus(BorrowStatus status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "BorrowRecord{" +
+            "systemConfigService=" + systemConfigService +
+            ", id=" + id +
+            ", userId=" + userId +
+            ", bookId=" + bookId +
+            ", borrowDate=" + borrowDate +
+            ", dueDate=" + dueDate +
+            ", returnDate=" + returnDate +
+            ", status=" + status +
+            '}';
+    }
 }

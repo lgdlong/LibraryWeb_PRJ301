@@ -130,6 +130,9 @@ public class BorrowRecordService {
 
         List<BorrowRecord> history = borrowRecordDao.getBorrowHistoryByUserId(userId);
 
+        System.out.println("Borrow history for user ID " + userId + ":");
+        history.forEach(System.out::println); // Debugging line to check history
+
         if (history == null || history.isEmpty()) {
             return Collections.emptyList();
         }

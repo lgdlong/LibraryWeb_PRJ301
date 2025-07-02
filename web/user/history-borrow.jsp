@@ -38,7 +38,6 @@
                                         <th>Book Title</th>
                                         <th>Borrow Date</th>
                                         <th>Due Date</th>
-                                        <th>Return Date</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -51,16 +50,6 @@
                                                 <td>${item.bookTitle}</td>
                                                 <td>${item.borrowDate}</td>
                                                 <td>${item.dueDate}</td>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${empty item.returnDate}">
-                                                            <span class="text-danger fw-bold">Not Returned</span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            ${item.returnDate}
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
                                                 <td>
                                                     <span class="text-warning fw-bold">Borrowed</span>
                                                 </td>
@@ -91,7 +80,7 @@
                                         <th>Book Title</th>
                                         <th>Borrow Date</th>
                                         <th>Due Date</th>
-                                        <th>Return Date</th>
+                                        <th>Fine Amount</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -106,11 +95,11 @@
                                                 <td>${item.dueDate}</td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${empty item.returnDate}">
-                                                            <span class="text-danger fw-bold">Not Returned</span>
+                                                        <c:when test="${fineMap[item.id] != null}">
+                                                            <span class="fw-bold text-primary">${fineMap[item.id].fineAmount}</span>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            ${item.returnDate}
+                                                            <span class="text-muted">0</span>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
