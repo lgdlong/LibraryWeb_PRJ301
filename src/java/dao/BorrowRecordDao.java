@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.logging.*;
 
 public class BorrowRecordDao {
+
     private static final Logger LOGGER = Logger.getLogger(BorrowRecordDao.class.getName());
 
     // Lấy tất cả borrow records (không join, chỉ bảng borrow_records)
@@ -327,7 +328,9 @@ public class BorrowRecordDao {
                     conn.commit();
 
                     for (int count : results) {
-                        if (count >= 1) total++;
+                        if (count >= 1) {
+                            total++;
+                        }
                     }
                 } catch (SQLException e) {
                     conn.rollback();
@@ -343,7 +346,3 @@ public class BorrowRecordDao {
         return total;
     }
 }
-
-
-
-

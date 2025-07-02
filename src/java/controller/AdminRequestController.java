@@ -38,7 +38,7 @@ public class AdminRequestController extends HttpServlet {
             long id = Long.parseLong(idParam);
             RequestStatus newStatus = RequestStatus.valueOf(statusParam.toUpperCase());
 
-            // Chỉ cho phép duyệt hoặc từ chối
+            // Kiểm tra trạng thái hợp lệ (chỉ cho phép APPROVED hoặc REJECTED)
             if (newStatus != RequestStatus.APPROVED && newStatus != RequestStatus.REJECTED) {
                 setErrorAndForward(req, resp, "Invalid status: Must be APPROVED or REJECTED.");
                 return;
@@ -50,6 +50,7 @@ public class AdminRequestController extends HttpServlet {
                 return;
             }
 
+            // Kiểm tra trạng thái hiện tại là PENDING
             if (request.getStatus() != RequestStatus.PENDING) {
                 setErrorAndForward(req, resp, "Request is not in PENDING status.");
                 return;
@@ -89,5 +90,4 @@ public class AdminRequestController extends HttpServlet {
         req.setAttribute("contentPage", "/admin/request-management.jsp");
         req.getRequestDispatcher("/admin/layout.jsp").forward(req, resp);
     }
-
 }
