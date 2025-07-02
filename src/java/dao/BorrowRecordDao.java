@@ -3,7 +3,6 @@ package dao;
 import db.*;
 import entity.*;
 import enums.*;
-
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
@@ -67,6 +66,28 @@ public class BorrowRecordDao {
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Failed to fetch overdue records", e);
+            throw new RuntimeException(e);
+        }
+
+        return records;
+    }
+
+    // Lấy tất cả bản ghi trạng thái "OVERDUE" cho user cụ thể
+    public List<BorrowRecord> getOverdueByUserId(long userId) {
+        List<BorrowRecord> records = new ArrayList<>();
+        String sql = "SELECT id, user_id, book_id, borrow_date, due_date, return_date, status FROM borrow_records WHERE status = 'overdue' AND user_id = ?";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setLong(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    records.add(mapRow(rs));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to fetch overdue records for user " + userId, e);
             throw new RuntimeException(e);
         }
 

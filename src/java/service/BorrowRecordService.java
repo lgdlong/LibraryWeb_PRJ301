@@ -4,12 +4,11 @@ import dao.*;
 import dto.*;
 import entity.*;
 import enums.*;
-import mapper.*;
-
 import java.sql.*;
 import java.time.*;
 import java.util.*;
 import java.util.stream.*;
+import mapper.*;
 
 public class BorrowRecordService {
     private final BorrowRecordDao borrowRecordDao = new BorrowRecordDao();
@@ -62,6 +61,19 @@ public class BorrowRecordService {
 
     public List<BorrowRecordDTO> getAllOverdue() {
         List<BorrowRecord> overdueRecords = borrowRecordDao.getAllOverdue();
+        if (overdueRecords == null || overdueRecords.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return overdueRecords.stream()
+            .map(BorrowRecordMapping::toBorrowRecordDTO)
+            .collect(Collectors.toList());
+    }
+
+    public List<BorrowRecordDTO> getOverdueByUserId(long userId) {
+        if (userId <= 0) {
+            throw new IllegalArgumentException("User ID must be positive");
+        }
+        List<BorrowRecord> overdueRecords = borrowRecordDao.getOverdueByUserId(userId);
         if (overdueRecords == null || overdueRecords.isEmpty()) {
             return Collections.emptyList();
         }
