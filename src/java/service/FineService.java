@@ -4,11 +4,10 @@ import dao.*;
 import dto.*;
 import entity.*;
 import enums.*;
-import mapper.*;
-
 import java.time.*;
 import java.util.*;
 import java.util.stream.*;
+import mapper.*;
 
 public class FineService {
     private final FineDao fineDao = new FineDao();
@@ -89,6 +88,45 @@ public class FineService {
                 }
             } catch (Exception e) {
                 System.err.println("Failed to process fine for record " + record.getId() + ": " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Xử lý phạt quá hạn cho một user cụ thể (tối ưu hiệu suất)
+     * @param userId ID của user cần xử lý phạt
+     */
+    public void processOverdueFines(long userId) {
+        if (userId <= 0) {
+            throw new IllegalArgumentException("User ID must be positive");
+        }
+
+        SystemConfigService configService = new SystemConfigService();
+        double finePerDay = configService.getConfigByConfigKey("overdue_fine_per_day").getConfigValue();
+
+        // Lấy danh sách overdue chỉ cho user này
+        List<BorrowRecordDTO> overdueRecords = borrowRecordService.getOverdueByUserId(userId);
+
+        for (BorrowRecordDTO record : overdueRecords) {
+            try {
+                Fine fine = fineDao.getByBorrowRecordId(record.getId());
+                FineDTO existingFine = fine != null ? FineMapping.toDTO(fine) : null;
+                double fineAmount = calculateFine(record, finePerDay);
+
+                if (existingFine == null) {
+                    FineDTO fineDTO = new FineDTO();
+                    fineDTO.setBorrowRecordId(record.getId());
+                    fineDTO.setFineAmount(fineAmount);
+                    fineDTO.setPaidStatus(PaidStatus.UNPAID.toString());
+                    addFine(fineDTO);
+                } else {
+                    if (Math.abs(existingFine.getFineAmount() - fineAmount) > 0.001) {
+                        existingFine.setFineAmount(fineAmount);
+                        updateFine(existingFine);
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to process fine for record " + record.getId() + " for user " + userId + ": " + e.getMessage());
             }
         }
     }
