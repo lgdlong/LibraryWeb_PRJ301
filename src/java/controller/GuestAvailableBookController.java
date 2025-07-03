@@ -23,7 +23,7 @@ public class GuestAvailableBookController extends HttpServlet {
             if(page == null || page.isEmpty()){
                 page = "guest.jsp";
             }
-            request.setAttribute("contenPage","/guest/" + page);
+            request.setAttribute("contentPage","/guest/" + page);
 
             request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
         } catch (Exception e) {
