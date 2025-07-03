@@ -3,7 +3,10 @@ package dto;
 import java.time.*;
 
 public class BorrowRecordDTO {
+
     private long id;
+    private long userId;
+    private long bookId;
     private String userName;
     private String bookTitle;
     private LocalDate borrowDate;
@@ -14,8 +17,11 @@ public class BorrowRecordDTO {
     public BorrowRecordDTO() {
     }
 
-    public BorrowRecordDTO(long id, String userName, String bookTitle, LocalDate borrowDate, LocalDate dueDate, LocalDate returnDate, String status) {
+    public BorrowRecordDTO(long id, long userId, long bookId, String userName, String bookTitle,
+            LocalDate borrowDate, LocalDate dueDate, LocalDate returnDate, String status) {
         this.id = id;
+        this.userId = userId;
+        this.bookId = bookId;
         this.userName = userName;
         this.bookTitle = bookTitle;
         this.borrowDate = borrowDate;
@@ -30,6 +36,22 @@ public class BorrowRecordDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public long getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(long bookId) {
+        this.bookId = bookId;
     }
 
     public String getUserName() {
@@ -79,4 +101,5 @@ public class BorrowRecordDTO {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }

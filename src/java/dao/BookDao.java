@@ -261,6 +261,26 @@ public class BookDao {
         return books;
     }
 
+    private static final String UPDATE_AVAILABLE_COPIES = "update [library_system].[dbo].[books] set [available_copies] = [available_copies] -1 where id = ? and [available_copies] > 0";
+
+    public void decreaseAvailableCopies(long bookId) {
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(UPDATE_AVAILABLE_COPIES)) {
+            ps.setLong(1, bookId);
+            int rows = ps.executeUpdate();
+
+            if (rows == 0) {
+                throw new IllegalStateException("The book is out of stock or does not exist.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error while decreasing book quantity.");
+        }
+    }
+
+
     public Book decreaseBookAvailable(long bookId) {
         String sql =
             "UPDATE books " +

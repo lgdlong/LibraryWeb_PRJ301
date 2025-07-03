@@ -4,15 +4,16 @@ import dao.*;
 import dto.*;
 import entity.*;
 import enums.*;
-import mapper.*;
-
 import java.sql.*;
 import java.time.*;
 import java.util.*;
 import java.util.stream.*;
+import mapper.*;
 
 public class BorrowRecordService {
     private final BorrowRecordDao borrowRecordDao = new BorrowRecordDao();
+    private final BookDao bookDao = new BookDao();
+    private final BookRequestDao bookRequestDao = new BookRequestDao();
 
     public void addNewBorrowRecord(BorrowRecord record) {
         if (record == null) {
@@ -68,6 +69,19 @@ public class BorrowRecordService {
             .collect(Collectors.toList());
     }
 
+    public List<BorrowRecordDTO> getOverdueByUserId(long userId) {
+        if (userId <= 0) {
+            throw new IllegalArgumentException("User ID must be positive");
+        }
+        List<BorrowRecord> overdueRecords = borrowRecordDao.getOverdueByUserId(userId);
+        if (overdueRecords == null || overdueRecords.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return overdueRecords.stream()
+            .map(BorrowRecordMapping::toBorrowRecordDTO)
+            .collect(Collectors.toList());
+    }
+
     public BorrowRecordDTO getById(long id) {
         if (id <= 0) {
             throw new IllegalArgumentException("Record ID must be positive");
@@ -90,9 +104,6 @@ public class BorrowRecordService {
             .collect(Collectors.toList());
     }
 
-    public void addBorrowRecord(BorrowRecordDTO recordDTO) {
-        //
-    }
 
     public void checkAndUpdateOverdue() {
         List<BorrowRecordDTO> allBorrowed = getAllBorrowed(); // Chỉ lấy BORROWED
@@ -131,6 +142,9 @@ public class BorrowRecordService {
 
         List<BorrowRecord> history = borrowRecordDao.getBorrowHistoryByUserId(userId);
 
+        System.out.println("Borrow history for user ID " + userId + ":");
+        history.forEach(System.out::println); // Debugging line to check history
+
         if (history == null || history.isEmpty()) {
             return Collections.emptyList();
         }
@@ -151,5 +165,39 @@ public class BorrowRecordService {
         return borrowRecordDao.sendBorrowRequest(userId, books);
     }
 
+    public void addBorrowRecord(BorrowRecordDTO recordDTO) {
+        if (recordDTO == null) throw new IllegalArgumentException("Record must not be null");
+        long bookId = recordDTO.getBookId();
+
+        BorrowRecord borrowRecord = BorrowRecordMapping.toBorrowRecord(recordDTO);
+        borrowRecordDao.add(borrowRecord);
+
+        bookDao.decreaseAvailableCopies(bookId);
+    }
+
+    public void approveBookRequest(BookRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request is null");
+        }
+
+        // 1. Tạo DTO để ghi bản ghi mượn sách
+        BorrowRecordDTO dto = new BorrowRecordDTO();
+        dto.setUserId(request.getUserId());
+        dto.setBookId(request.getBookId());
+        dto.setBorrowDate(LocalDate.now());
+        dto.setDueDate(LocalDate.now().plusDays(getLoanPeriodDays()));
+        dto.setStatus("BORROWED");
+
+        // 2. Ghi bản ghi mượn và trừ sách
+        addBorrowRecord(dto);
+
+        // 3. Cập nhật trạng thái yêu cầu mượn
+        bookRequestDao.updateStatus(request.getId(), "approved");
+    }
+
+    private int getLoanPeriodDays() {
+        SystemConfigService configService = new SystemConfigService();
+        return (int) configService.getConfigByConfigKey("default_borrow_duration_days").getConfigValue();
+    }
 
 }
