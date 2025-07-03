@@ -1,29 +1,30 @@
 package controller;
 
-import entity.*;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import service.*;
+import java.io.IOException;
+import java.util.List;
 
-import java.io.*;
-import java.util.*;
+import entity.Book;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import service.BookService;
 
-/**
- * @author Dien Sanh
- */
 public class GuestAvailableBookController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         try {
             BookService bookService = new BookService();
-            List<Book> availableBooks = bookService.getAvailableBook();
+            List<Book> availableBooks = bookService.getAllActiveBooks();
 
-            HttpSession session = request.getSession();
-            session.setAttribute("availableBooks", availableBooks);
-            session.setAttribute("contentPage", "/guest/guest.jsp");
+            request.setAttribute("availableBooks", availableBooks);
+            String page = request.getParameter("page");
+            if(page == null || page.isEmpty()){
+                page = "guest.jsp";
+            }
+            request.setAttribute("contentPage","/guest/" + page);
 
-            // Forward to the common layout
             request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
         } catch (Exception e) {
             System.err.println("Error in GuestAvailableBookController: " + e.getMessage());

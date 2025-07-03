@@ -18,7 +18,7 @@ public class GuestHomeController extends HttpServlet {
         try {
             BookService bookService = new BookService();
             List<Book> newBooks = bookService.getNewBooks();
-            List<Book> availableBooks = bookService.getAvailableBook();
+            List<Book> availableBooks = bookService.getAllActiveBooks();
 
             HttpSession session = request.getSession();
             session.setAttribute("newBooks", newBooks);
@@ -28,6 +28,7 @@ public class GuestHomeController extends HttpServlet {
             request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
 
         } catch (Exception e) {
+            e.printStackTrace();
             response.sendError(500, "Error loading home page.");
         }
     }

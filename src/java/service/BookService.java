@@ -133,8 +133,8 @@ public class BookService {
         return bookDao.searchBookByKeyword(keyword.trim());
     }
 
-    public List<Book> getAvailableBook() {
-        return bookDao.getAvailableBook();
+    public List<Book> getAllActiveBooks() {
+        return bookDao.getAllActiveBooks();
     }
 
     public boolean incrementAvailableCopies(long bookId) {

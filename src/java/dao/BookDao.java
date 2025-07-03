@@ -237,12 +237,12 @@ public class BookDao {
         return books;
     }
 
-    public List<Book> getAvailableBook() {
+    public List<Book> getAllActiveBooks() {
         List<Book> books = new ArrayList<>();
         String sql = "select " +
             "id, title, author, isbn, cover_url, category, published_year, total_copies, available_copies, status " +
             "from [dbo].[books] " +
-            "where available_copies > 0 AND status LIKE ?";
+            "where status LIKE ?";
         try (Connection cn = DbConfig.getConnection();
              PreparedStatement stmt = cn.prepareStatement(sql)) {
 
