@@ -30,7 +30,7 @@ public class SearchBookController extends HttpServlet {
         }
         if (keyword == null ||keyword.trim().isEmpty()) {
             BookService bookService = new BookService();
-            List<Book> availableBooks = bookService.getAvailableBook();
+            List<Book> availableBooks = bookService.getAllActiveBooks();
 
             request.setAttribute("availableBooks", availableBooks);
             request.setAttribute("isSearch", false);

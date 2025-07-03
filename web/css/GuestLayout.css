@@ -134,6 +134,20 @@ h2 {
     background-color: #2980b9;
 }
 
+.book-action {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px; 
+}
+.out-of-stock {
+    color: red ; 
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+}
+
 
 /* View Book */
 .book-container {

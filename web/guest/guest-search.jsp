@@ -21,11 +21,20 @@
                             <p class="book-title">${b.title}</p>
                             <p class="book-author">${b.author}</p>
                         </div>
-                        <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
-                            <input type="hidden" name="bookId" value="${b.id}">
-                            <input type="hidden" name="currentPage" value="SearchBookController">
-                            <button type="submit" class="borrow-button">Borrow</button>
-                        </form>
+                        <div class="book-action">
+                            <c:choose>
+                                <c:when test="${b.availableCopies > 0}">
+                                    <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
+                                        <input type="hidden" name="bookId" value="${b.id}">
+                                        <input type="hidden" name="currentPage" value="GuestHomeController">
+                                        <button type="submit" class="borrow-button">Borrow</button>
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+                                    <p class="out-of-stock">Out of stock</p>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </c:forEach>
             </div>

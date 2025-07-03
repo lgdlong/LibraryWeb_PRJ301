@@ -17,11 +17,20 @@
         <p><span>Public Year:</span> ${book.publishedYear}</p>
         <p><span>Available Copies:</span> ${book.availableCopies}</p>
 
-        <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
-            <input type="hidden" name="bookId" value="${book.id}">
-            <input type="hidden" name="currentPage" value="ViewBookController?id=${book.id}">
-            <button type="submit" class="borrow-button">Borrow</button>
-        </form>
+        <div class="book-action">
+            <c:choose>
+                <c:when test="${book.availableCopies > 0}">
+                    <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
+                        <input type="hidden" name="bookId" value="${book.id}">
+                        <input type="hidden" name="currentPage" value="GuestHomeController">
+                        <button type="submit" class="borrow-button">Borrow</button>
+                    </form>
+                </c:when>
+                <c:otherwise>
+                    <div class="out-of-stock">Out of stock</div>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
 </div>
 
