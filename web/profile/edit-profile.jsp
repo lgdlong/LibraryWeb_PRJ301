@@ -11,9 +11,6 @@
       max-width: 500px;
       width: 100%;
     }
-    .btn-close {
-      margin-right: 10px !important;
-    }
   </style>
 </head>
 <body class="bg-light">
@@ -27,7 +24,7 @@
 <div class="container min-vh-100 d-flex align-items-center justify-content-center">
   <div class="card shadow profile-card mt-4">
     <div class="card-header bg-success text-white text-center position-relative">
-      <a href="${pageContext.request.contextPath}/profile" class="btn-close btn-close-white position-absolute top-50 end-0 translate-middle-y ms-3" aria-label="Close"></a>
+      <a href="${pageContext.request.contextPath}/profile" class="btn-close btn-close-white position-absolute top-50 end-0 translate-middle-y me-3" aria-label="Close"></a>
       <h4 class="mb-0">Edit Profile</h4>
     </div>
     <div class="card-body">
