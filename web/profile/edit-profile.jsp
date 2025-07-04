@@ -6,7 +6,15 @@
   <meta charset="UTF-8">
   <title>Edit Profile</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/edit-profile.css">
+  <style>
+    .profile-card {
+      max-width: 500px;
+      width: 100%;
+    }
+    .btn-close {
+      margin-right: 10px !important;
+    }
+  </style>
 </head>
 <body class="bg-light">
 
@@ -18,7 +26,8 @@
 
 <div class="container min-vh-100 d-flex align-items-center justify-content-center">
   <div class="card shadow profile-card mt-4">
-    <div class="card-header bg-success text-white text-center">
+    <div class="card-header bg-success text-white text-center position-relative">
+      <a href="${pageContext.request.contextPath}/profile" class="btn-close btn-close-white position-absolute top-50 end-0 translate-middle-y ms-3" aria-label="Close"></a>
       <h4 class="mb-0">Edit Profile</h4>
     </div>
     <div class="card-body">

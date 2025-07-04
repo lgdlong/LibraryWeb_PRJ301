@@ -11,13 +11,14 @@
       max-width: 500px;
       width: 100%;
     }
-
+    .btn-close {
+      margin-right: 10px !important;
+    }
     .user-name {
       font-size: 30px;
       font-weight: 600;
       color: black;
     }
-
     .email-input {
       max-width: 400px;
       margin: 0 auto;
@@ -35,7 +36,8 @@
 
 <div class="container min-vh-100 d-flex align-items-center justify-content-center">
   <div class="card shadow profile-card">
-    <div class="card-header bg-primary text-white text-center">
+    <div class="card-header bg-primary text-white text-center position-relative">
+      <a href="<%= request.getContextPath() %>/GuestHomeController" class="btn-close btn-close-white position-absolute top-50 end-0 translate-middle-y ms-3" aria-label="Close"></a>
       <h4 class="mb-0">Profile</h4>
     </div>
     <div class="card-body">
@@ -50,7 +52,6 @@
       </div>
       <div class="text-center">
         <a href="<%= request.getContextPath() %>/profile/update" class="btn btn-primary">Edit Profile</a>
-        <a href="<%= request.getContextPath() %>/GuestHomeController" class="btn btn-secondary ms-2">Go Back to Home</a>
         <%-- If you use a servlet/controller for editing, update the href accordingly --%>
       </div>
     </div>
