@@ -39,6 +39,11 @@ public class LoginController extends HttpServlet {
             User us = authService.checkLogin(email, password);
 
             if (us != null) {
+                 if (us.getUserStatus() == UserStatus.BLOCKED) {
+                request.setAttribute("ERROR", "Your account is blocked. Please contact administrator.");
+                request.getRequestDispatcher("/Login.jsp").forward(request, response);
+                return; // Stop further processing
+            }
                 HttpSession session = request.getSession();
                 session.setAttribute("LOGIN_USER", us);
                 UserRole role = us.getRole();
