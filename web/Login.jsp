@@ -26,7 +26,7 @@
       <div class="input-group">
         <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
         <input type="password" class="form-control" id="password" name="password" required placeholder="••••••••"/>
-        <button class="btn btn-outline-secondary" type="button" id="togglePassword" tabindex="-1">
+        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
           <i class="fa-solid fa-eye" id="eyeIcon"></i>
         </button>
       </div>
