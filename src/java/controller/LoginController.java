@@ -13,12 +13,6 @@ import java.sql.*;
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
-// Removed unused constants US and AD
-//    private static final String ADMIN_PAGE = "/admin/layout.jsp";
-//    private static final String USER_PAGE = "/user.jsp";
-//    private static final String ERROR = "Login.jsp";
-
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -39,11 +33,17 @@ public class LoginController extends HttpServlet {
             User us = authService.checkLogin(email, password);
 
             if (us != null) {
+                // Check if the user is blocked
+                if (UserStatus.BLOCKED.equals(us.getUserStatus())) {
+                    request.setAttribute("ERROR_ATTRIBUTE", "Your account is blocked, Please contact administrator.");
+                    request.getRequestDispatcher("/Login.jsp").forward(request, response);
+                    return; // Stop further processing
+                }
+
                 HttpSession session = request.getSession();
                 session.setAttribute("LOGIN_USER", us);
-                UserRole role = us.getRole();
 
-                if (role.equals(UserRole.ADMIN)) {
+                if (UserRole.ADMIN.equals(us.getRole())) {
                     response.sendRedirect(request.getContextPath() + "/admin");
                 } else {
                     response.sendRedirect(request.getContextPath() + "/GuestHomeController");
