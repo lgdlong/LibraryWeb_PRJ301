@@ -40,7 +40,7 @@ public class LoginController extends HttpServlet {
 
             if (us != null) {
                  if (us.getUserStatus() == UserStatus.BLOCKED) {
-                request.setAttribute("ERROR", "Your account is blocked. Please contact administrator.");
+                 request.setAttribute("ERROR_ATTRIBUTE", "Your account is blocked,Please contact administrator.");
                 request.getRequestDispatcher("/Login.jsp").forward(request, response);
                 return; // Stop further processing
             }
