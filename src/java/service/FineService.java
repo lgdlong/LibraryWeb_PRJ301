@@ -13,6 +13,14 @@ public class FineService {
     private final FineDao fineDao = new FineDao();
     private final BorrowRecordService borrowRecordService = new BorrowRecordService();
 
+    public boolean isFinePaid(long fineId) {
+        if (fineId <= 0) throw new IllegalArgumentException("Fine ID must be positive");
+        // Get fine by ID
+        Fine fine = fineDao.getById(fineId);
+        if (fine == null) return false;
+        return PaidStatus.PAID.equals(fine.getPaidStatus());
+    }
+
     public List<FineDTO> getAllFines() {
         try {
             List<Fine> requests = fineDao.getAll();
@@ -30,7 +38,6 @@ public class FineService {
             return Collections.emptyList();
         }
     }
-
 
     public FineDTO getFineById(long id) {
         Fine fine = fineDao.getById(id);
@@ -94,6 +101,7 @@ public class FineService {
 
     /**
      * Xử lý phạt quá hạn cho một user cụ thể (tối ưu hiệu suất)
+     *
      * @param userId ID của user cần xử lý phạt
      */
     public void processOverdueFines(long userId) {
@@ -137,5 +145,44 @@ public class FineService {
         LocalDate endDate = record.getReturnDate() != null ? record.getReturnDate() : java.time.LocalDate.now();
         long overdueDays = java.time.temporal.ChronoUnit.DAYS.between(record.getDueDate(), endDate);
         return Math.max(0, overdueDays) * finePerDay;
+    }
+
+    /**
+     * Tạo phạt cho bản ghi quá hạn (chỉ tạo nếu chưa có phạt)
+     * @param overdueRecord Bản ghi quá hạn cần tạo phạt
+     */
+    public void createFineForOverdue(BorrowRecordDTO overdueRecord) {
+        if (overdueRecord == null) {
+            throw new IllegalArgumentException("Overdue record must not be null");
+        }
+
+        try {
+            // Kiểm tra xem đã có phạt cho bản ghi này chưa
+            Fine existingFine = fineDao.getByBorrowRecordId(overdueRecord.getId());
+            if (existingFine != null) {
+                // Đã có phạt, không tạo thêm
+                return;
+            }
+
+            // Lấy cấu hình phạt từ hệ thống
+            SystemConfigService configService = new SystemConfigService();
+            double finePerDay = configService.getConfigByConfigKey("overdue_fine_per_day").getConfigValue();
+
+            // Tính số tiền phạt
+            double fineAmount = calculateFine(overdueRecord, finePerDay);
+
+            // Chỉ tạo phạt nếu số tiền > 0
+            if (fineAmount > 0) {
+                FineDTO fineDTO = new FineDTO();
+                fineDTO.setBorrowRecordId(overdueRecord.getId());
+                fineDTO.setFineAmount(fineAmount);
+                fineDTO.setPaidStatus(PaidStatus.UNPAID.toString());
+                addFine(fineDTO);
+                System.out.println("Created fine for overdue record ID: " + overdueRecord.getId() + " with amount: " + fineAmount);
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to create fine for overdue record " + overdueRecord.getId() + ": " + e.getMessage());
+            // Không ném exception để không làm gián đoạn quá trình cập nhật overdue
+        }
     }
 }

@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ADMIN
-  Date: 5/31/2025
-  Time: 00:50
-  To change this template use File | Settings | File Templates.
---%>
+<%--borrow-record-management.jsp--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -19,13 +13,13 @@
     </button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="returned-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button"
-            role="tab" aria-controls="returned" aria-selected="false">Returned
+    <button class="nav-link" id="overdue-tab" data-bs-toggle="tab" data-bs-target="#overdue" type="button"
+            role="tab" aria-controls="overdue" aria-selected="false">Overdue
     </button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="overdue-tab" data-bs-toggle="tab" data-bs-target="#overdue" type="button"
-            role="tab" aria-controls="overdue" aria-selected="false">Overdue
+    <button class="nav-link" id="returned-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button"
+            role="tab" aria-controls="returned" aria-selected="false">Returned
     </button>
   </li>
 </ul>
@@ -62,7 +56,8 @@
                   class="status-badge status-badge-${fn:escapeXml(request.status)}">${fn:escapeXml(request.status)}</span>
                 </td>
                 <td>
-                  <button class="btn btn-success btn-sm" onclick="openReturnModal('${fn:escapeXml(request.id)}', false)">
+                  <button class="btn btn-success btn-sm"
+                          onclick="openReturnModal('${fn:escapeXml(request.id)}', false)">
                     <i class="bi bi-arrow-return-left"></i> Return
                   </button>
                 </td>
@@ -161,7 +156,8 @@
 </div>
 
 <!-- Return Confirmation Modal -->
-<div class="modal fade" id="returnConfirmModal" tabindex="-1" aria-labelledby="returnConfirmModalLabel" aria-hidden="true">
+<div class="modal fade" id="returnConfirmModal" tabindex="-1" aria-labelledby="returnConfirmModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

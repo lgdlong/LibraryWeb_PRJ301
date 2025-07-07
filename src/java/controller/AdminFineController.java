@@ -28,6 +28,16 @@ public class AdminFineController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+        
+        String action = request.getParameter("action");
+        
+        // Handle manual overdue fine processing
+        if ("process-overdue".equals(action)) {
+            handleManualFineProcessing(request, response);
+            return;
+        }
+        
+        // Existing logic for updating fine status
         String idStr = request.getParameter("id");
         String newStatusStr = request.getParameter("paidStatus");
 
@@ -47,10 +57,32 @@ public class AdminFineController extends HttpServlet {
                     fineService.updateFine(fine);
                 }
             } catch (Exception e) {
-                e.printStackTrace(); // Có thể log hoặc redirect error page
+                System.err.println("Error updating fine status: " + e.getMessage());
             }
         }
 
+        response.sendRedirect(request.getContextPath() + "/admin/fines");
+    }
+
+    /**
+     * Handle manual overdue fine processing
+     */
+    private void handleManualFineProcessing(HttpServletRequest request, HttpServletResponse response) 
+            throws IOException {
+        try {
+            // Process all overdue fines to update amounts
+            fineService.processOverdueFines();
+            
+            // Set success message
+            request.getSession().setAttribute("successMessage", 
+                "Overdue fine processing completed successfully! All fine amounts have been updated.");
+            
+        } catch (Exception e) {
+            System.err.println("Error during manual fine processing: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", 
+                "Failed to process overdue fines: " + e.getMessage());
+        }
+        
         response.sendRedirect(request.getContextPath() + "/admin/fines");
     }
 }

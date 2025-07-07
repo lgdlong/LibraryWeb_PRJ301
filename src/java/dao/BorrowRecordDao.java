@@ -3,6 +3,7 @@ package dao;
 import db.*;
 import entity.*;
 import enums.*;
+
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
@@ -79,7 +80,7 @@ public class BorrowRecordDao {
 
         try (Connection conn = DbConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+
             stmt.setLong(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -157,6 +158,35 @@ public class BorrowRecordDao {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Failed to add borrow record with provided connection", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update(Connection conn, BorrowRecord record) {
+        if (record == null || record.getId() <= 0) {
+            throw new IllegalArgumentException("BorrowRecord must not be null and must have a valid ID for update.");
+        }
+        if (conn == null) {
+            throw new IllegalArgumentException("Connection must not be null.");
+        }
+        String sql = "UPDATE borrow_records SET user_id = ?, book_id = ?, borrow_date = ?, due_date = ?, return_date = ?, status = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, record.getUserId());
+            stmt.setLong(2, record.getBookId());
+            stmt.setDate(3, Date.valueOf(record.getBorrowDate()));
+            stmt.setDate(4, Date.valueOf(record.getDueDate()));
+            stmt.setDate(5, record.getReturnDate() != null ? Date.valueOf(record.getReturnDate()) : null);
+            stmt.setString(6, record.getStatus().toString());
+            stmt.setLong(7, record.getId());
+
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Update failed, no rows affected. Record with ID " + record.getId() + " may not exist.");
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to update borrow record with provided connection", e);
             throw new RuntimeException(e);
         }
     }

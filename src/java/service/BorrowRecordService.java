@@ -1,26 +1,21 @@
 package service;
 
 import dao.*;
+import db.*;
 import dto.*;
 import entity.*;
 import enums.*;
+import mapper.*;
+
 import java.sql.*;
 import java.time.*;
 import java.util.*;
 import java.util.stream.*;
-import mapper.*;
 
 public class BorrowRecordService {
     private final BorrowRecordDao borrowRecordDao = new BorrowRecordDao();
     private final BookDao bookDao = new BookDao();
-    private final BookRequestDao bookRequestDao = new BookRequestDao();
-
-    public void addNewBorrowRecord(BorrowRecord record) {
-        if (record == null) {
-            throw new IllegalArgumentException("BorrowRecord must not be null");
-        }
-        borrowRecordDao.add(record);
-    }
+    private final FineDao fineDao = new FineDao();
 
     public void addNewBorrowRecord(Connection conn, BorrowRecord record) {
         if (record == null) {
@@ -104,6 +99,119 @@ public class BorrowRecordService {
             .collect(Collectors.toList());
     }
 
+    // Tracking statistics class for overdue processing
+    public static class OverdueProcessingResult {
+        private final int totalChecked;
+        private final int updatedToOverdue;
+        private final int finesCreated;
+        private final int errorCount;
+        private final LocalDateTime processTime;
+        private final List<String> errors;
+
+        public OverdueProcessingResult(int totalChecked, int updatedToOverdue, int finesCreated, int errorCount, LocalDateTime processTime, List<String> errors) {
+            this.totalChecked = totalChecked;
+            this.updatedToOverdue = updatedToOverdue;
+            this.finesCreated = finesCreated;
+            this.errorCount = errorCount;
+            this.processTime = processTime;
+            this.errors = new ArrayList<>(errors);
+        }
+
+        // Getters
+        public int getTotalChecked() {
+            return totalChecked;
+        }
+
+        public int getUpdatedToOverdue() {
+            return updatedToOverdue;
+        }
+
+        public int getFinesCreated() {
+            return finesCreated;
+        }
+
+        public int getErrorCount() {
+            return errorCount;
+        }
+
+        public LocalDateTime getProcessTime() {
+            return processTime;
+        }
+
+        public List<String> getErrors() {
+            return new ArrayList<>(errors);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("OverdueProcessing[checked=%d, updated=%d, fines=%d, errors=%d, time=%s]",
+                totalChecked, updatedToOverdue, finesCreated, errorCount, processTime);
+        }
+    }
+
+    // Enhanced overdue checking with detailed tracking and logging
+    public OverdueProcessingResult checkAndUpdateOverdueWithTracking() {
+        LocalDateTime startTime = LocalDateTime.now();
+        List<BorrowRecordDTO> allBorrowed = getAllBorrowed(); // Only get BORROWED records
+
+        int totalChecked = 0;
+        int updatedToOverdue = 0;
+        int finesCreated = 0;
+        int errorCount = 0;
+        List<String> errors = new ArrayList<>();
+
+        if (allBorrowed == null || allBorrowed.isEmpty()) {
+            System.out.println("No borrowed records found for overdue processing at " + startTime);
+            return new OverdueProcessingResult(0, 0, 0, 0, startTime, errors);
+        }
+
+        LocalDate now = LocalDate.now(ZoneId.systemDefault());
+        FineService fineService = new FineService();
+
+        System.out.println("Starting overdue processing at " + startTime + " for " + allBorrowed.size() + " borrowed records");
+
+        for (BorrowRecordDTO dto : allBorrowed) {
+            totalChecked++;
+
+            try {
+                if (dto.getDueDate() != null && dto.getDueDate().isBefore(now)) {
+                    // Record is overdue
+                    long daysOverdue = java.time.temporal.ChronoUnit.DAYS.between(dto.getDueDate(), now);
+                    System.out.println("Processing overdue record ID: " + dto.getId() +
+                        " (due: " + dto.getDueDate() + ", days overdue: " + daysOverdue + ")");
+
+                    // 1. Update status to OVERDUE
+                    updateStatus(dto.getId(), BorrowStatus.OVERDUE);
+                    updatedToOverdue++;
+
+                    // 2. Create fine if not exists
+                    dto.setStatus(BorrowStatus.OVERDUE.toString());
+
+                    // Check if fine already exists before creating
+                    Fine existingFine = fineDao.getByBorrowRecordId(dto.getId());
+                    if (existingFine == null) {
+                        fineService.createFineForOverdue(dto);
+                        finesCreated++;
+                        System.out.println("Created fine for overdue record ID: " + dto.getId());
+                    } else {
+                        System.out.println("Fine already exists for record ID: " + dto.getId());
+                    }
+                }
+            } catch (Exception e) {
+                errorCount++;
+                String errorMsg = "Failed to process record " + dto.getId() + ": " + e.getMessage();
+                errors.add(errorMsg);
+                System.err.println(errorMsg);
+                // Don't print full stack trace in production, just log the message
+            }
+        }
+
+        OverdueProcessingResult result = new OverdueProcessingResult(
+            totalChecked, updatedToOverdue, finesCreated, errorCount, startTime, errors);
+
+        System.out.println("Completed overdue processing: " + result);
+        return result;
+    }
 
     public void checkAndUpdateOverdue() {
         List<BorrowRecordDTO> allBorrowed = getAllBorrowed(); // Chỉ lấy BORROWED
@@ -111,15 +219,23 @@ public class BorrowRecordService {
         if (allBorrowed == null || allBorrowed.isEmpty()) return;
 
         LocalDate now = LocalDate.now(ZoneId.systemDefault());
+        FineService fineService = new FineService();
 
         for (BorrowRecordDTO dto : allBorrowed) {
             if (dto.getDueDate() != null
                 && dto.getDueDate().isBefore(now)) {
-                // Nếu quá hạn, cập nhật trạng thái
+                // Nếu quá hạn, cập nhật trạng thái và tạo phạt
                 try {
+                    // 1. Cập nhật trạng thái thành OVERDUE
                     updateStatus(dto.getId(), BorrowStatus.OVERDUE);
+
+                    // 2. Tạo phạt cho bản ghi quá hạn (nếu chưa có)
+                    // Cập nhật status của DTO để phản ánh trạng thái mới
+                    dto.setStatus(BorrowStatus.OVERDUE.toString());
+                    fineService.createFineForOverdue(dto);
+
                 } catch (Exception e) {
-                    System.err.println("Failed to update overdue status for record " + dto.getId() + ": " + e.getMessage());
+                    System.err.println("Failed to update overdue status and create fine for record " + dto.getId() + ": " + e.getMessage());
                 }
             }
         }
@@ -135,6 +251,66 @@ public class BorrowRecordService {
         // Cập nhật cả trên entity và DB
         record.setStatus(newStatus);
         borrowRecordDao.updateStatus(id, newStatus);
+    }
+
+    public void returnBorrowedRecord(BorrowRecordDTO recordDTO, boolean isPaid) {
+        Connection conn = null;
+        try {
+            conn = DbConfig.getConnection();
+            conn.setAutoCommit(false); // Bắt đầu transaction
+
+            // 1. Kiểm tra đầu vào
+            if (recordDTO == null) {
+                throw new IllegalArgumentException("BorrowRecordDTO must not be null");
+            }
+
+            BorrowRecord record = BorrowRecordMapping.toBorrowRecord(recordDTO);
+            if (record == null) {
+                throw new IllegalArgumentException("BorrowRecord mapping failed");
+            }
+
+            // 2. Nếu record bị quá hạn và đã trả phạt, cập nhật tình trạng paid cho Fine
+            boolean wasOverdue = BorrowStatus.OVERDUE.toString().equals(recordDTO.getStatus());
+            if (wasOverdue) {
+                // Cập nhật trạng thái fine nếu có
+                Fine fine = fineDao.getByBorrowRecordId(conn, record.getId());
+                if (fine != null && !fine.isPaid() && isPaid) {
+                    fine.markAsPaid(); // cập nhật trường paid, ngày thanh toán, v.v.
+                    fineDao.update(conn, fine);
+                }
+            }
+
+            // 3. mark record's status to RETURNED and set return date is now
+            record.markAsReturned();
+
+            // 4. update the record in DB
+            borrowRecordDao.update(conn, record);
+
+            // 5. increase the book's available count
+            bookDao.increaseBookAvailable(conn, record.getBookId());
+
+            conn.commit();
+            System.out.println("Borrow record (ID: " + record.getId() + ") has been marked as returned. Book available increased.");
+        } catch (Exception e) {
+            // Nếu bất kỳ lỗi nào thì rollback
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            throw new RuntimeException(e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing connection: " + e.getMessage());
+                }
+            }
+        }
     }
 
     public List<BorrowRecordDTO> getBorrowHistoryByUserId(long userId) {
@@ -165,39 +341,66 @@ public class BorrowRecordService {
         return borrowRecordDao.sendBorrowRequest(userId, books);
     }
 
-    public void addBorrowRecord(BorrowRecordDTO recordDTO) {
-        if (recordDTO == null) throw new IllegalArgumentException("Record must not be null");
-        long bookId = recordDTO.getBookId();
+    // Get statistics about overdue records
+    public Map<String, Object> getOverdueStatistics() {
+        Map<String, Object> stats = new HashMap<>();
 
-        BorrowRecord borrowRecord = BorrowRecordMapping.toBorrowRecord(recordDTO);
-        borrowRecordDao.add(borrowRecord);
+        try {
+            List<BorrowRecordDTO> allOverdue = getAllOverdue();
+            List<BorrowRecordDTO> allBorrowed = getAllBorrowed();
 
-        bookDao.decreaseAvailableCopies(bookId);
-    }
+            // Count overdue by days
+            LocalDate now = LocalDate.now();
+            long recentOverdue = 0; // 1-7 days
+            long moderateOverdue = 0; // 8-30 days
+            long severeOverdue = 0; // 30+ days
 
-    public void approveBookRequest(BookRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Request is null");
+            for (BorrowRecordDTO record : allOverdue) {
+                if (record.getDueDate() != null) {
+                    long daysOverdue = java.time.temporal.ChronoUnit.DAYS.between(record.getDueDate(), now);
+                    if (daysOverdue <= 7) {
+                        recentOverdue++;
+                    } else if (daysOverdue <= 30) {
+                        moderateOverdue++;
+                    } else {
+                        severeOverdue++;
+                    }
+                }
+            }
+
+            stats.put("totalOverdue", allOverdue.size());
+            stats.put("totalBorrowed", allBorrowed.size());
+            stats.put("recentOverdue", recentOverdue); // 1-7 days
+            stats.put("moderateOverdue", moderateOverdue); // 8-30 days
+            stats.put("severeOverdue", severeOverdue); // 30+ days
+            stats.put("generatedAt", LocalDateTime.now());
+
+        } catch (Exception e) {
+            System.err.println("Error generating overdue statistics: " + e.getMessage());
+            stats.put("error", e.getMessage());
         }
 
-        // 1. Tạo DTO để ghi bản ghi mượn sách
-        BorrowRecordDTO dto = new BorrowRecordDTO();
-        dto.setUserId(request.getUserId());
-        dto.setBookId(request.getBookId());
-        dto.setBorrowDate(LocalDate.now());
-        dto.setDueDate(LocalDate.now().plusDays(getLoanPeriodDays()));
-        dto.setStatus("BORROWED");
-
-        // 2. Ghi bản ghi mượn và trừ sách
-        addBorrowRecord(dto);
-
-        // 3. Cập nhật trạng thái yêu cầu mượn
-        bookRequestDao.updateStatus(request.getId(), "approved");
+        return stats;
     }
 
-    private int getLoanPeriodDays() {
-        SystemConfigService configService = new SystemConfigService();
-        return (int) configService.getConfigByConfigKey("default_borrow_duration_days").getConfigValue();
-    }
+    // Get records that are approaching due date (for proactive management)
+    public List<BorrowRecordDTO> getRecordsApproachingDueDate(int daysBeforeDue) {
+        if (daysBeforeDue < 1) {
+            throw new IllegalArgumentException("Days before due must be at least 1");
+        }
 
+        List<BorrowRecordDTO> allBorrowed = getAllBorrowed();
+        if (allBorrowed == null || allBorrowed.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        LocalDate threshold = LocalDate.now().plusDays(daysBeforeDue);
+
+        return allBorrowed.stream()
+            .filter(record -> record.getDueDate() != null)
+            .filter(record -> !record.getDueDate().isAfter(threshold))
+            .filter(record -> record.getDueDate().isAfter(LocalDate.now())) // Not yet overdue
+            .sorted((r1, r2) -> r1.getDueDate().compareTo(r2.getDueDate()))
+            .collect(Collectors.toList());
+    }
 }

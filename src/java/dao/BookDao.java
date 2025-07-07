@@ -263,24 +263,6 @@ public class BookDao {
 
     private static final String UPDATE_AVAILABLE_COPIES = "update [library_system].[dbo].[books] set [available_copies] = [available_copies] -1 where id = ? and [available_copies] > 0";
 
-    public void decreaseAvailableCopies(long bookId) {
-
-        try (Connection conn = DbConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(UPDATE_AVAILABLE_COPIES)) {
-            ps.setLong(1, bookId);
-            int rows = ps.executeUpdate();
-
-            if (rows == 0) {
-                throw new IllegalStateException("The book is out of stock or does not exist.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error while decreasing book quantity.");
-        }
-    }
-
-
     public Book decreaseBookAvailable(long bookId) {
         String sql =
             "UPDATE books " +
@@ -353,6 +335,32 @@ public class BookDao {
                     return mapRow(rs); // dùng lại hàm mapRow đã chuẩn hóa
                 } else {
                     throw new IllegalArgumentException("Book not found or no available copies to increase");
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error increasing book available copies", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Book increaseBookAvailable(Connection conn, long bookId) {
+        String sql =
+            "UPDATE books " +
+                "SET available_copies = available_copies + 1 " +
+                "OUTPUT inserted.id, inserted.title, inserted.author, inserted.isbn, " +
+                "inserted.cover_url, inserted.category, inserted.published_year, " +
+                "inserted.total_copies, inserted.available_copies, inserted.status " +
+                "WHERE id = ?;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, bookId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs); // dùng lại hàm mapRow đã chuẩn hóa
+                } else {
+                    throw new IllegalArgumentException("Book not found or cannot increase available copies");
                 }
             }
 

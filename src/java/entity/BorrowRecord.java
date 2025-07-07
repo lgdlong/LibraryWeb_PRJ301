@@ -74,7 +74,6 @@ public class BorrowRecord {
         return dueDate;
     }
 
-
     public void setDueDate(LocalDate borrowDate) {
         if (borrowDate == null) {
             throw new IllegalArgumentException("Borrow date must not be null");
@@ -101,6 +100,26 @@ public class BorrowRecord {
 
     public void setStatus(BorrowStatus status) {
         this.status = status;
+    }
+
+    public boolean isOverdue() {
+        if (this.dueDate == null) {
+            throw new IllegalStateException("Due date is not set. Cannot check overdue status.");
+        }
+        LocalDate now = LocalDate.now();
+        return BorrowStatus.BORROWED.equals(this.status) && this.dueDate.isBefore(now);
+    }
+
+    public void markAsReturned() {
+        // Check if the record is already returned or if the return date is already set
+        if (BorrowStatus.RETURNED.equals(this.status)) {
+            throw new IllegalStateException("Record is already marked as returned. Cannot mark as returned again.");
+        }
+        if (this.returnDate != null) {
+            throw new IllegalStateException("Return date is already set. Cannot mark as returned again.");
+        }
+        this.returnDate = LocalDate.now();
+        this.status = BorrowStatus.RETURNED;
     }
 
     @Override

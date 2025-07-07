@@ -50,7 +50,6 @@ public class BookRequestDao {
         return requests;
     }
 
-
     public BookRequest findById(long id) {
         String sql = "SELECT * FROM book_requests WHERE id = ?";
         try (Connection conn = DbConfig.getConnection();

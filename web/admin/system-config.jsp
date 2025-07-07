@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ADMIN
-  Date: 5/28/2025
-  Time: 13:15
-  To change this template use File | Settings | File Templates.
---%>
+<%--system-config.jsp--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -36,7 +30,8 @@
           <td>${config.configValue}</td>
           <td>${config.description}</td>
           <td>
-            <button class="btn btn-warning btn-sm" onclick="openForm('${config.id}', '${fn:escapeXml(config.configKey)}', '${fn:escapeXml(config.configValue)}', '${fn:escapeXml(config.description)}')">
+            <button class="btn btn-warning btn-sm"
+                    onclick="openForm('${config.id}', '${fn:escapeXml(config.configKey)}', '${fn:escapeXml(config.configValue)}', '${fn:escapeXml(config.description)}')">
               <i class="bi bi-pencil"></i> Edit
             </button>
           </td>
