@@ -31,6 +31,27 @@ public class FineDao {
         return fines;
     }
 
+    public Fine getByBorrowRecordId(Connection conn, long borrowRecordId) {
+        if (conn == null) {
+            throw new IllegalArgumentException("Connection must not be null");
+        }
+        String sql = "SELECT id, borrow_id, fine_amount, paid_status FROM fines WHERE borrow_id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, borrowRecordId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error fetching fine by borrow record ID", e);
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
     // Lấy Fine theo borrowRecordId
     public Fine getByBorrowRecordId(long borrowRecordId) {
         String sql = "SELECT id, borrow_id, fine_amount, paid_status FROM fines WHERE borrow_id = ?";
@@ -86,6 +107,25 @@ public class FineDao {
             stmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error adding fine", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update(Connection conn, Fine fine) {
+        if (conn == null) {
+            throw new IllegalArgumentException("Connection must not be null");
+        }
+        String sql = "UPDATE fines SET borrow_id = ?, fine_amount = ?, paid_status = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, fine.getBorrowId());
+            stmt.setDouble(2, fine.getFineAmount());
+            stmt.setString(3, fine.getPaidStatus().toString());
+            stmt.setLong(4, fine.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error updating fine", e);
             throw new RuntimeException(e);
         }
     }

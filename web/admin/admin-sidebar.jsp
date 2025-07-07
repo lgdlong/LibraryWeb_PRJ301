@@ -62,6 +62,13 @@
       Manage Borrows
     </a>
 
+    <a href="${pageContext.request.contextPath}/admin/overdue-management"
+       class="list-group-item list-group-item-action d-flex align-items-center gap-2
+              ${pageContext.request.servletPath.contains('/overdue-management.jsp') ? 'active' : ''}">
+      <i class="bi bi-exclamation-triangle"></i>
+      Overdue Management
+    </a>
+
     <a href="${pageContext.request.contextPath}/admin/fines"
        class="list-group-item list-group-item-action d-flex align-items-center gap-2
               ${pageContext.request.servletPath.contains('/fine-management.jsp') ? 'active' : ''}">

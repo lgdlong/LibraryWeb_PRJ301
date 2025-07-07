@@ -32,18 +32,24 @@
             <th class="text-white text-uppercase">Book Title</th>
             <th class="text-white text-uppercase">Amount</th>
             <th class="text-white text-uppercase">Status</th>
+            <th class="text-white text-uppercase">Action</th>
           </tr>
           </thead>
           <tbody>
           <c:forEach var="fine" items="${fineList}" varStatus="loop">
             <c:if test="${fine.paidStatus == 'unpaid'}">
-              <tr
-                onclick="openFineForm('${fine.id}', '${fine.userName}', '${fine.bookTitle}', '${fine.fineAmount}', '${fine.paidStatus}', 'unpaid')">
+              <tr>
                 <td>${loop.index + 1}</td>
                 <td>${fine.userName}</td>
                 <td>${fine.bookTitle}</td>
                 <td class="fw-bold text-primary">${fine.fineAmount}</td>
                 <td><span class="status-badge status-badge-${fine.paidStatus}">${fine.paidStatus}</span></td>
+                <td>
+                  <button class="btn btn-success btn-sm" onclick="markAsPaid('${fine.id}', '${fn:escapeXml(fine.userName)}')"
+                  onCli>
+                    <i class="bi bi-check-circle"></i> Mark as Paid
+                  </button>
+                </td>
               </tr>
             </c:if>
           </c:forEach>
@@ -66,18 +72,23 @@
             <th class="text-white text-uppercase">Book Title</th>
             <th class="text-white text-uppercase">Amount</th>
             <th class="text-white text-uppercase">Status</th>
+            <th class="text-white text-uppercase">Action</th>
           </tr>
           </thead>
           <tbody>
           <c:forEach var="fine" items="${fineList}" varStatus="loop">
             <c:if test="${fine.paidStatus == 'paid'}">
-              <tr
-                onclick="openFineForm('${fine.id}', '${fine.userName}', '${fine.bookTitle}', '${fine.fineAmount}', '${fine.paidStatus}', 'paid')">
+              <tr>
                 <td>${loop.index + 1}</td>
                 <td>${fine.userName}</td>
                 <td>${fine.bookTitle}</td>
                 <td class="fw-bold text-primary">${fine.fineAmount}</td>
                 <td><span class="status-badge status-badge-${fine.paidStatus}">${fine.paidStatus}</span></td>
+                <td>
+                  <button class="btn btn-warning btn-sm" onclick="markAsUnpaid('${fine.id}', '${fn:escapeXml(fine.userName)}')">
+                    <i class="bi bi-x-circle"></i> Mark as Unpaid
+                  </button>
+                </td>
               </tr>
             </c:if>
           </c:forEach>
@@ -92,7 +103,7 @@
 <div class="modal fade" id="fineModal" tabindex="-1" aria-labelledby="fineModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form method="post" action="${pageContext.request.contextPath}/admin/fines/update">
+      <form method="post" action="${pageContext.request.contextPath}/admin/fines">
         <input type="hidden" name="csrf_token" value="${sessionScope.csrf_token}">
         <div class="modal-header">
           <h5 class="modal-title" id="fineModalLabel">Update Fine</h5>
@@ -149,6 +160,45 @@
     statusSelect.selectedIndex = 0;
 
     modal.show();
+  }
+
+  function markAsPaid(fineId, userName) {
+    if (confirm('Are you sure you want to mark this fine as PAID for ' + userName + '?')) {
+    updateFineStatus(fineId, 'PAID');
+  }
+  }
+
+  function markAsUnpaid(fineId, userName) {
+    if (confirm('Are you sure you want to mark this fine as UNPAID for ' + userName + '?')) {
+      updateFineStatus(fineId, 'UNPAID');
+    }
+  }
+
+  function updateFineStatus(fineId, newStatus) {
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.action = '${pageContext.request.contextPath}/admin/fines';
+
+    const idField = document.createElement('input');
+    idField.type = 'hidden';
+    idField.name = 'id';
+    idField.value = fineId;
+
+    const statusField = document.createElement('input');
+    statusField.type = 'hidden';
+    statusField.name = 'paidStatus';
+    statusField.value = newStatus;
+
+    const csrfField = document.createElement('input');
+    csrfField.type = 'hidden';
+    csrfField.name = 'csrf_token';
+    csrfField.value = '${sessionScope.csrf_token}';
+
+    form.appendChild(idField);
+    form.appendChild(statusField);
+    form.appendChild(csrfField);
+    document.body.appendChild(form);
+    form.submit();
   }
 </script>
 

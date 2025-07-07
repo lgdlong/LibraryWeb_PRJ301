@@ -51,4 +51,19 @@ public class Fine {
     public void setPaidStatus(PaidStatus paidStatus) {
         this.paidStatus = paidStatus;
     }
+
+    public boolean isPaid() {
+        return paidStatus == PaidStatus.PAID;
+    }
+
+    public boolean isUnpaid() {
+        return paidStatus == PaidStatus.UNPAID;
+    }
+
+    public void markAsPaid() {
+        if (isPaid()) {
+            throw new IllegalStateException("Fine is already paid.");
+        }
+        this.paidStatus = PaidStatus.PAID;
+    }
 }
