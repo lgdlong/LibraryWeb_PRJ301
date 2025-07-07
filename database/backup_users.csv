@@ -1,0 +1,31 @@
+"id","name","email","password","role","status"
+1,Alice Admin,alice.admin@example.com,admin123,admin,active
+2,Thi No,No@example.com,no123,user,active
+3,Emma Reader,emma.user@example.com,user123,user,active
+4,Noah Reader,noah.user@example.com,user456,user,active
+5,Olivia Reader,olivia.user@example.com,user789,user,blocked
+6,Hoang Long,long@gmail.com,"123456",user,active
+8,Phung Luu Hoang Long,phungluuhoanglong@gmail.com,"123456",user,active
+9,Super Admin,admin@admin.com,admin,admin,active
+10,Blocked Man,blockedman@gmail.com,"123456",user,blocked
+11,abc,abc@gmail.com,"123456",user,active
+12,Nguyen Van A,vana@gmail.com,pass12,user,active
+13,John Doe,john.doe@example.com,john123,user,active
+14,Jane Smith,jane.smith@example.com,jane456,user,active
+15,Phan Thi B,phanb@gmail.com,phanb123,user,blocked
+16,Le Quang C,lequangc@gmail.com,quangc456,user,active
+17,Emily Reader,emily.reader@example.com,reader123,user,active
+18,Mai Lan,mailan@gmail.com,lan789,user,blocked
+19,Anna Nguyen,anna.nguyen@example.com,anna123,user,active
+20,James Bond,james.bond@example.com,bond007,user,active
+21,Dao Minh D,daominhd@gmail.com,dao456,user,active
+22,Lisa Le,lisa.le@example.com,lisa456,user,active
+23,Pham Tuan,pham.tuan@gmail.com,tuan123,user,blocked
+24,Linda Tran,linda.tran@example.com,linda789,user,active
+25,Vu Hoang,vu.hoang@gmail.com,hoang123,user,active
+26,Peter Pan,peter.pan@example.com,peter456,user,blocked
+27,Susan Lee,susan.lee@example.com,susan123,user,active
+28,Nguyen Thi Hoa,nguyenthihoa@gmail.com,hoa321,user,active
+29,Chris Evans,chris.evans@example.com,chris321,user,active
+30,Lan Huong,lanhuong@gmail.com,huong456,user,blocked
+31,Ben White,ben.white@example.com,ben123,user,active
