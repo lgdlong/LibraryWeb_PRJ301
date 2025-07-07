@@ -15,7 +15,7 @@ import java.util.stream.*;
 public class BorrowRecordService {
     private final BorrowRecordDao borrowRecordDao = new BorrowRecordDao();
     private final BookDao bookDao = new BookDao();
-    public final FineDao fineDao = new FineDao();
+    private final FineDao fineDao = new FineDao();
 
     public void addNewBorrowRecord(Connection conn, BorrowRecord record) {
         if (record == null) {
