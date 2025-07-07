@@ -113,7 +113,7 @@ public class BorrowRecord {
     public void markAsReturned() {
         // Check if the record is already returned or if the return date is already set
         if (BorrowStatus.RETURNED.equals(this.status)) {
-            throw new IllegalStateException("Return date is already set. Cannot mark as returned again.");
+            throw new IllegalStateException("Record is already marked as returned. Cannot mark as returned again.");
         }
         if (this.returnDate != null) {
             throw new IllegalStateException("Return date is already set. Cannot mark as returned again.");
