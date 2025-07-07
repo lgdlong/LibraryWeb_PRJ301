@@ -1,3 +1,4 @@
+<%--admin/layout.jsp--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
@@ -9,7 +10,7 @@
   <div class="d-none d-lg-block">
     <jsp:include page="/admin/admin-sidebar.jsp"/>
   </div>
-  
+
   <!-- Mobile Top Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm d-lg-none sticky-top">
     <div class="container-fluid px-3">
@@ -43,11 +44,15 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/requests">Requests</a></li>
-              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/borrow-records">Borrowings</a></li>
+              <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/borrow-records">Borrowings</a>
+              </li>
               <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/fines">Fines</a></li>
               <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/config">System Config</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item text-danger" href="${pageContext.request.contextPath}/LogoutController">Logout</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item text-danger"
+                     href="${pageContext.request.contextPath}/LogoutController">Logout</a></li>
             </ul>
           </li>
         </ul>
@@ -67,10 +72,11 @@
         </c:otherwise>
       </c:choose>
     </div>
-    
+
     <!-- Footer -->
     <footer class="mt-5 pt-4 pb-2 text-center text-muted small">
-      <p>© ${pageContext.servletContext.servletContextName} Library Management System ${java.time.Year.now().getValue()}</p>
+      <p>© ${pageContext.servletContext.servletContextName} Library Management
+        System ${java.time.Year.now().getValue()}</p>
     </footer>
   </div>
 </div>

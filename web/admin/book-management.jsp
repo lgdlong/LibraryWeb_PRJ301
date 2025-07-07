@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ADMIN
-  Date: 5/30/2025
-  Time: 13:36
-  To change this template use File | Settings | File Templates.
---%>
+<%--book-management.jsp--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -51,25 +45,27 @@
           <td>${fn:escapeXml(book.author)}</td>
           <td>${fn:escapeXml(book.isbn)}</td>
           <td>${fn:escapeXml(book.category)}</td>
-          <td>${book.publishedYear}</td>          
+          <td>${book.publishedYear}</td>
           <td>${book.totalCopies}</td>
           <td>${book.availableCopies}</td>
-          <td><span class="status-badge status-badge-${fn:escapeXml(book.status)}">${fn:escapeXml(book.status)}</span></td>
+          <td><span class="status-badge status-badge-${fn:escapeXml(book.status)}">${fn:escapeXml(book.status)}</span>
+          </td>
           <td>
             <button class="btn btn-warning btn-sm" onclick="openBookForm(
-              '${book.id}', 
-              '${fn:escapeXml(book.title)}', 
-              '${fn:escapeXml(book.author)}', 
-              '${fn:escapeXml(book.isbn)}', 
-              '${fn:escapeXml(book.coverUrl)}', 
-              '${fn:escapeXml(book.category)}', 
-              '${book.publishedYear}', 
-              '${book.totalCopies}', 
-              '${book.availableCopies}', 
+              '${book.id}',
+              '${fn:escapeXml(book.title)}',
+              '${fn:escapeXml(book.author)}',
+              '${fn:escapeXml(book.isbn)}',
+              '${fn:escapeXml(book.coverUrl)}',
+              '${fn:escapeXml(book.category)}',
+              '${book.publishedYear}',
+              '${book.totalCopies}',
+              '${book.availableCopies}',
               '${fn:escapeXml(book.status)}')">
               <i class="bi bi-pencil"></i> Edit
             </button>
-            <button class="btn btn-danger btn-sm" onclick="confirmDeleteBook('${book.id}', '${fn:escapeXml(book.title)}')">
+            <button class="btn btn-danger btn-sm"
+                    onclick="confirmDeleteBook('${book.id}', '${fn:escapeXml(book.title)}')">
               <i class="bi bi-trash"></i> Delete
             </button>
           </td>
@@ -102,7 +98,7 @@
           </div>
           <div class="mb-3">
             <label for="isbn" class="form-label">ISBN</label>
-            <input type="text" class="form-control" id="isbn" name="isbn" maxlength="20" 
+            <input type="text" class="form-control" id="isbn" name="isbn" maxlength="20"
                    pattern="^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$"
                    title="Please enter a valid ISBN-10 or ISBN-13">
           </div>
@@ -193,7 +189,8 @@
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -234,7 +231,7 @@
   function confirmDeleteBook(id, title) {
     const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
     document.getElementById('deleteMessage').innerText = `Are you sure you want to delete the book?`;
-    document.getElementById('confirmDeleteBtn').onclick = function() {
+    document.getElementById('confirmDeleteBtn').onclick = function () {
       submitBookDelete(id);
       modal.hide();
     }
@@ -246,14 +243,14 @@
       const form = document.createElement('form');
       form.method = 'post';
       form.action = "${pageContext.request.contextPath}/admin/books?delete=" + encodeURIComponent(id);
-      
+
       // Add CSRF token
       const csrfInput = document.createElement('input');
       csrfInput.type = 'hidden';
       csrfInput.name = 'csrf_token';
       csrfInput.value = '${sessionScope.csrf_token}';
       form.appendChild(csrfInput);
-      
+
       document.body.appendChild(form);
       form.submit();
     }

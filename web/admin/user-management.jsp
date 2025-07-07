@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ADMIN
-  Date: 5/29/2025
-  Time: 20:56
-  To change this template use File | Settings | File Templates.
---%>
-<!-- user-management.jsp -->
+<%--user-management.jsp--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -58,12 +51,14 @@
             </span>
           </td>
           <td>
-            <button class="btn btn-warning btn-sm me-1" onclick="openUserForm('${fn:escapeXml(user.id)}', '${fn:escapeXml(user.email)}', '${fn:escapeXml(user.name)}', '${fn:escapeXml(user.role)}', '${fn:escapeXml(user.status)}')">
+            <button class="btn btn-warning btn-sm me-1"
+                    onclick="openUserForm('${fn:escapeXml(user.id)}', '${fn:escapeXml(user.email)}', '${fn:escapeXml(user.name)}', '${fn:escapeXml(user.role)}', '${fn:escapeXml(user.status)}')">
               <i class="bi bi-pencil"></i> Edit
             </button>
-            <button class="btn btn-danger btn-sm" onclick="toggleUserStatus('${fn:escapeXml(user.id)}', '${fn:escapeXml(user.status)}')">
-              <i class="bi bi-${user.status == 'active' ? 'lock' : 'unlock'}"></i> 
-              ${user.status == 'active' ? 'Block' : 'Unblock'}
+            <button class="btn btn-danger btn-sm"
+                    onclick="toggleUserStatus('${fn:escapeXml(user.id)}', '${fn:escapeXml(user.status)}')">
+              <i class="bi bi-${user.status == 'active' ? 'lock' : 'unlock'}"></i>
+                ${user.status == 'active' ? 'Block' : 'Unblock'}
             </button>
           </td>
         </tr>
@@ -112,7 +107,8 @@
           </div>
         </div>
         <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-danger" id="userDeleteBtn" onclick="showDeleteConfirmModal()">Delete</button>
+          <button type="button" class="btn btn-danger" id="userDeleteBtn" onclick="showDeleteConfirmModal()">Delete
+          </button>
           <div>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Save</button>
@@ -186,7 +182,7 @@
     confirmModal.show();
 
     // Handle confirm button click
-    document.getElementById('confirmActionBtn').onclick = function() {
+    document.getElementById('confirmActionBtn').onclick = function () {
       confirmModal.hide();
       submitUserDelete(userId);
     };
@@ -205,31 +201,31 @@
   function toggleUserStatus(userId, currentStatus) {
     const newStatus = currentStatus === 'active' ? 'blocked' : 'active';
     const action = newStatus === 'blocked' ? 'block' : 'unblock';
-    
+
     // Set confirmation message
     document.getElementById('confirmMessage').innerText = `Are you sure you want to ${action} this user?`;
-    
+
     const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
     confirmModal.show();
-    
+
     // Handle confirm button click
-    document.getElementById('confirmActionBtn').onclick = function() {
+    document.getElementById('confirmActionBtn').onclick = function () {
       confirmModal.hide();
-      
+
       const form = document.createElement('form');
       form.method = 'post';
       form.action = "${pageContext.request.contextPath}/admin/users";
-      
+
       const idField = document.createElement('input');
       idField.type = 'hidden';
       idField.name = 'id';
       idField.value = userId;
-      
+
       const statusField = document.createElement('input');
       statusField.type = 'hidden';
       statusField.name = 'status';
       statusField.value = newStatus;
-      
+
       form.appendChild(idField);
       form.appendChild(statusField);
       document.body.appendChild(form);
