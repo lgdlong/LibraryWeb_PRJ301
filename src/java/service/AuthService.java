@@ -4,8 +4,9 @@ package service;
 import db.*;
 import entity.*;
 import enums.*;
-import java.sql.*;
 import security.*;
+
+import java.sql.*;
 
 public class AuthService {
     private static final String GET_USER_BY_EMAIL = "SELECT [id],[name],[email],[password],[role],[status] FROM users WHERE email=?";
@@ -32,7 +33,8 @@ public class AuthService {
 
                     // Try BCrypt verification first
                     boolean isValidPassword = false;
-                    if (storedHashedPassword.startsWith("$2a$") || storedHashedPassword.startsWith("$2b$")) {
+                    if (storedHashedPassword.startsWith("$2a$") || storedHashedPassword.startsWith("$2b$") ||
+                        storedHashedPassword.startsWith("$2x$") || storedHashedPassword.startsWith("$2y$")) {
                         // Password is already hashed with BCrypt
                         isValidPassword = PasswordHasher.matches(password, storedHashedPassword);
                     } else {

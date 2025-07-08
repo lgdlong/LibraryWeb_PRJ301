@@ -9,6 +9,9 @@ public class PasswordHasher {
         if (password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be null or empty");
         }
+        if (password.length() > 72) {
+            throw new IllegalArgumentException("Password length cannot exceed 72 characters");
+        }
         // Cost 12 là hợp lý, có thể tăng giảm tùy server
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
@@ -18,6 +21,11 @@ public class PasswordHasher {
         if (rawPassword == null || hashedPassword == null) {
             return false;
         }
-        return BCrypt.checkpw(rawPassword, hashedPassword);
+        try {
+            return BCrypt.checkpw(rawPassword, hashedPassword);
+        } catch (IllegalArgumentException e) {
+            // Invalid hash format - likely not a BCrypt hash
+            return false;
+        }
     }
 }
