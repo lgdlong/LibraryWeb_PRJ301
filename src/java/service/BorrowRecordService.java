@@ -5,12 +5,11 @@ import db.*;
 import dto.*;
 import entity.*;
 import enums.*;
-import mapper.*;
-
 import java.sql.*;
 import java.time.*;
 import java.util.*;
 import java.util.stream.*;
+import mapper.*;
 
 public class BorrowRecordService {
     private final BorrowRecordDao borrowRecordDao = new BorrowRecordDao();
@@ -402,5 +401,21 @@ public class BorrowRecordService {
             .filter(record -> record.getDueDate().isAfter(LocalDate.now())) // Not yet overdue
             .sorted((r1, r2) -> r1.getDueDate().compareTo(r2.getDueDate()))
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Get monthly borrowing statistics for the last 12 months
+     * @return Map with month-year as key and borrow count as value
+     */
+    public Map<String, Long> getMonthlyBorrowingStats() {
+        return borrowRecordDao.getMonthlyBorrowingStats();
+    }
+
+    /**
+     * Get average borrow duration in days for returned books
+     * @return Average duration in days, or 0 if no returned books
+     */
+    public double getAverageBorrowDuration() {
+        return borrowRecordDao.getAverageBorrowDuration();
     }
 }
