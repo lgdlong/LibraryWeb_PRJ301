@@ -4,12 +4,11 @@ package service;
 import db.*;
 import entity.*;
 import enums.*;
+import java.sql.*;
 import security.*;
 
-import java.sql.*;
-
 public class AuthService {
-    private static final String CHECK_LOGIN = "SELECT [id],[name],[email],[password],[role],[status] FROM users WHERE email=? AND password=?";
+    private static final String GET_USER_BY_EMAIL = "SELECT [id],[name],[email],[password],[role],[status] FROM users WHERE email=?";
     private static final String CHECK_EMAIL_EXISTS = "SELECT [id] FROM users WHERE email=?";
 
     public User checkLogin(String email, String password) throws SQLException {
@@ -18,25 +17,30 @@ public class AuthService {
         ResultSet rs = null;
         User result = null;
 
-        // Hash the password before checking
-        password = PasswordHasher.hash(password);
-
         try {
             cn = DbConfig.getConnection();
             if (cn != null) {
-                ptm = cn.prepareStatement(CHECK_LOGIN);
+                // First, get the user by email
+                ptm = cn.prepareStatement(GET_USER_BY_EMAIL);
                 ptm.setString(1, email);
-                ptm.setString(2, password);
                 rs = ptm.executeQuery();
+                
                 if (rs.next()) {
-                    int id = rs.getInt("id");
-                    String name = rs.getString("name");
-                    UserRole role = parseUserRole(rs.getString("role"));
-                    UserStatus status = parseUserStatus(rs.getString("status"));
-                    result = new User(id, name, email, role, status);
+                    String storedHashedPassword = rs.getString("password");
+                    
+                    // Use BCrypt to verify the password
+                    if (PasswordHasher.matches(password, storedHashedPassword)) {
+                        // Password matches, create user object
+                        int id = rs.getInt("id");
+                        String name = rs.getString("name");
+                        UserRole role = parseUserRole(rs.getString("role"));
+                        UserStatus status = parseUserStatus(rs.getString("status"));
+                        result = new User(id, name, email, role, status);
+                    }
                 }
             }
         } catch (Exception e) {
+            System.err.println("Error in checkLogin: " + e.getMessage());
             e.printStackTrace();
         } finally {
             if (rs != null) rs.close();
