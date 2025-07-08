@@ -1,15 +1,12 @@
 package service;
 
 
-import db.DbConfig;
-import entity.User;
-import enums.UserRole;
-import enums.UserStatus;
+import db.*;
+import entity.*;
+import enums.*;
+import security.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AuthService {
     private static final String CHECK_LOGIN = "SELECT [id],[name],[email],[password],[role],[status] FROM users WHERE email=? AND password=?";
@@ -20,6 +17,9 @@ public class AuthService {
         PreparedStatement ptm = null;
         ResultSet rs = null;
         User result = null;
+
+        // Hash the password before checking
+        password = PasswordHasher.hash(password);
 
         try {
             cn = DbConfig.getConnection();
