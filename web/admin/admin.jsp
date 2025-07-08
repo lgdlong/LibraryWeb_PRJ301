@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <!-- Add Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0"></script>
 
 <!-- Monthly Borrowing Stats Chart Section -->
 <div class="row g-4 mb-4">
