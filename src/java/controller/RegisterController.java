@@ -5,6 +5,7 @@ import entity.*;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
+import security.*;
 import service.*;
 
 import java.io.*;
@@ -60,7 +61,11 @@ public class RegisterController extends HttpServlet {
 
             // Process registration
             if (check) {
+                // Hash the password before saving
+                password = PasswordHasher.hash(password);
+                // Create a new user entity
                 User user = new User(fullName, email, password);
+                // Save user to the database
                 userService.addUser(user);
                 response.sendRedirect(request.getContextPath() + "/login");
             } else {

@@ -16,9 +16,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-
         request.getRequestDispatcher("/Login.jsp").forward(request, response);
-
     }
 
     @Override
@@ -53,15 +51,9 @@ public class LoginController extends HttpServlet {
                 request.getRequestDispatcher("/Login.jsp").forward(request, response);
             }
         } catch (SQLException e) {
-            log("ERROR at LoginController: " + e.toString());
+            System.err.println("ERROR at LoginController: " + e.toString());
             request.setAttribute("ERROR", "Internal server error");
             request.getRequestDispatcher("/Login.jsp").forward(request, response);
         }
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }
