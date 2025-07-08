@@ -297,6 +297,14 @@ public class BorrowRecordDao {
      */
     public Map<String, Long> getMonthlyBorrowingStats() {
         Map<String, Long> monthlyStats = new LinkedHashMap<>();
+
+        // Pre-populate the map with the last 12 months
+        Calendar calendar = Calendar.getInstance();
+        for (int i = 0; i < 12; i++) {
+            String monthKey = String.format("%d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
+            monthlyStats.put(monthKey, 0L);
+            calendar.add(Calendar.MONTH, -1);
+        }
         String sql = "SELECT " +
                 "YEAR(borrow_date) AS year, " +
                 "MONTH(borrow_date) AS month, " +
