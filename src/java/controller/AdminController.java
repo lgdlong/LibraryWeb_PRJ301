@@ -35,6 +35,10 @@ public class AdminController extends HttpServlet {
             request.setAttribute("borrowedCount", borrowRecordService.countCurrentlyBorrowedBooks());
             request.setAttribute("mostBorrowedBooks", borrowRecordService.getMostBorrowedBooks());
 
+            // Add new statistics
+            request.setAttribute("monthlyBorrowingStats", borrowRecordService.getMonthlyBorrowingStats());
+            request.setAttribute("averageBorrowDuration", borrowRecordService.getAverageBorrowDuration());
+
             request.getRequestDispatcher("/admin/layout.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
