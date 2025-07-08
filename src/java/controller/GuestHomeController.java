@@ -2,6 +2,7 @@ package controller;
 
 import entity.*;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import service.*;
 
@@ -11,6 +12,7 @@ import java.util.*;
 /**
  * @author Dien Sanh
  */
+@WebServlet("/guest")
 public class GuestHomeController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

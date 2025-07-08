@@ -2,13 +2,14 @@ package controller;
 
 import entity.*;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import service.*;
 
 import java.io.*;
 import java.util.*;
 
-
+@WebServlet("/guest/search-book")
 public class SearchBookController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {

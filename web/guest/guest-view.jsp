@@ -22,7 +22,7 @@
                 <c:when test="${book.availableCopies > 0}">
                     <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
                         <input type="hidden" name="bookId" value="${book.id}">
-                        <input type="hidden" name="currentPage" value="GuestHomeController">
+                        <input type="hidden" name="currentPage" value="${pageContext.request.contextPath}/guest">
                         <button type="submit" class="borrow-button">Borrow</button>
                     </form>
                 </c:when>

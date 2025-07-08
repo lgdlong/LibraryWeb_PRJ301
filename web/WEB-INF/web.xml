@@ -26,10 +26,6 @@
         <servlet-class>controller.ViewBookController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GuestAvailableBookController</servlet-name>
-        <servlet-class>controller.GuestAvailableBookController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>GuestHomeController</servlet-name>
         <servlet-class>controller.GuestHomeController</servlet-class>
     </servlet>
@@ -40,10 +36,6 @@
     <servlet>
         <servlet-name>ProfileUpdateController</servlet-name>
         <servlet-class>controller.ProfileUpdateController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>NewBookController</servlet-name>
-        <servlet-class>controller.NewBookController</servlet-class>
     </servlet>
     <!-- Mapping chỉ cho các servlet không dùng annotation -->
     <servlet>
@@ -87,10 +79,6 @@
         <url-pattern>/ViewBookController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GuestAvailableBookController</servlet-name>
-        <url-pattern>/GuestAvailableBookController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>GuestHomeController</servlet-name>
         <url-pattern>/GuestHomeController</url-pattern>
     </servlet-mapping>
@@ -101,10 +89,6 @@
     <servlet-mapping>
         <servlet-name>ProfileUpdateController</servlet-name>
         <url-pattern>/ProfileUpdateController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>NewBookController</servlet-name>
-        <url-pattern>/NewBookController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BorrowController</servlet-name>

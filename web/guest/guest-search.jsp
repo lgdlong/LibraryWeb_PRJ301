@@ -14,7 +14,7 @@
             <div class="cards-container">
                 <c:forEach var="b" items="${books}">
                     <div class="book-card">
-                        <a href="${pageContext.request.contextPath}/ViewBookController?id=${b.id}" class="book-link">
+                        <a href="${pageContext.request.contextPath}/guest/view-book?id=${b.id}" class="book-link">
                             <img class="book-image" src="${b.coverUrl}" alt="No Image">
                         </a>
                         <div class="book-meta">
@@ -26,7 +26,7 @@
                                 <c:when test="${b.availableCopies > 0}">
                                     <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
                                         <input type="hidden" name="bookId" value="${b.id}">
-                                        <input type="hidden" name="currentPage" value="GuestHomeController">
+                                        <input type="hidden" name="currentPage" value="${pageContext.request.contextPath}/guest">
                                         <button type="submit" class="borrow-button">Borrow</button>
                                     </form>
                                 </c:when>
