@@ -33,7 +33,7 @@
             <h2 class="display-6 fw-bold mb-0">
               <c:choose>
                 <c:when test="${averageBorrowDuration > 0}">
-                  <fmt:formatNumber value="${averageBorrowDuration}" maxFractionDigits="0" />
+                  ${Math.round(averageBorrowDuration)}
                 </c:when>
                 <c:otherwise>0</c:otherwise>
               </c:choose>
