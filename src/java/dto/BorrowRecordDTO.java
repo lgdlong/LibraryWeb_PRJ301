@@ -101,5 +101,8 @@ public class BorrowRecordDTO {
     public void setStatus(String status) {
         this.status = status;
     }
+    public boolean isOverdue() {
+    return returnDate == null && dueDate != null && dueDate.isBefore(LocalDate.now());
+}
 
 }

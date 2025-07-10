@@ -1,9 +1,13 @@
 package service;
 
 import dao.*;
+import db.DbConfig;
 import dto.*;
 import entity.*;
 import enums.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.*;
 import java.util.*;
 import java.util.stream.*;
@@ -185,4 +189,22 @@ public class FineService {
             // Không ném exception để không làm gián đoạn quá trình cập nhật overdue
         }
     }
+
+public Map<Long, FineDTO> getFinesByBorrowRecordIds(List<Long> borrowRecordIds) {
+    Map<Long, FineDTO> fineMap = new HashMap<>();
+    if (borrowRecordIds == null || borrowRecordIds.isEmpty()) {
+        return fineMap;
+    }
+
+    List<Fine> fines = fineDao.getFinesByBorrowRecordIds(borrowRecordIds);
+
+    for (Fine fine : fines) {
+        FineDTO dto = FineMapping.toDTO(fine);
+        fineMap.put(fine.getBorrowId(), dto);
+    }
+
+    return fineMap;
+}
+
+
 }
