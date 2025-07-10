@@ -11,6 +11,7 @@ import java.util.logging.*;
 public class FineDao {
     private static final Logger LOGGER = Logger.getLogger(FineDao.class.getName());
 
+    
     // Lấy tất cả Fine entity (chỉ bảng fines)
     public List<Fine> getAll() {
         List<Fine> fines = new ArrayList<>();
@@ -189,4 +190,43 @@ public class FineDao {
             PaidStatus.fromString(rs.getString("paid_status"))
         );
     }
+    public List<Fine> getFinesByBorrowRecordIds(List<Long> borrowRecordIds) {
+    if (borrowRecordIds == null || borrowRecordIds.isEmpty()) {
+        return Collections.emptyList();
+    }
+
+    StringBuilder sql = new StringBuilder("SELECT * FROM fines WHERE borrow_id IN (");
+    for (int i = 0; i < borrowRecordIds.size(); i++) {
+        sql.append("?");
+        if (i < borrowRecordIds.size() - 1) {
+            sql.append(",");
+        }
+    }
+    sql.append(")");
+
+    try (Connection conn = DbConfig.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+        for (int i = 0; i < borrowRecordIds.size(); i++) {
+            ps.setLong(i + 1, borrowRecordIds.get(i));
+        }
+
+        ResultSet rs = ps.executeQuery();
+        List<Fine> fineList = new ArrayList<>();
+        while (rs.next()) {
+            Fine fine = new Fine(
+                rs.getLong("id"),
+                rs.getLong("borrow_id"),
+                rs.getDouble("fine_amount"),
+                PaidStatus.valueOf(rs.getString("paid_status"))
+            );
+            fineList.add(fine);
+        }
+        return fineList;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return Collections.emptyList();
+    }
+}
+
 }
