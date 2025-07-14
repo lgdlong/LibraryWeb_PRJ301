@@ -8,7 +8,7 @@ import service.*;
 
 import java.io.*;
 import java.util.*;
-
+import java.util.stream.Collectors;
 
 public class ViewHistoryBorrowController extends HttpServlet {
 
@@ -28,14 +28,16 @@ public class ViewHistoryBorrowController extends HttpServlet {
                 return;
             }
 
-            // **GỌI kiểm tra & cập nhật overdue trước khi lấy danh sách**
+
             borrowRecordService.checkAndUpdateOverdue();
 
-            // **Xử lý các khoản phạt quá hạn chỉ cho user hiện tại (tối ưu hiệu suất)**
+
             fineService.processOverdueFines(user.getId());
 
+         
             List<BorrowRecordDTO> history = borrowRecordService.getBorrowHistoryByUserId(user.getId());
 
+   
             Map<Long, FineDTO> fineMap = new HashMap<>();
             for (BorrowRecordDTO record : history) {
                 FineDTO fine = fineService.getFineByBorrowRecordId(record.getId());
@@ -44,9 +46,31 @@ public class ViewHistoryBorrowController extends HttpServlet {
                 }
             }
 
+          
+            List<BorrowRecordDTO> overdueSortedByFine = new ArrayList<>();
+            for (BorrowRecordDTO record : history) {
+                FineDTO fine = fineMap.get(record.getId());
+                if (fine != null
+                    && record.getReturnDate() == null
+                    && record.getDueDate() != null
+                    && record.getDueDate().isBefore(java.time.LocalDate.now())) {
+                    overdueSortedByFine.add(record);
+                }
+            }
 
+            overdueSortedByFine.sort((r1, r2) -> {
+                Double f1 = fineMap.get(r1.getId()).getFineAmount();
+                Double f2 = fineMap.get(r2.getId()).getFineAmount();
+                return f2.compareTo(f1); // sắp xếp giảm dần
+            });
+
+       
             request.setAttribute("borrowHistory", history);
             request.setAttribute("fineMap", fineMap);
+
+      
+            request.setAttribute("overdueSortedByFine", overdueSortedByFine);
+
             request.setAttribute("contentPage", "/user/history-borrow.jsp");
             request.setAttribute("sidebarPage", "/user/my-library-sidebar.jsp");
             request.getRequestDispatcher("/guest/layout.jsp").forward(request, response);
