@@ -4,7 +4,7 @@
 <div class="main-content">
     <h2>Search Books</h2>
 
-    <c:set var="books" value="${requestScope.results != null ? requestScope.results : sessionScope.searchResults}" />
+    <c:set var="books" value="${results}" />
 
     <c:choose>
         <c:when test="${books == null || empty books}">
