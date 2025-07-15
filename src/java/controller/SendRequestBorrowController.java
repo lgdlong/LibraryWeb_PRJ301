@@ -2,13 +2,14 @@ package controller;
 
 import entity.*;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import service.*;
 
 import java.io.*;
 import java.util.*;
 
-
+@WebServlet("/borrow/send-request")
 public class SendRequestBorrowController extends HttpServlet {
 
 
@@ -18,10 +19,6 @@ public class SendRequestBorrowController extends HttpServlet {
         HttpSession session = request.getSession();
         User us = (User) session.getAttribute("LOGIN_USER");
 
-        if (us == null) {
-            response.sendRedirect(request.getContextPath() + "/Login.jsp");
-            return;
-        }
 
         List<Book> books = (List<Book>) session.getAttribute("borrowBook");
         if (books == null || books.isEmpty()) {

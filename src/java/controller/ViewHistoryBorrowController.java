@@ -3,13 +3,14 @@ package controller;
 import dto.*;
 import entity.*;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import service.*;
 
 import java.io.*;
 import java.util.*;
 
-
+@WebServlet("/borrow/history")
 public class ViewHistoryBorrowController extends HttpServlet {
 
     private final BorrowRecordService borrowRecordService = new BorrowRecordService();
@@ -23,10 +24,7 @@ public class ViewHistoryBorrowController extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
 
-            if (user == null) {
-                response.sendRedirect("Login.jsp");
-                return;
-            }
+
 
             // **GỌI kiểm tra & cập nhật overdue trước khi lấy danh sách**
             borrowRecordService.checkAndUpdateOverdue();

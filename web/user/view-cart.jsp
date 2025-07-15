@@ -34,7 +34,7 @@
                             <td>${book.author}</td>
                             <td>${book.category}</td>
                             <td>
-                                <form action="${pageContext.request.contextPath}/ViewBorrowBookController" method="post" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/borrow/current" method="post" class="d-inline">
                                     <input type="hidden" name="bookId" value="${book.id}" />
                                     <input type="hidden" name="action" value="remove" />
                                     <button type="submit" class="btn btn-sm btn-danger">Remove</button>
@@ -46,7 +46,7 @@
             </table>
         </div>
 
-        <form action="${pageContext.request.contextPath}/SendRequestBorrowController" method="post" class="text-center mt-3">
+        <form action="${pageContext.request.contextPath}/borrow/send-request" method="post" class="text-center mt-3">
             <button type="submit" class="btn btn-primary">Send Request</button>
         </form>
     </c:if>

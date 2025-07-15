@@ -2,14 +2,13 @@ package controller;
 
 import entity.*;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.*;
 import java.util.*;
 
-/**
- * @author Dien Sanh
- */
+@WebServlet("/borrow/current")
 public class ViewBorrowBookController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -17,11 +16,7 @@ public class ViewBorrowBookController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             HttpSession session = request.getSession();
-            User us = (User) session.getAttribute("LOGIN_USER");
-            if (us == null) {
-                response.sendRedirect("Login.jsp");
-                return;
-            }
+
             ArrayList<Book> list = (ArrayList<Book>) session.getAttribute("borrowBook");
             String action = request.getParameter("action");
             String id = request.getParameter("bookId");

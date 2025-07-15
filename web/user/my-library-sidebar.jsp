@@ -19,13 +19,13 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="right-links-group d-flex flex-row navbar-nav align-items-center">
                 <li class="nav-item me-3">
-                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewBorrowBookController">Selected Books</a>
+                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/borrow/current">Selected Books</a>
                 </li>
                 <li class="nav-item me-3">
-                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewHistoryBorrowController">Borrowed History</a>
+                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/borrow/history">Borrowed History</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewBooksRequestController">Borrow Requests</a>
+                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/borrow/requested">Borrow Requests</a>
                 </li>
             </ul>
         </div>

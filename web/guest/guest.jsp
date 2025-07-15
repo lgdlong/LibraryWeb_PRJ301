@@ -25,7 +25,7 @@
                                 <div class="book-action">
                                     <c:choose>
                                         <c:when test="${b.availableCopies > 0}">
-                                            <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
+                                            <form action="${pageContext.request.contextPath}/borrow/book" method="post" class="borrow-form">
                                                 <input type="hidden" name="bookId" value="${b.id}">
                                                 <input type="hidden" name="currentPage" value="${pageContext.request.contextPath}/home">
                                                 <button type="submit" class="borrow-button">Borrow</button>
@@ -65,7 +65,7 @@
                         <div class="book-action">
                             <c:choose>
                                 <c:when test="${b.availableCopies > 0}">
-                                    <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
+                                    <form action="${pageContext.request.contextPath}/borrow/book" method="post" class="borrow-form">
                                         <input type="hidden" name="bookId" value="${b.id}">
                                         <input type="hidden" name="currentPage" value="${pageContext.request.contextPath}/home">
                                         <button type="submit" class="borrow-button">Borrow</button>
