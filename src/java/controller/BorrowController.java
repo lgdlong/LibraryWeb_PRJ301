@@ -45,11 +45,11 @@ public class BorrowController extends HttpServlet {
                     session.setAttribute("borrowBook", bookList);
                 }
             }
-            String currentPage = request.getParameter("currentPage");
-            if (currentPage == null || currentPage.trim().isEmpty()) {
-                currentPage = "GuestHomeController";
+            String referer = request.getHeader("referer");
+            if (referer == null || referer.trim().isEmpty()) {
+                referer = request.getContextPath() + "/home";
             }
-            response.sendRedirect(request.getContextPath() + "/" + currentPage);
+            response.sendRedirect(referer);
 
         } catch (Exception e) {
             // Log the error appropriately
@@ -57,7 +57,7 @@ public class BorrowController extends HttpServlet {
 
             // Provide user feedback
             request.setAttribute("errorMessage", "An error occurred while processing your request. Please try again.");
-            request.getRequestDispatcher("/error.jsp").forward(request, response);
+
         }
 
     }
