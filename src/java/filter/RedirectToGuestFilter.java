@@ -33,9 +33,9 @@ public class RedirectToGuestFilter implements Filter {
         String context = req.getContextPath();
 
         try {
-            // Nếu truy cập gốc context, redirect sang /guest
+
             if (uri.equals(context) || uri.equals(context + "/")) {
-                res.sendRedirect(context + "/guest");
+                res.sendRedirect(context + "/home");
                 return;
             }
 

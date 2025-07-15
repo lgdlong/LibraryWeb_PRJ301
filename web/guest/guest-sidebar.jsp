@@ -9,11 +9,11 @@
 <div class="navbar">
 
   <div class="navbar">
-    <a href="${pageContext.request.contextPath}/guest" class="nav-link">Home</a>
+    <a href="${pageContext.request.contextPath}/home" class="nav-link">Home</a>
   </div>
 
   <div class="nav-center">
-    <form class="search-bar" action="${pageContext.request.contextPath}/guest/search-book" method="get">
+    <form class="search-bar" action="${pageContext.request.contextPath}/search" method="get">
       <input type="text" name="keyword" placeholder="Search..."
              value="<%= request.getParameter("keyword") != null ? request.getParameter("keyword") : "" %>"/>
       <button type="submit">Search</button>

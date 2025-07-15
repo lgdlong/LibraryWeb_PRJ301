@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * @author Dien Sanh
  */
-@WebServlet("/guest")
+@WebServlet({"/home", "/"})
 public class GuestHomeController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

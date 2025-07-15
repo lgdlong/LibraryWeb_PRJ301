@@ -8,7 +8,7 @@ import service.*;
 
 import java.io.*;
 
-@WebServlet("/guest/view-book")
+@WebServlet("/view")
 public class ViewBookController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

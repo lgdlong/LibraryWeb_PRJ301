@@ -9,7 +9,7 @@ import service.*;
 import java.io.*;
 import java.util.*;
 
-@WebServlet("/guest/search-book")
+@WebServlet("/search")
 public class SearchBookController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
