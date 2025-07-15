@@ -7,7 +7,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container-fluid px-4">
         <!-- Left - Brand (Home) -->
-        <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/GuestHomeController">Home</a>
+        <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">Home</a>
 
         <!-- Collapse toggle button for responsive view -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
