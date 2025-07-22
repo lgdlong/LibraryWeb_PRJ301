@@ -2,6 +2,51 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
+<!-- Add Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0"></script>
+
+<!-- Monthly Borrowing Stats Chart Section -->
+<div class="row g-4 mb-4">
+  <div class="col-md-8">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white border-0">
+        <h5 class="mb-0">Monthly Borrowing Statistics</h5>
+        <small class="text-muted">Last 12 months borrowing activity</small>
+      </div>
+      <div class="card-body">
+        <canvas id="monthlyBorrowingChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white border-0">
+        <h5 class="mb-0">Average Borrow Duration</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-flex align-items-center">
+          <div class="icon-square text-bg-success rounded-3 me-3">
+            <i class="bi bi-clock fs-4"></i>
+          </div>
+          <div>
+            <h2 class="display-6 fw-bold mb-0">
+              <c:choose>
+                <c:when test="${averageBorrowDuration > 0}">
+                  ${Math.round(averageBorrowDuration)}
+                </c:when>
+                <c:otherwise>0</c:otherwise>
+              </c:choose>
+            </h2>
+            <p class="text-muted mb-0">days</p>
+          </div>
+        </div>
+        <p class="card-text text-muted mt-3">Average time books are kept before return</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Improved Dashboard Header with Welcome Message and Quick Actions -->
 <div class="d-flex justify-content-between align-items-center mb-4">
   <div>
@@ -141,4 +186,51 @@
     </div>
   </div>
 </div>
+
+<!-- Chart JavaScript -->
+<script>
+// Monthly Borrowing Statistics Chart
+const monthlyLabels = [
+  <c:forEach var="entry" items="${monthlyBorrowingStats}" varStatus="status">
+    "${entry.key}"<c:if test="${!status.last}">,</c:if>
+  </c:forEach>
+];
+
+const monthlyData = [
+  <c:forEach var="entry" items="${monthlyBorrowingStats}" varStatus="status">
+    ${entry.value}<c:if test="${!status.last}">,</c:if>
+  </c:forEach>
+];
+
+const ctx = document.getElementById('monthlyBorrowingChart').getContext('2d');
+const monthlyBorrowingChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: monthlyLabels,
+        datasets: [{
+            label: 'Books Borrowed',
+            data: monthlyData,
+            backgroundColor: 'rgba(54, 162, 235, 0.8)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+</script>
 

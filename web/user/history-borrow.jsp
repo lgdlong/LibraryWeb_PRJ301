@@ -47,7 +47,7 @@
                   <c:if test="${item.status == 'borrowed'}">
                     <c:set var="hasBorrowedRecords" value="true"/>
                     <tr>
-                      <td>${item.bookTitle}</td>
+                      <td class="text-start">${item.bookTitle}</td>
                       <td>${item.borrowDate}</td>
                       <td>${item.dueDate}</td>
                       <td>
@@ -90,7 +90,7 @@
                   <c:if test="${item.status == 'overdue'}">
                     <c:set var="hasOverdueRecords" value="true"/>
                     <tr>
-                      <td>${item.bookTitle}</td>
+                      <td class="text-start">${item.bookTitle}</td>
                       <td>${item.borrowDate}</td>
                       <td>${item.dueDate}</td>
                       <td>

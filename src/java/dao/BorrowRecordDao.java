@@ -3,7 +3,6 @@ package dao;
 import db.*;
 import entity.*;
 import enums.*;
-
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
@@ -290,6 +289,73 @@ public class BorrowRecordDao {
             throw new RuntimeException(e);
         }
         return mostBorrowed;
+    }
+
+    /**
+     * Get monthly borrowing statistics for the last 12 months
+     * @return Map with month-year as key and borrow count as value
+     */
+    public Map<String, Long> getMonthlyBorrowingStats() {
+        Map<String, Long> monthlyStats = new LinkedHashMap<>();
+
+        // Pre-populate the map with the last 12 months
+        Calendar calendar = Calendar.getInstance();
+        for (int i = 0; i < 12; i++) {
+            String monthKey = String.format("%d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
+            monthlyStats.put(monthKey, 0L);
+            calendar.add(Calendar.MONTH, -1);
+        }
+        String sql = "SELECT " +
+                "YEAR(borrow_date) AS year, " +
+                "MONTH(borrow_date) AS month, " +
+                "COUNT(*) AS borrow_count " +
+                "FROM borrow_records " +
+                "WHERE borrow_date >= DATEADD(MONTH, -12, GETDATE()) " +
+                "GROUP BY YEAR(borrow_date), MONTH(borrow_date) " +
+                "ORDER BY year, month";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int year = rs.getInt("year");
+                int month = rs.getInt("month");
+                long count = rs.getLong("borrow_count");
+                
+                String monthKey = String.format("%d-%02d", year, month);
+                monthlyStats.put(monthKey, count);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to retrieve monthly borrowing statistics", e);
+            throw new RuntimeException(e);
+        }
+
+        return monthlyStats;
+    }
+
+    /**
+     * Calculate average borrow duration in days for returned books
+     * @return Average duration in days, or 0 if no returned books
+     */
+    public double getAverageBorrowDuration() {
+        String sql = "SELECT AVG(DATEDIFF(DAY, borrow_date, return_date)) AS avg_duration " +
+                "FROM borrow_records " +
+                "WHERE status = 'RETURNED' AND return_date IS NOT NULL";
+
+        try (Connection conn = DbConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getDouble("avg_duration");
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to calculate average borrow duration", e);
+            throw new RuntimeException(e);
+        }
+
+        return 0.0;
     }
 
     // Mapping ResultSet sang entity
