@@ -3,6 +3,7 @@ package controller;
 import dto.*;
 import entity.*;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import service.*;
 
@@ -10,6 +11,8 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+@WebServlet("/borrow/history")
 public class ViewHistoryBorrowController extends HttpServlet {
 
     private final BorrowRecordService borrowRecordService = new BorrowRecordService();
@@ -23,10 +26,7 @@ public class ViewHistoryBorrowController extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
 
-            if (user == null) {
-                response.sendRedirect("Login.jsp");
-                return;
-            }
+
 
 
             borrowRecordService.checkAndUpdateOverdue();
@@ -34,10 +34,8 @@ public class ViewHistoryBorrowController extends HttpServlet {
 
             fineService.processOverdueFines(user.getId());
 
-         
             List<BorrowRecordDTO> history = borrowRecordService.getBorrowHistoryByUserId(user.getId());
 
-   
             Map<Long, FineDTO> fineMap = new HashMap<>();
             for (BorrowRecordDTO record : history) {
                 FineDTO fine = fineService.getFineByBorrowRecordId(record.getId());
@@ -46,7 +44,7 @@ public class ViewHistoryBorrowController extends HttpServlet {
                 }
             }
 
-          
+
             List<BorrowRecordDTO> overdueSortedByFine = new ArrayList<>();
             for (BorrowRecordDTO record : history) {
                 FineDTO fine = fineMap.get(record.getId());
@@ -64,11 +62,11 @@ public class ViewHistoryBorrowController extends HttpServlet {
                 return f2.compareTo(f1); // sắp xếp giảm dần
             });
 
-       
+
             request.setAttribute("borrowHistory", history);
             request.setAttribute("fineMap", fineMap);
 
-      
+
             request.setAttribute("overdueSortedByFine", overdueSortedByFine);
 
             request.setAttribute("contentPage", "/user/history-borrow.jsp");

@@ -15,7 +15,7 @@
                     <div class="cards-container">
                         <c:forEach var="b" items="${sessionScope.newBooks}">
                             <div class="book-card">
-                                <a href="${pageContext.request.contextPath}/ViewBookController?id=${b.id}" class="book-link">
+                                <a href="${pageContext.request.contextPath}/view?id=${b.id}" class="book-link">
                                     <img src="${b.coverUrl}" alt="Book Cover" class="book-image">
                                 </a>
                                 <div class="book-meta">
@@ -25,9 +25,9 @@
                                 <div class="book-action">
                                     <c:choose>
                                         <c:when test="${b.availableCopies > 0}">
-                                            <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
+                                            <form action="${pageContext.request.contextPath}/borrow/book" method="post" class="borrow-form">
                                                 <input type="hidden" name="bookId" value="${b.id}">
-                                                <input type="hidden" name="currentPage" value="GuestHomeController">
+                                                <input type="hidden" name="currentPage" value="${pageContext.request.contextPath}/home">
                                                 <button type="submit" class="borrow-button">Borrow</button>
                                             </form>
                                         </c:when>
@@ -55,7 +55,7 @@
             <div class="cards-container">
                 <c:forEach var="b" items="${availableBooks}">
                     <div class="book-card">
-                        <a href="${pageContext.request.contextPath}/ViewBookController?id=${b.id}" class="book-link">
+                        <a href="${pageContext.request.contextPath}/view?id=${b.id}" class="book-link">
                             <img src="${b.coverUrl}" alt="Book Cover" class="book-image">
                         </a>
                         <div class="book-meta">
@@ -65,9 +65,9 @@
                         <div class="book-action">
                             <c:choose>
                                 <c:when test="${b.availableCopies > 0}">
-                                    <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
+                                    <form action="${pageContext.request.contextPath}/borrow/book" method="post" class="borrow-form">
                                         <input type="hidden" name="bookId" value="${b.id}">
-                                        <input type="hidden" name="currentPage" value="GuestHomeController">
+                                        <input type="hidden" name="currentPage" value="${pageContext.request.contextPath}/home">
                                         <button type="submit" class="borrow-button">Borrow</button>
                                     </form>
                                 </c:when>

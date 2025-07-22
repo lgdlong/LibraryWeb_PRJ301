@@ -44,7 +44,7 @@ public class LoginController extends HttpServlet {
                 if (UserRole.ADMIN.equals(us.getRole())) {
                     response.sendRedirect(request.getContextPath() + "/admin");
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/GuestHomeController");
+                    response.sendRedirect(request.getContextPath() + "/home");
                 }
             } else {
                 request.setAttribute("ERROR", "Incorrect email or password");

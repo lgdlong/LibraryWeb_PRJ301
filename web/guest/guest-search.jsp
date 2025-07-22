@@ -4,7 +4,7 @@
 <div class="main-content">
     <h2>Search Books</h2>
 
-    <c:set var="books" value="${requestScope.results != null ? requestScope.results : sessionScope.searchResults}" />
+    <c:set var="books" value="${results}" />
 
     <c:choose>
         <c:when test="${books == null || empty books}">
@@ -14,7 +14,7 @@
             <div class="cards-container">
                 <c:forEach var="b" items="${books}">
                     <div class="book-card">
-                        <a href="${pageContext.request.contextPath}/ViewBookController?id=${b.id}" class="book-link">
+                        <a href="${pageContext.request.contextPath}/view?id=${b.id}" class="book-link">
                             <img class="book-image" src="${b.coverUrl}" alt="No Image">
                         </a>
                         <div class="book-meta">
@@ -24,9 +24,8 @@
                         <div class="book-action">
                             <c:choose>
                                 <c:when test="${b.availableCopies > 0}">
-                                    <form action="${pageContext.request.contextPath}/BorrowController" method="post" class="borrow-form">
+                                    <form action="${pageContext.request.contextPath}/borrow/book" method="post" class="borrow-form">
                                         <input type="hidden" name="bookId" value="${b.id}">
-                                        <input type="hidden" name="currentPage" value="GuestHomeController">
                                         <button type="submit" class="borrow-button">Borrow</button>
                                     </form>
                                 </c:when>

@@ -1,46 +1,34 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="entity.User" %>
-
-<%
-  User us = (User) session.getAttribute("LOGIN_USER");
-%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <div class="navbar">
-
   <div class="navbar">
-    <a href="GuestHomeController" class="nav-link">Home</a>
+    <a href="${pageContext.request.contextPath}/home" class="nav-link">Home</a>
   </div>
 
   <div class="nav-center">
-    <form class="search-bar" action="SearchBookController" method="get">
+    <form class="search-bar" action="${pageContext.request.contextPath}/search" method="get">
       <input type="text" name="keyword" placeholder="Search..."
-             value="<%= request.getParameter("keyword") != null ? request.getParameter("keyword") : "" %>"/>
+             value="${param.keyword != null ? param.keyword : ''}" />
       <button type="submit">Search</button>
     </form>
   </div>
 
   <div class="nav-right">
-    <%
-      if (us == null) {
-    %>
-
-    <a href="${pageContext.request.contextPath}/Login.jsp" class="nav-link">Login</a>
-    <a href="${pageContext.request.contextPath}/Register.jsp" class="nav-link register">Register</a>
-    <%
-    } else {
-    %>
-    <div class="user-nav">
-      <span class="welcome-text"> Welcome, <%= us.getName() %></span>
-      <a href="<%= request.getContextPath() %>/profile" class="nav-link">Profile</a>
-      <a href="${pageContext.request.contextPath}/ViewBorrowBookController" class="nav-link">My Library</a>
-      <a href="LogoutController" class="nav-link logout-btn">Logout</a>
-    </div>
-    <%
-      }
-    %>
+    <c:choose>
+      <c:when test="${empty sessionScope.LOGIN_USER}">
+        <a href="${pageContext.request.contextPath}/Login.jsp" class="nav-link">Login</a>
+        <a href="${pageContext.request.contextPath}/Register.jsp" class="nav-link register">Register</a>
+      </c:when>
+      <c:otherwise>
+        <c:set var="user" value="${sessionScope.LOGIN_USER}" />
+        <div class="user-nav">
+          <span class="welcome-text">Welcome, ${user.name}</span>
+          <a href="${pageContext.request.contextPath}/profile" class="nav-link">Profile</a>
+          <a href="${pageContext.request.contextPath}/borrow/current" class="nav-link">My Library</a>
+          <a href="${pageContext.request.contextPath}/LogoutController" class="nav-link logout-btn">Logout</a>
+        </div>
+      </c:otherwise>
+    </c:choose>
   </div>
 </div>
-
-
-

@@ -2,14 +2,13 @@ package controller;
 
 import entity.*;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import service.*;
 
 import java.io.*;
 
-/**
- * @author Dien Sanh
- */
+@WebServlet("/view")
 public class ViewBookController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

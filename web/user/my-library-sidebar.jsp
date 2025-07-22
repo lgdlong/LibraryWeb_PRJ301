@@ -7,7 +7,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container-fluid px-4">
         <!-- Left - Brand (Home) -->
-        <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/GuestHomeController">Home</a>
+        <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">Home</a>
 
         <!-- Collapse toggle button for responsive view -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -19,13 +19,13 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="right-links-group d-flex flex-row navbar-nav align-items-center">
                 <li class="nav-item me-3">
-                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewBorrowBookController">Selected Books</a>
+                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/borrow/current">Selected Books</a>
                 </li>
                 <li class="nav-item me-3">
-                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewHistoryBorrowController">Borrowed History</a>
+                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/borrow/history">Borrowed History</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/ViewBooksRequestController">Borrow Requests</a>
+                    <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/borrow/requested">Borrow Requests</a>
                 </li>
             </ul>
         </div>
